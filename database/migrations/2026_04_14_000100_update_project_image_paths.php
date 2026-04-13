@@ -9,7 +9,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Update image paths to remove /main/ prefix
      * Changes: uploads/projects/main/xxx.webp → uploads/projects/xxx.webp
      */

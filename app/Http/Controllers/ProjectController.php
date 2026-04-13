@@ -126,4 +126,43 @@ class ProjectController extends Controller
                 ->with('error', 'Gagal menghapus proyek. Silakan coba lagi.');
         }
     }
+
+    /**
+     * Handle drag-and-drop reordering of projects
+     */
+    public function reorder(\Illuminate\Http\Request $request)
+    {
+        try {
+            $orders = $request->validate([
+                'orders' => 'required|array',
+                'orders.*.id' => 'required|integer|exists:proyeks,id',
+                'orders.*.position' => 'required|integer|min:1'
+            ]);
+
+            // Use database transaction for data integrity
+            return \DB::transaction(function () use ($orders) {
+                foreach ($orders['orders'] as $order) {
+                    Proyek::where('id', $order['id'])
+                        ->update(['urutan' => $order['position']]);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Urutan proyek berhasil diperbarui'
+                ]);
+            });
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Project reorder error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui urutan proyek'
+            ], 500);
+        }
+    }
 }

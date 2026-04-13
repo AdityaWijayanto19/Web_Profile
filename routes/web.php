@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function () {
         Route::bind('project', function ($value) {
             return \App\Models\Proyek::findOrFail($value);
         });
+        Route::post('/projects/reorder', [ProjectController::class, 'reorder'])->name('projects.reorder');
         Route::resource('projects', ProjectController::class);
 
         // Technologies - Resource Controller (CRUD Routes)

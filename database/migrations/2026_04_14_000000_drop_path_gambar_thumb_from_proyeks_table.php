@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Drop path_gambar_thumb column as we're using only main image
      */
     public function up(): void
