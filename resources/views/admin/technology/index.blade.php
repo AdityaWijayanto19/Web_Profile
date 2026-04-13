@@ -1,0 +1,132 @@
+@extends('layouts.app')
+
+@section('title', 'Technologies Management - Pie')
+@section('page_title', 'Technologies Library')
+
+@section('content')
+<div class="max-w-6xl mx-auto">
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-white mb-1">Technology Stack</h1>
+            <p class="text-sm text-gray-500">Manage available technologies for projects</p>
+        </div>
+        <a href="{{ route('technologies.create') }}" class="bg-[#730c1e] hover:bg-[#8e1227] text-white px-6 py-2.5 rounded-sm text-sm font-bold transition-all flex items-center gap-2 shadow-lg shadow-[#730c1e]/10">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            ADD TECHNOLOGY
+        </a>
+    </div>
+
+    <!-- SEARCH & FILTER -->
+    <div class="mb-6 flex gap-4">
+        <div class="flex-1 relative">
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600"></i>
+            <input type="text" id="search-tech" placeholder="Search technologies..."
+                class="w-full bg-[#1a151d] border border-white/5 rounded-sm pl-10 pr-4 py-2.5 text-white text-sm focus:border-[#730c1e] outline-none transition-all">
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-[#1a151d] border border-white/5 rounded-sm overflow-hidden shadow-2xl">
+        <!-- TABLE HEADER -->
+        <div class="grid grid-cols-12 gap-4 p-4 bg-black/20 border-b border-white/5">
+            <div class="col-span-1 text-[10px] font-bold text-gray-500 uppercase tracking-widest">#</div>
+            <div class="col-span-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Technology</div>
+            <div class="col-span-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Icon</div>
+            <div class="col-span-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Actions</div>
+        </div>
+
+        <!-- TABLE BODY -->
+        <div class="divide-y divide-white/5">
+            @forelse($technologies as $index => $tech)
+                <div class="grid grid-cols-12 gap-4 p-4 hover:bg-black/20 transition-colors">
+                    <!-- Index -->
+                    <div class="col-span-1">
+                        <span class="text-sm text-gray-400">{{ $loop->iteration }}</span>
+                    </div>
+
+                    <!-- Name + Icon Preview -->
+                    <div class="col-span-4 flex items-center gap-3">
+                        <div class="w-8 h-8 bg-[#730c1e]/20 rounded-sm flex items-center justify-center flex-shrink-0">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{{ $tech->path_icon }}.svg" alt="{{ $tech->path_icon }}" class="w-4 h-4" style="filter: invert(1);">
+                        </div>
+                        <span class="text-sm text-white font-medium">{{ $tech->nama }}</span>
+                    </div>
+
+                    <!-- Icon Name -->
+                    <div class="col-span-3 flex items-center">
+                        <span class="text-xs text-gray-500 bg-black/40 px-2.5 py-1.5 rounded-sm">{{ $tech->path_icon }}</span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col-span-4 flex items-center gap-2">
+                        <a href="{{ route('technologies.edit', $tech) }}"
+                            class="text-[10px] font-bold text-gray-500 hover:text-[#730c1e] transition-colors px-3 py-1.5 rounded-sm hover:bg-black/40 inline-flex items-center gap-1 uppercase tracking-widest">
+                            <i data-lucide="edit-2" class="w-3 h-3"></i>
+                            Edit
+                        </a>
+                        <form action="{{ route('technologies.destroy', $tech) }}" method="POST" class="inline" onsubmit="return confirm('Delete {{ $tech->nama }}?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-[10px] font-bold text-gray-500 hover:text-red-500 transition-colors px-3 py-1.5 rounded-sm hover:bg-red-500/10 inline-flex items-center gap-1 uppercase tracking-widest">
+                                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <div class="p-8 text-center">
+                    <i data-lucide="inbox" class="w-12 h-12 text-gray-600 mx-auto mb-3 opacity-50"></i>
+                    <p class="text-sm text-gray-500">No technologies found</p>
+                    <a href="{{ route('technologies.create') }}" class="text-[#730c1e] hover:underline text-sm font-medium mt-2 inline-block">
+                        Create one now
+                    </a>
+                </div>
+            @endforelse
+        </div>
+    </div>
+
+    <!-- PAGINATION -->
+    @if($technologies->hasPages())
+        <div class="mt-6 flex justify-center">
+            {{ $technologies->links() }}
+        </div>
+    @endif
+
+    <!-- INFO CARD -->
+    <div class="mt-8 bg-[#1a151d] border border-white/5 rounded-sm p-6">
+        <h4 class="text-white text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-[#730c1e]"></i> Using Lucide Icons
+        </h4>
+        <p class="text-xs text-gray-400 leading-relaxed mb-3">
+            All icons are from the <a href="https://lucide.dev/" target="_blank" class="text-[#730c1e] hover:underline">Lucide Icon Library</a>.
+            When adding a technology, enter the icon name exactly as shown in Lucide documentation.
+        </p>
+        <p class="text-xs text-gray-500 italic">
+            Example: <span class="text-gray-400">code</span>,
+            <span class="text-gray-400">database</span>,
+            <span class="text-gray-400">zap</span>,
+            <span class="text-gray-400">github</span>, etc.
+        </p>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    lucide.createIcons();
+
+    // Simple search filter
+    document.getElementById('search-tech').addEventListener('keyup', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        document.querySelectorAll('.grid.grid-cols-12 > .col-span-1').forEach(row => {
+            const parent = row.closest('.divide-y');
+            if (!parent) return;
+
+            const text = parent.textContent.toLowerCase();
+            parent.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+</script>
+@endpush
