@@ -30,7 +30,7 @@
                     'route' => 'edukasi.index',
                     'icon' => 'album',
                     'name' => 'Edukasi',
-                    'pattern' => 'admin/edukasi/*',
+                    'pattern' => 'admin/edukasi*',
                     'desc' => 'Education history',
                 ],
                 [
@@ -44,21 +44,21 @@
                     'route' => 'sertifikat.index',
                     'icon' => 'file',
                     'name' => 'Certificates',
-                    'pattern' => 'admin/sertifikat/*',
+                    'pattern' => 'admin/sertifikat*',
                     'desc' => 'Achieved awards',
                 ],
                 [
                     'route' => 'projects.index',
                     'icon' => 'folder-open-dot',
                     'name' => 'Project',
-                    'pattern' => 'admin/projects/*',
+                    'pattern' => 'admin/projects*',
                     'desc' => 'Portfolio work',
                 ],
                 [
                     'route' => 'article.index',
                     'icon' => 'newspaper',
                     'name' => 'Article',
-                    'pattern' => 'admin/article/*',
+                    'pattern' => 'admin/article*',
                     'desc' => 'Written blogs',
                 ],
             ];

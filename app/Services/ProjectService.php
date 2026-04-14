@@ -17,7 +17,7 @@ class ProjectService
     /**
      * Perpage items for pagination
      */
-    private const PER_PAGE = 12;
+    private const PER_PAGE = 6;
 
     /**
      * Inject dependencies
