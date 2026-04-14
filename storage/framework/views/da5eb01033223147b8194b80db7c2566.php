@@ -1,9 +1,7 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Add Education - FoxHR'); ?>
+<?php $__env->startSection('page_title', 'Add New Education'); ?>
 
-@section('title', 'Add Education - FoxHR')
-@section('page_title', 'Add New Education')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="max-w-[1200px]"> <!-- Dipersempit agar tidak terlalu lebar -->
     <!-- Breadcrumb -->
     <div class="mb-6">
@@ -13,8 +11,8 @@
         </a>
     </div>
 
-    <form action="{{ route('pendidikans.store') }}" method="POST">
-        @csrf
+    <form action="<?php echo e(route('pendidikans.store')); ?>" method="POST">
+        <?php echo csrf_field(); ?>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
             <!-- LEFT COLUMN: FORM UTAMA (8/12) -->
@@ -164,4 +162,6 @@
         </div>
     </form>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/edukasi/create.blade.php ENDPATH**/ ?>

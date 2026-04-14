@@ -26,10 +26,10 @@
                     'desc' => 'Manage account',
                 ],
                 [
-                    'route' => 'edukasi.index',
+                    'route' => 'pendidikans.index',
                     'icon' => 'album',
                     'name' => 'Edukasi',
-                    'pattern' => 'admin/edukasi*',
+                    'pattern' => 'admin/pendidikans*',
                     'desc' => 'Education history',
                 ],
                 [

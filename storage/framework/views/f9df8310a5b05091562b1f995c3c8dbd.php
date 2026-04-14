@@ -1,9 +1,7 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Edit Education - FoxHR'); ?>
+<?php $__env->startSection('page_title', 'Edit Education'); ?>
 
-@section('title', 'Edit Education - FoxHR')
-@section('page_title', 'Edit Education')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="max-w-[1200px]">
     <!-- Breadcrumb -->
     <div class="mb-6 flex justify-between items-center">
@@ -17,9 +15,9 @@
     </div>
 
     <!-- Form menggunakan Method PUT untuk Update -->
-    <form action="{{ route('pendidikans.update', $pendidikan->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+    <form action="<?php echo e(route('pendidikans.update', $pendidikan->id)); ?>" method="POST">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
@@ -38,13 +36,13 @@
                             <!-- Period Start -->
                             <div class="space-y-2">
                                 <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start Year</label>
-                                <input type="text" name="start_year" value="{{ explode(' - ', $pendidikan->periode)[0] ?? '' }}"
+                                <input type="text" name="start_year" value="<?php echo e(explode(' - ', $pendidikan->periode)[0] ?? ''); ?>"
                                     class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
                             </div>
                             <!-- Period End -->
                             <div class="space-y-2">
                                 <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year / Status</label>
-                                <input type="text" name="end_year" value="{{ explode(' - ', $pendidikan->periode)[1] ?? '' }}"
+                                <input type="text" name="end_year" value="<?php echo e(explode(' - ', $pendidikan->periode)[1] ?? ''); ?>"
                                     class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
                             </div>
                         </div>
@@ -52,14 +50,14 @@
                         <!-- Degree / Major -->
                         <div class="space-y-2">
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Degree & Major</label>
-                            <input type="text" name="degree" value="{{ $pendidikan->gelar }}"
+                            <input type="text" name="degree" value="<?php echo e($pendidikan->gelar); ?>"
                                 class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
                         </div>
 
                         <!-- Institution Name -->
                         <div class="space-y-2">
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Institution / University</label>
-                            <input type="text" name="institution" value="{{ $pendidikan->instansi }}"
+                            <input type="text" name="institution" value="<?php echo e($pendidikan->instansi); ?>"
                                 class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
                         </div>
 
@@ -67,7 +65,7 @@
                         <div class="space-y-2">
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Short Description</label>
                             <textarea name="description" rows="6"
-                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-3 text-white outline-none focus:border-[#730c1e] transition-all resize-none text-sm leading-relaxed font-light">{{ $pendidikan->keterangan }}</textarea>
+                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-3 text-white outline-none focus:border-[#730c1e] transition-all resize-none text-sm leading-relaxed font-light"><?php echo e($pendidikan->keterangan); ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -169,4 +167,6 @@
         </div>
     </form>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/edukasi/edit.blade.php ENDPATH**/ ?>

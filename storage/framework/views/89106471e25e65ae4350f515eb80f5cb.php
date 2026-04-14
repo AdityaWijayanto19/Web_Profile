@@ -141,7 +141,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
     lucide.createIcons();
-    
+
     document.addEventListener('DOMContentLoaded', function() {
         const el = document.getElementById('sortable-table');
         Sortable.create(el, {
@@ -153,14 +153,14 @@
                 updateUrutanValues();
             },
         });
-        
+
         function updateRowNumbers() {
             const rows = document.querySelectorAll('.row-number');
             rows.forEach((row, index) => {
                 row.innerText = index + 1;
             });
         }
-        
+
         function updateUrutanValues() {
             const rows = document.querySelectorAll('#sortable-table tr[data-id]');
             rows.forEach((row, index) => {

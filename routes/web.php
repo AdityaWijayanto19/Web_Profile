@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\PengalamanController;
+use App\Http\Controllers\PendidikanController;
 
 // ==================== PUBLIC ROUTES ====================
 Route::get('/', function () {
@@ -44,19 +45,13 @@ Route::middleware('auth')->group(function () {
 
         // Hero Section (Singleton - only edit/update)
         Route::put('/hero-section', [HeroSectionController::class, 'update'])->name('hero-section.update');
-        Route::prefix('edukasi')->group(function () {
-            Route::get('/index', function () {
-                return view('admin/edukasi/index');
-            })->name('edukasi.index');
 
-            Route::get('/create', function () {
-                return view('admin/edukasi/create');
-            })->name('edukasi.create');
-
-            Route::get('/edit', function () {
-                return view('admin/edukasi/edit');
-            })->name('edukasi.edit');
+        // Pendidikan (Education) - Resource Controller (CRUD Routes)
+        Route::bind('pendidikan', function ($value) {
+            return \App\Models\Pendidikan::findOrFail($value);
         });
+        Route::post('/pendidikans/reorder', [PendidikanController::class, 'reorder'])->name('pendidikans.reorder');
+        Route::resource('pendidikans', PendidikanController::class);
 
         // Pengalaman (Experience) - Read & Update only (3 fixed records)
         Route::get('/pengalaman', [PengalamanController::class, 'index'])->name('pengalaman.index');

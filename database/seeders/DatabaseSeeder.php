@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
         // Seed pengalaman
         $this->call(PengalamanSeeder::class);
 
+        // Seed pendidikan
+        $this->call(PendidikanSeeder::class);
+
         // Create admin user
         User::factory()->create([
             'name' => 'Admin',

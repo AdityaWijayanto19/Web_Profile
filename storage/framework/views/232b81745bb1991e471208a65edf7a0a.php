@@ -30,7 +30,7 @@
             <h2 class="text-xl font-semibold text-white">Educational Root</h2>
             <p class="text-gray-400 text-xs mt-1">Manage your educational background and timeline order.</p>
         </div>
-        <a href="<?php echo e(route('edukasi.create')); ?>" class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-xs font-medium">
+        <a href="<?php echo e(route('pendidikans.create')); ?>" class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-xs font-medium">
             <i data-lucide="plus" class="w-4 h-4"></i>
             ADD NEW EDUCATION
         </a>
@@ -49,61 +49,42 @@
                 </tr>
             </thead>
             <tbody id="sortable-table">
-                <!-- Row 1 -->
-                <tr class="group border-b border-white/5 transition-colors duration-200 hover:bg-white/[0.02]" data-id="1">
+                <?php $__empty_1 = true; $__currentLoopData = $pendidikans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $pendidikan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <tr class="group border-b border-white/5 transition-colors duration-200 hover:bg-white/[0.02]" data-id="<?php echo e($pendidikan->id); ?>">
                     <td class="px-4 py-4 text-center relative">
-                        <span class="row-number text-gray-500 group-hover:opacity-0 transition-opacity">1</span>
+                        <span class="row-number text-gray-500 group-hover:opacity-0 transition-opacity"><?php echo e($index + 1); ?></span>
                         <div class="drag-handle absolute inset-0 flex items-center justify-center text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
                             <i data-lucide="grip-vertical" class="w-5 h-5"></i>
                         </div>
                     </td>
-                    <td class="px-4 py-4 font-mono text-[#730c1e]">2016 - 2020</td>
+                    <td class="px-4 py-4 font-mono text-[#730c1e]"><?php echo e($pendidikan->periode); ?></td>
                     <td class="px-4 py-4">
-                        <div class="text-white font-medium">Bachelor of Software Engineering</div>
-                        <div class="text-gray-500 text-xs mt-0.5">University of Technology</div>
+                        <div class="text-white font-medium"><?php echo e($pendidikan->gelar); ?></div>
+                        <div class="text-gray-500 text-xs mt-0.5"><?php echo e($pendidikan->instansi); ?></div>
                     </td>
                     <td class="px-4 py-4">
-                        <p class="text-gray-400 line-clamp-1 max-w-xs text-xs">Graduated with Honors. Focused on Distributed Systems...</p>
+                        <p class="text-gray-400 line-clamp-1 max-w-xs text-xs"><?php echo e($pendidikan->keterangan); ?></p>
                     </td>
                     <td class="px-4 py-4 text-right">
                         <div class="flex justify-end gap-2">
-                            <a href="<?php echo e(route('edukasi.edit')); ?>" class="p-1.5 hover:bg-white/10 rounded text-gray-400 hover:text-white transition-colors">
+                            <a href="<?php echo e(route('pendidikans.edit', $pendidikan->id)); ?>" class="p-1.5 hover:bg-white/10 rounded text-gray-400 hover:text-white transition-colors">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </a>
-                            <button class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
+                            <form action="<?php echo e(route('pendidikans.destroy', $pendidikan->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                                <button type="submit" class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors border-0 bg-transparent cursor-pointer">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
-
-                <!-- Row 2 -->
-                <tr class="group border-b border-white/5 transition-colors duration-200 hover:bg-white/[0.02]" data-id="2">
-                    <td class="px-4 py-4 text-center relative">
-                        <span class="row-number text-gray-500 group-hover:opacity-0 transition-opacity">2</span>
-                        <div class="drag-handle absolute inset-0 flex items-center justify-center text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
-                            <i data-lucide="grip-vertical" class="w-5 h-5"></i>
-                        </div>
-                    </td>
-                    <td class="px-4 py-4 font-mono text-[#730c1e]">2021 - 2022</td>
-                    <td class="px-4 py-4">
-                        <div class="text-white font-medium">Master of AI & Interaction</div>
-                        <div class="text-gray-500 text-xs mt-0.5">Global Design Institute</div>
-                    </td>
-                    <td class="px-4 py-4">
-                        <p class="text-gray-400 line-clamp-1 max-w-xs text-xs">Specialized in Generative UI and Machine Learning...</p>
-                    </td>
-                    <td class="px-4 py-4 text-right">
-                        <div class="flex justify-end gap-2">
-                            <button class="p-1.5 hover:bg-white/10 rounded text-gray-400 hover:text-white transition-colors">
-                                <i data-lucide="edit-3" class="w-4 h-4"></i>
-                            </button>
-                            <button class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </td>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <tr>
+                    <td colspan="5" class="px-4 py-6 text-center text-gray-500">Tidak ada data pendidikan</td>
                 </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

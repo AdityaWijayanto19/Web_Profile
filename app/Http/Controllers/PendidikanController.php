@@ -1,0 +1,165 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\PendidikanRequest;
+use App\Http\Requests\StorePendidikanRequest;
+use App\Models\Pendidikan;
+use App\Services\PendidikanService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+
+class PendidikanController extends Controller
+{
+    /**
+     * Inject PendidikanService
+     */
+    private PendidikanService $pendidikanService;
+
+    public function __construct(PendidikanService $pendidikanService)
+    {
+        $this->pendidikanService = $pendidikanService;
+    }
+
+    /**
+     * Show pendidikan management page
+     *
+     * @return View
+     */
+    public function index(): View
+    {
+        $pendidikans = $this->pendidikanService->getAll();
+
+        return view('admin.edukasi.index', [
+            'pendidikans' => $pendidikans,
+        ]);
+    }
+
+    /**
+     * Show create form
+     *
+     * @return View
+     */
+    public function create(): View
+    {
+        return view('admin.edukasi.create');
+    }
+
+    /**
+     * Store new pendidikan
+     *
+     * @param StorePendidikanRequest $request
+     * @return RedirectResponse
+     */
+    public function store(StorePendidikanRequest $request): RedirectResponse
+    {
+        try {
+            $validated = $request->validated();
+
+            // Transform form fields to model fields
+            $data = [
+                'gelar' => $validated['degree'],
+                'instansi' => $validated['institution'],
+                'periode' => "{$validated['start_year']} - {$validated['end_year']}",
+                'keterangan' => $validated['description'] ?? null,
+            ];
+
+            $this->pendidikanService->create($data);
+
+            return redirect()->route('pendidikans.index')
+                ->with('success', 'Pendidikan berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Gagal menambahkan pendidikan. Silakan coba lagi.')
+                ->withInput();
+        }
+    }
+
+    /**
+     * Show edit form
+     *
+     * @param Pendidikan $pendidikan
+     * @return View
+     */
+    public function edit(Pendidikan $pendidikan): View
+    {
+        return view('admin.edukasi.edit', [
+            'pendidikan' => $pendidikan,
+        ]);
+    }
+
+    /**
+     * Update pendidikan
+     *
+     * @param StorePendidikanRequest $request
+     * @param Pendidikan $pendidikan
+     * @return RedirectResponse
+     */
+    public function update(StorePendidikanRequest $request, Pendidikan $pendidikan): RedirectResponse
+    {
+        try {
+            $validated = $request->validated();
+
+            // Transform form fields to model fields
+            $data = [
+                'gelar' => $validated['degree'],
+                'instansi' => $validated['institution'],
+                'periode' => "{$validated['start_year']} - {$validated['end_year']}",
+                'keterangan' => $validated['description'] ?? null,
+            ];
+
+            $this->pendidikanService->update($pendidikan, $data);
+
+            return redirect()->route('pendidikans.index')
+                ->with('success', 'Pendidikan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Gagal memperbarui pendidikan. Silakan coba lagi.')
+                ->withInput();
+        }
+    }
+
+    /**
+     * Delete pendidikan
+     *
+     * @param Pendidikan $pendidikan
+     * @return RedirectResponse
+     */
+    public function destroy(Pendidikan $pendidikan): RedirectResponse
+    {
+        try {
+            $this->pendidikanService->delete($pendidikan);
+
+            return redirect()->route('pendidikans.index')
+                ->with('success', 'Pendidikan berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Gagal menghapus pendidikan. Silakan coba lagi.');
+        }
+    }
+
+    /**
+     * Reorder pendidikan via AJAX
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse
+     */
+    public function reorder(\Illuminate\Http\Request $request): JsonResponse
+    {
+        try {
+            $ids = $request->input('ids', []);
+            $this->pendidikanService->reorder($ids);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order updated successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reorder pendidikan',
+            ], 500);
+        }
+    }
+}
