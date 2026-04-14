@@ -41,10 +41,10 @@
                     'desc' => 'Work experience',
                 ],
                 [
-                    'route' => 'sertifikat.index',
+                    'route' => 'sertifikats.index',
                     'icon' => 'file',
                     'name' => 'Certificates',
-                    'pattern' => 'admin/sertifikat*',
+                    'pattern' => 'admin/sertifikats*',
                     'desc' => 'Achieved awards',
                 ],
                 [

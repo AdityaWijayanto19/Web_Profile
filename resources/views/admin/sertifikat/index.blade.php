@@ -45,105 +45,98 @@
             <h2 class="text-xl font-bold text-white tracking-tight">Certifications</h2>
             <p class="text-gray-500 text-[11px] mt-1 uppercase tracking-tighter">Manage and reorder your professional credentials.</p>
         </div>
-        <a href="{{ route('sertifikat.create') }}" class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+        <a href="{{ route('sertifikats.create') }}" class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
             <i data-lucide="plus" class="w-3.5 h-3.5"></i>
             Add New
         </a>
     </div>
 
+    <!-- Alert Messages -->
+    @if(session('success'))
+        <div class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-sm text-[11px] font-medium uppercase tracking-widest flex items-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-300 rounded-sm text-[11px] font-medium uppercase tracking-widest flex items-center gap-2">
+            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- GRID 3 KOLOM (Mirip Project Index) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12" id="sortable-cards">
 
-        <!-- Item 1 -->
-        <div class="group cursor-grab active:cursor-grabbing">
-            <div class="cert-thumb relative mb-4">
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-500">
+        @forelse($sertifikats as $sertifikat)
+            <!-- Sertifikat Card -->
+            <div class="group cursor-grab active:cursor-grabbing" data-id="{{ $sertifikat->id }}">
+                <div class="cert-thumb relative mb-4">
+                    @if($sertifikat->path_gambar)
+                        <img src="{{ asset('storage/' . $sertifikat->path_gambar) }}"
+                             alt="{{ $sertifikat->nama_sertifikat }}"
+                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-500">
+                    @else
+                        <div class="w-full h-full bg-gradient-to-br from-[#730c1e] to-black flex items-center justify-center">
+                            <i data-lucide="certificate" class="w-12 h-12 text-white/30"></i>
+                        </div>
+                    @endif
 
-                <!-- Hover Overlay Buttons -->
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10">
-                    <button onclick="openEditor()" class="p-2.5 bg-white/10 hover:bg-[#730c1e] rounded-sm text-white transition-colors">
-                        <i data-lucide="edit-3" class="w-4.5 h-4.5"></i>
-                    </button>
-                    <button class="p-2.5 bg-white/10 hover:bg-red-600 rounded-sm text-white transition-colors">
-                        <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
-                    </button>
-                </div>
+                    <!-- Hover Overlay Buttons -->
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10">
+                        <a href="{{ route('sertifikats.edit', $sertifikat) }}" class="p-2.5 bg-white/10 hover:bg-[#730c1e] rounded-sm text-white transition-colors">
+                            <i data-lucide="edit-3" class="w-4.5 h-4.5"></i>
+                        </a>
+                        <form action="{{ route('sertifikats.destroy', $sertifikat) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="p-2.5 bg-white/10 hover:bg-red-600 rounded-sm text-white transition-colors">
+                                <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
+                            </button>
+                        </form>
+                    </div>
 
-                <!-- Small Badge Icon (Tetap dipertahankan di pojok) -->
-                <div class="absolute bottom-2 left-2 z-10">
-                    <div class="w-6 h-6 bg-[#730c1e] flex items-center justify-center rounded-sm">
-                        <i data-lucide="check-circle" class="w-3.5 h-3.5 text-white"></i>
+                    <!-- Badge Icon (Tetap dipertahankan di pojok) -->
+                    <div class="absolute bottom-2 left-2 z-10">
+                        <div class="w-6 h-6 bg-[#730c1e] flex items-center justify-center rounded-sm">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-white"></i>
+                        </div>
+                    </div>
+
+                    <!-- Year Badge -->
+                    <div class="absolute top-2 right-2 z-10">
+                        <div class="px-2 py-1 bg-[#730c1e] rounded-sm">
+                            <span class="text-[9px] font-bold text-white">{{ $sertifikat->tahun }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="px-0.5 space-y-1">
-                <h4 class="text-sm font-bold text-white uppercase tracking-wider truncate">Google Certified</h4>
-                <p class="text-[11px] text-gray-500 font-medium uppercase mt-0.5">UX Architecture Professional</p>
-            </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="group cursor-grab active:cursor-grabbing">
-            <div class="cert-thumb relative mb-4">
-                <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=600" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-500">
-
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10">
-                    <button onclick="openEditor()" class="p-2.5 bg-white/10 hover:bg-[#730c1e] rounded-sm text-white transition-colors">
-                        <i data-lucide="edit-3" class="w-4.5 h-4.5"></i>
-                    </button>
-                    <button class="p-2.5 bg-white/10 hover:bg-red-600 rounded-sm text-white transition-colors">
-                        <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
-                    </button>
-                </div>
-
-                <div class="absolute bottom-2 left-2 z-10">
-                    <div class="w-6 h-6 bg-[#730c1e] flex items-center justify-center rounded-sm">
-                        <i data-lucide="code" class="w-3.5 h-3.5 text-white"></i>
-                    </div>
+                <div class="px-0.5 space-y-1">
+                    <a href="{{ route('sertifikats.show', $sertifikat) }}" class="text-sm font-bold text-white uppercase tracking-wider truncate hover:text-[#730c1e] transition-colors line-clamp-1">
+                        {{ $sertifikat->nama_sertifikat }}
+                    </a>
+                    <p class="text-[11px] text-gray-500 font-medium uppercase mt-0.5 line-clamp-1">{{ $sertifikat->penerbit }}</p>
                 </div>
             </div>
-
-            <div class="px-0.5 space-y-1">
-                <h4 class="text-sm font-bold text-white uppercase tracking-wider truncate">Meta Engineer</h4>
-                <p class="text-[11px] text-gray-500 font-medium uppercase mt-0.5">React Professional Certification</p>
+        @empty
+            <div class="col-span-full py-16 text-center">
+                <i data-lucide="inbox" class="w-16 h-16 text-gray-600 mx-auto mb-4"></i>
+                <p class="text-gray-500 text-[11px] uppercase tracking-widest">No certifications yet.</p>
+                <a href="{{ route('sertifikats.create') }}" class="mt-4 inline-block btn-primary text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest">
+                    Create Your First Certificate
+                </a>
             </div>
-        </div>
+        @endforelse
 
     </div>
-</div>
 
-<!-- SLIDE-OVER Editor (Panel Samping) -->
-<div id="editor-panel" class="fixed inset-y-0 right-0 w-80 bg-[#0f0d11] border-l border-white/5 shadow-2xl transform translate-x-full transition-transform duration-500 z-50 p-8">
-    <div class="flex justify-between items-center mb-10 border-b border-white/5 pb-4">
-        <h3 class="text-xs font-bold text-white uppercase tracking-[0.2em]">Update Certificate</h3>
-        <button onclick="closeEditor()" class="text-gray-500 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-    </div>
-
-    <div class="space-y-6">
-        <div>
-            <label class="text-[9px] text-gray-500 uppercase font-bold mb-2 block tracking-widest">Certificate Image</label>
-            <div class="w-full aspect-video bg-black/20 border border-dashed border-white/10 rounded-sm flex flex-col items-center justify-center text-gray-500 hover:border-[#730c1e] transition-all cursor-pointer">
-                <i data-lucide="image" class="w-5 h-5 mb-1"></i>
-                <span class="text-[8px] uppercase">Upload New</span>
-            </div>
+    <!-- Pagination -->
+    @if($sertifikats->hasPages())
+        <div class="mt-12 flex justify-center">
+            {{ $sertifikats->links() }}
         </div>
-
-        <div class="space-y-4">
-            <div>
-                <label class="text-[9px] text-gray-500 uppercase font-bold mb-1.5 block tracking-widest">Institution</label>
-                <input type="text" class="w-full form-input-custom px-3 py-2 text-[11px] outline-none rounded-sm" placeholder="e.g. Google">
-            </div>
-            <div>
-                <label class="text-[9px] text-gray-500 uppercase font-bold mb-1.5 block tracking-widest">Subject</label>
-                <input type="text" class="w-full form-input-custom px-3 py-2 text-[11px] outline-none rounded-sm" placeholder="e.g. UX Architecture">
-            </div>
-        </div>
-
-        <button class="w-full btn-primary text-white py-2.5 mt-4 rounded-sm text-[10px] font-bold tracking-widest uppercase shadow-lg shadow-[#730c1e]/20">
-            Save Changes
-        </button>
-    </div>
+    @endif
 </div>
 @endsection
 

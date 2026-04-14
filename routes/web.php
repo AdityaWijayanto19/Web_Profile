@@ -62,27 +62,18 @@ Route::middleware('auth')->group(function () {
             return view('admin/pengalaman');
         })->name('pengalaman');
 
-        // Sertifikat (Certificates)
-        Route::prefix('sertifikat')->group(function () {
-            Route::get('/index', function () {
-                return view('admin/sertifikat/index');
-            })->name('sertifikat.index');
-
-            Route::get('/create', function () {
-                return view('admin/sertifikat/create');
-            })->name('sertifikat.create');
-
-            Route::get('/edit', function () {
-                return view('admin/sertifikat/edit');
-            })->name('sertifikat.edit');
-        });
-
         // Projects - Resource Controller (CRUD Routes)
         Route::bind('project', function ($value) {
             return \App\Models\Proyek::findOrFail($value);
         });
         Route::post('/projects/reorder', [ProjectController::class, 'reorder'])->name('projects.reorder');
         Route::resource('projects', ProjectController::class);
+
+        // Sertifikats - Resource Controller (CRUD Routes)
+        Route::bind('sertifikat', function ($value) {
+            return \App\Models\Sertifikat::findOrFail($value);
+        });
+        Route::resource('sertifikats', 'App\Http\Controllers\SertifikatController');
 
         // Technologies - Resource Controller (CRUD Routes)
         Route::resource('technologies', TechnologyController::class);
