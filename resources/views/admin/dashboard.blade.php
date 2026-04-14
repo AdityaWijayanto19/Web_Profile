@@ -4,7 +4,7 @@
 @section('page_title', 'Dashboard')
 
 @section('content')
-<div class="grid grid-cols-12 gap-4">
+<div class="grid grid-cols-12 gap-4 px-4">
 
     <!-- LEFT COLUMN -->
     <div class="col-span-12 lg:col-span-8 space-y-4">

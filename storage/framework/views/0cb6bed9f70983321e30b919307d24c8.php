@@ -2,7 +2,7 @@
 <?php $__env->startSection('page_title', 'Create New Project'); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="max-w-[1200px]">
+<div class="max-w-7xl mx-auto px-4">
     <!-- Breadcrumb -->
     <div class="mb-6">
         <a href="<?php echo e(route('projects.index')); ?>" class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
@@ -272,33 +272,6 @@ endif;
 unset($__errorArgs, $__bag); ?>
                 </div>
 
-                <!-- CONTENT GUIDELINES CARD -->
-                <div class="bg-[#1a151d] border border-white/5 rounded-sm p-6">
-                    <h4 class="text-white text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <i data-lucide="info" class="w-3.5 h-3.5 text-[#730c1e]"></i> Content Tips
-                    </h4>
-
-                    <ul class="space-y-4">
-                        <li class="flex gap-3">
-                            <div class="w-5 h-5 rounded bg-[#730c1e]/10 border border-[#730c1e]/20 flex items-center justify-center flex-shrink-0">
-                                <span class="text-[10px] text-[#730c1e] font-bold">1</span>
-                            </div>
-                            <p class="text-[11px] text-gray-400 leading-relaxed">Pilih setidaknya satu teknologi untuk project.</p>
-                        </li>
-                        <li class="flex gap-3">
-                            <div class="w-5 h-5 rounded bg-[#730c1e]/10 border border-[#730c1e]/20 flex items-center justify-center flex-shrink-0">
-                                <span class="text-[10px] text-[#730c1e] font-bold">2</span>
-                            </div>
-                            <p class="text-[11px] text-gray-400 leading-relaxed">Gambar akan dioptimalkan ke format WebP 1200x800px otomatis.</p>
-                        </li>
-                        <li class="flex gap-3">
-                            <div class="w-5 h-5 rounded bg-[#730c1e]/10 border border-[#730c1e]/20 flex items-center justify-center flex-shrink-0">
-                                <span class="text-[10px] text-[#730c1e] font-bold">3</span>
-                            </div>
-                            <p class="text-[11px] text-gray-400 leading-relaxed">Order number menentukan urutan tampil di portfolio. Semakin kecil, semakin atas.</p>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
     </form>

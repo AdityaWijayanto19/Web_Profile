@@ -32,17 +32,17 @@
 <?php $__env->startSection('content'); ?>
     <div class="max-w-7xl mx-auto px-4">
 
-        <!-- Header Section -->
+        
         <div class="flex justify-between items-end mb-8 border-b border-white/5 pb-6">
             <div>
-                <h2 class="text-xl font-bold text-white tracking-tight uppercase">Portfolio Projects</h2>
-                <p class="text-gray-500 text-[10px] mt-1 uppercase tracking-[0.2em]">Showcase your work and technical
+                <h2 class="text-xl font-bold text-white tracking-tight">Portfolio Projects</h2>
+                <p class="text-gray-500 text-[11px] mt-1 uppercase tracking-tighter">Showcase your work and technical
                     expertise.</p>
             </div>
             <a href="<?php echo e(route('projects.create')); ?>"
-                class="btn-primary text-white px-5 py-2.5 rounded-sm flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+                class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                Create New
+                Add New
             </a>
         </div>
 
@@ -150,8 +150,9 @@
                     </div>
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                <div class="col-span-full py-20 text-center border border-dashed border-white/5">
-                    <p class="text-gray-600 text-[10px] uppercase tracking-[0.3em]">Project directory is empty</p>
+                 <div class="col-span-full py-16 text-center">
+                    <i data-lucide="inbox" class="w-16 h-16 text-gray-600 mx-auto mb-4"></i>
+                    <p class="text-gray-500 text-[11px] uppercase tracking-widest">No Projects yet.</p>
                 </div>
             <?php endif; ?>
 

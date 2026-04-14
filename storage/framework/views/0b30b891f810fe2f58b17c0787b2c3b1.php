@@ -34,7 +34,7 @@
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="max-w-6xl mx-auto">
+<div class="max-w-7xl mx-auto px-4">
     <!-- Header Section -->
     <div class="flex justify-between items-end mb-6">
         <div>

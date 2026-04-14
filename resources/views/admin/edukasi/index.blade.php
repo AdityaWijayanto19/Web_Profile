@@ -25,7 +25,7 @@
 @endpush
 
 @section('content')
-<div class="max-w-6xl mx-auto">
+<div class="max-w-7xl mx-auto px-4">
     <!-- Header Section -->
     <div class="flex justify-between items-end mb-6">
         <div>
@@ -34,7 +34,7 @@
         </div>
         <a href="{{ route('pendidikans.create') }}" class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-xs font-medium">
             <i data-lucide="plus" class="w-4 h-4"></i>
-            ADD NEW EDUCATION
+            ADD NEW
         </a>
     </div>
 
@@ -93,7 +93,6 @@
 
     <div class="mt-4 flex justify-between items-center text-xs text-gray-500 italic">
         <p>* Drag the <span class="inline-block"><i data-lucide="grip-vertical" class="w-3 h-3 inline"></i></span> icon to reorder positions.</p>
-        <p>Total: 2 entries</p>
     </div>
 </div>
 @endsection

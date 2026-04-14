@@ -4,215 +4,223 @@
 @section('page_title', 'Hero Section Manager')
 
 @push('styles')
-<style>
-    /* Custom Input Style agar senada dengan halaman lain */
-    .form-input-custom {
-        background-color: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        transition: all 0.2s;
-    }
-    .form-input-custom:focus {
-        border-color: #730c1e;
-        outline: none;
-        background-color: rgba(255, 255, 255, 0.03);
-    }
-    .btn-push {
-        background-color: #730c1e;
-        box-shadow: 0 4px 15px rgba(115, 12, 30, 0.2);
-    }
-    .btn-push:hover {
-        background-color: #921126;
-        transform: translateY(-1px);
-    }
-</style>
+    <style>
+        /* Custom Input Style */
+        .form-input-custom {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .form-input-custom:focus {
+            border-color: #730c1e;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 1px #730c1e;
+        }
+
+        /* Card Hover Effect */
+        .card-custom {
+            background: #1a151d;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: border 0.3s ease;
+        }
+
+        .card-custom:hover {
+            border-color: rgba(115, 12, 30, 0.4);
+        }
+    </style>
 @endpush
 
 @section('content')
-<!-- Flash Messages -->
-@if ($message = Session::get('success'))
-    <div class="max-w-6xl mx-auto mb-4 p-4 bg-green-900/20 border border-green-700/50 rounded-sm">
-        <div class="text-sm text-green-400 flex items-center gap-2">
-            <i data-lucide="check-circle" class="w-4 h-4"></i>
-            {{ $message }}
+    <!-- Flash Messages (Tetap) -->
+    @if ($message = Session::get('success'))
+        <div
+            class="max-w-6xl mx-auto mb-4 p-4 bg-green-900/20 border border-green-700/50 rounded-sm flex items-center gap-2 text-sm text-green-400">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> {{ $message }}
         </div>
-    </div>
-@endif
+    @endif
 
-@if ($message = Session::get('error'))
-    <div class="max-w-6xl mx-auto mb-4 p-4 bg-red-900/20 border border-red-700/50 rounded-sm">
-        <div class="text-sm text-red-400 flex items-center gap-2">
-            <i data-lucide="alert-circle" class="w-4 h-4"></i>
-            {{ $message }}
+    @if ($errors->any())
+        <div class="max-w-6xl mx-auto mb-4 p-4 bg-red-900/20 border border-red-700/50 rounded-sm">
+            <div class="text-sm text-red-400 mb-2 flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i> Terjadi kesalahan validasi:
+            </div>
+            <ul class="list-disc list-inside text-xs text-red-300 space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-    </div>
-@endif
+    @endif
 
-<!-- Validation Errors -->
-@if ($errors->any())
-    <div class="max-w-6xl mx-auto mb-4 p-4 bg-red-900/20 border border-red-700/50 rounded-sm">
-        <div class="text-sm text-red-400 mb-2 flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-            Terjadi kesalahan pada validasi:
-        </div>
-        <ul class="list-disc list-inside text-xs text-red-300 space-y-1">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    <form action="{{ route('hero-section.update') }}" method="POST" enctype="multipart/form-data"
+        class="max-w-7xl mx-auto px-4 pb-10">
+        @csrf
+        @method('PUT')
 
-<form action="{{ route('hero-section.update') }}" method="POST" enctype="multipart/form-data" class="max-w-6xl mx-auto">
-    @csrf
-    @method('PUT')
+        <div class="grid grid-cols-12 gap-6">
 
-    <div class="grid grid-cols-12 gap-4">
+            <!-- CARD 1: IDENTITY -->
+            <div class="col-span-12 lg:col-span-5 card-custom rounded-sm p-6 relative overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 p-3 text-[8px] font-black text-[#730c1e] uppercase tracking-[0.2em] opacity-40">
+                    Section 01 / Identity</div>
 
-        <!-- ELEMENT 1: IDENTITY -->
-        <div class="col-span-12 lg:col-span-7 bg-[#1a151d] rounded-sm p-5 border border-white/5 relative shadow-sm">
-            <div class="absolute top-3 right-4 text-[8px] font-black text-[#730c1e] uppercase tracking-widest opacity-60">Identity</div>
-
-            <div class="mb-6 min-h-[80px] flex flex-col justify-center border-l-2 border-[#730c1e] pl-4">
-                <h1 id="preview-first-name" class="text-3xl md:text-4xl font-bold text-white tracking-tighter leading-none uppercase">ADITYA P.</h1>
-                <h1 id="preview-last-name" class="text-3xl md:text-4xl font-bold text-[#730c1e] italic tracking-tighter leading-none uppercase">WIJAYANTO</h1>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
-                <div class="space-y-1.5">
-                    <label class="text-[9px] font-bold uppercase tracking-widest text-gray-500">First Name & Initial</label>
-                    <input type="text" id="input-first-name" name="nama_depan" value="{{ $hero->nama_depan ?? 'ADITYA P.' }}"
-                        oninput="updatePreview('preview-first-name', this.value)"
-                        class="w-full form-input-custom rounded-sm px-3 py-2 text-xs">
+                <div class="mb-8 border-l-4 border-[#730c1e] pl-5 py-2">
+                    <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Live Preview</p>
+                    <h1 id="preview-first-name"
+                        class="text-3xl font-bold text-white tracking-tighter leading-none uppercase">
+                        {{ $hero->nama_depan ?? 'ADITYA P.' }}</h1>
+                    <h1 id="preview-last-name"
+                        class="text-3xl font-bold text-[#730c1e] italic tracking-tighter leading-none uppercase">
+                        {{ $hero->nama_belakang ?? 'WIJAYANTO' }}</h1>
                 </div>
-                <div class="space-y-1.5">
-                    <label class="text-[9px] font-bold uppercase tracking-widest text-gray-500">Last Name</label>
-                    <input type="text" id="input-last-name" name="nama_belakang" value="{{ $hero->nama_belakang ?? 'WIJAYANTO' }}"
-                        oninput="updatePreview('preview-last-name', this.value)"
-                        class="w-full form-input-custom rounded-sm px-3 py-2 text-xs">
-                </div>
-            </div>
-        </div>  
 
-        <!-- ELEMENT 3: COPYWRITING -->
-        <div class="col-span-12 lg:col-span-8 bg-[#1a151d] rounded-sm p-5 border border-white/5 space-y-5 relative shadow-sm">
-            <div class="absolute top-3 right-4 text-[8px] font-black text-[#730c1e] uppercase tracking-widest opacity-60">Copywriting</div>
-            <div class="space-y-2 pb-4 border-b border-white/5">
-                <p id="preview-headline" class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold">Undergraduate University of Brawijaya</p>
-                <p id="preview-bio" class="text-xs text-gray-500 leading-relaxed max-w-xl italic">
-                    Crafting <span class="text-white border-b border-[#730c1e]/40 font-medium">high-performance</span> digital products...
-                </p>
-            </div>
-            <div class="grid grid-cols-1 gap-4">
-                <div class="space-y-1.5">
-                    <label class="text-[9px] font-bold uppercase tracking-widest text-gray-500">Headline</label>
-
-                    <input type="text" id="input-headline" name="text_singkat" value="{{ $hero->text_singkat ?? 'Undergraduate University of Brawijaya' }}"
-                    oninput="updatePreview('preview-headline', this.value)"
-                    class="w-full form-input-custom rounded-sm px-3 py-2 text-xs">
-                </div>
-                <div class="space-y-1.5">
-                    <label class="text-[9px] font-bold uppercase tracking-widest text-gray-500">Biography</label>
-                    <textarea id="input-bio" name="deskripsi" rows="2"
-                        oninput="updatePreview('preview-bio', this.value)"
-                        class="w-full form-input-custom rounded-sm px-3 py-2 text-xs leading-relaxed">{{ $hero->deskripsi ?? 'Crafting digital products with immersive aesthetics since 2016.' }}</textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- ELEMENT 4: SYSTEM METRICS -->
-        <div class="col-span-12 lg:col-span-4 bg-[#1a151d] rounded-sm p-5 border border-white/5 flex flex-col justify-between relative shadow-sm">
-            <div class="absolute top-3 right-4 text-[8px] font-black text-[#730c1e] uppercase tracking-widest opacity-60">Metrics</div>
-            <div class="flex items-center gap-6 py-2">
-                <div class="text-center">
-                    <h3 class="text-3xl font-bold text-white tracking-tighter italic">0</h3>
-                    <p class="text-[8px] uppercase tracking-widest text-gray-500 font-black">Years</p>
-                </div>
-                <div class="h-8 w-[1px] bg-white/5"></div>
-                <div class="text-center">
-                    <h3 class="text-3xl font-bold text-white tracking-tighter italic">5+</h3>
-                    <p class="text-[8px] uppercase tracking-widest text-gray-500 font-black">Projects</p>
-                </div>
-            </div>
-            <div class="bg-black/20 p-3 rounded-sm border border-white/5 mt-4">
-                <p class="text-[9px] text-gray-500 leading-relaxed italic">Values are synced from database.</p>
-            </div>
-        </div>
-
-        <!-- ELEMENT 5: VISUAL & ACTION -->
-        <div class="col-span-12 bg-[#1a151d] rounded-sm border border-white/5 overflow-hidden grid grid-cols-12 relative shadow-sm">
-            <div class="col-span-12 md:col-span-8 p-6 flex flex-col justify-center space-y-6">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-1.5">
-                        <label class="text-[9px] font-bold uppercase tracking-widest text-gray-500">Destination URL</label>
-                        <input type="text" name="link_cv" value="{{ $hero->link_cv ?? '#contact' }}" class="w-full form-input-custom rounded-sm px-3 py-2 text-xs">
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">First Name &
+                                Initial</label>
+                            <input type="text" id="input-first-name" name="nama_depan"
+                                value="{{ $hero->nama_depan ?? 'ADITYA P.' }}"
+                                oninput="updatePreview('preview-first-name', this.value)"
+                                class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Last Name</label>
+                            <input type="text" id="input-last-name" name="nama_belakang"
+                                value="{{ $hero->nama_belakang ?? 'WIJAYANTO' }}"
+                                oninput="updatePreview('preview-last-name', this.value)"
+                                class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs">
+                        </div>
                     </div>
                 </div>
-                <div id="preview-cta-label" class="px-8 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest inline-block rounded-sm w-max">
-                    Get in Touch
+            </div>
+
+            <!-- CARD 2: COPYWRITING -->
+            <div class="col-span-12 lg:col-span-7 card-custom rounded-sm p-6 relative overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 p-3 text-[8px] font-black text-[#730c1e] uppercase tracking-[0.2em] opacity-40">
+                    Section 02 / Messaging</div>
+
+                <div class="mb-8 min-h-[70px]">
+                    <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Preview Headline & Bio</p>
+                    <p id="preview-headline" class="text-xs uppercase tracking-[0.2em] text-white font-bold mb-2">
+                        {{ $hero->text_singkat ?? 'Undergraduate University of Brawijaya' }}</p>
+                    <p id="preview-bio"
+                        class="text-[11px] text-gray-400 leading-relaxed italic border-t border-white/5 pt-2 max-w-md">
+                        {{ $hero->deskripsi ?? 'Crafting digital products...' }}</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Headline / Title</label>
+                        <input type="text" id="input-headline" name="text_singkat"
+                            value="{{ $hero->text_singkat ?? 'Undergraduate University of Brawijaya' }}"
+                            oninput="updatePreview('preview-headline', this.value)"
+                            class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Short Biography</label>
+                        <textarea id="input-bio" name="deskripsi" rows="3" oninput="updatePreview('preview-bio', this.value)"
+                            class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs leading-relaxed resize-none">{{ $hero->deskripsi ?? 'Crafting digital products with immersive aesthetics since 2016.' }}</textarea>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-span-12 md:col-span-4 bg-black/40 p-6 flex flex-col items-center justify-center border-l border-white/5">
-                <div class="relative group w-32 h-40 border border-dashed border-white/10 rounded-sm flex items-center justify-center overflow-hidden">
-                    <img id="preview-portrait" src="{{ $hero && $hero->path_foto ? Storage::disk('public')->url($hero->path_foto) : asset('assets/images/me.png') }}" class="w-full h-full object-cover grayscale opacity-40 group-hover:opacity-100 transition-all">
-                    <label for="portrait" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 cursor-pointer transition-all">
-                        <i data-lucide="upload-cloud" class="w-6 h-6 text-white mb-1"></i>
-                        <span class="text-[8px] font-bold text-white uppercase tracking-tighter">Replace</span>
-                    </label>
-                    <input type="file" id="portrait" name="path_foto" class="hidden" onchange="previewImage(event)">
+            <!-- CARD 3: VISUAL & ASSETS -->
+            <div class="col-span-12 card-custom rounded-sm overflow-hidden relative">
+                <div
+                    class="absolute top-0 right-0 p-3 text-[8px] font-black text-[#730c1e] uppercase tracking-[0.2em] opacity-40 z-10">
+                    Section 03 / Assets & CTA</div>
+
+                <div class="grid grid-cols-12">
+                    <!-- Left Side: URL & CTA -->
+                    <div class="col-span-12 md:col-span-8 p-8 border-b md:border-b-0 md:border-r border-white/5">
+                        <div class="max-w-md space-y-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                                    <i data-lucide="link" class="w-3 h-3"></i> Destination Link (CV/Contact)
+                                </label>
+                                <input type="text" name="link_cv" value="{{ $hero->link_cv ?? '#contact' }}"
+                                    class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs font-mono">
+                            </div>
+
+                            <div class="pt-4">
+                                <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-3">Button Preview</p>
+                                <div
+                                    class="px-10 py-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] inline-block rounded-sm shadow-lg shadow-white/5">
+                                    Get in Touch
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Portrait Upload -->
+                    <div class="col-span-12 md:col-span-4 bg-black/20 p-8 flex flex-col items-center justify-center">
+                        <div class="relative group">
+                            <div class="w-40 h-52 border border-white/10 rounded-sm overflow-hidden bg-[#110e13] relative">
+                                @if ($hero->path_foto)
+                                    <img id="preview-portrait" src="{{ asset('storage/' . $hero->path_foto) }}"
+                                        class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105">
+                                @else
+                                    <div id="no-preview"
+                                        class="w-full h-full flex items-center justify-center text-[10px] text-gray-600 italic uppercase tracking-tighter">
+                                        No Preview</div>
+                                    <img id="preview-portrait" src=""
+                                        class="hidden w-full h-full object-cover grayscale">
+                                @endif
+
+                                <label for="portrait"
+                                    class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 cursor-pointer transition-all">
+                                    <i data-lucide="camera" class="w-6 h-6 text-white mb-2"></i>
+                                    <span class="text-[9px] font-black text-white uppercase tracking-widest">Update
+                                        Photo</span>
+                                </label>
+                            </div>
+                            <input type="file" id="portrait" name="path_foto" class="hidden"
+                                onchange="previewImage(event)">
+                            <p class="mt-3 text-[8px] text-center text-gray-500 uppercase tracking-widest font-medium">
+                                Recommended: 4:5 Aspect Ratio</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-    </div>
-
-    <!-- ACTION BAR -->
-    <div class="mt-6 flex justify-between items-center bg-[#1a151d] p-3 rounded-sm border border-white/5">
-        <span class="text-[9px] text-gray-600 uppercase font-bold tracking-widest pl-2 italic">Ready for production</span>
-        <button type="submit" class="btn-push text-white px-8 py-2.5 rounded-sm font-bold text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 transition-all">
-            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-            Push to Production
+        <button type="submit"
+            class="btn-push w-full mt-8 flex gap-2 bg-[#730c1e] hover:bg-[#921126] hover:translate-y-0.5 justify-center items-center card-custom p-4 rounded-sm bottom-6 z-20 shadow-2xl">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            Submit Changes
         </button>
-    </div>
-</form>
+    </form>
 @endsection
 
 @push('scripts')
-<script>
-    lucide.createIcons();
+    <script>
+        lucide.createIcons();
 
-    function updatePreview(id, val) {
-        document.getElementById(id).innerText = val;
-    }
+        function updatePreview(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = val;
+        }
 
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            document.getElementById('preview-portrait').src = reader.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
+        function previewImage(event) {
+            const reader = new FileReader();
+            const preview = document.getElementById('preview-portrait');
+            const noPreview = document.getElementById('no-preview');
 
-    // Initialize preview values from form inputs on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        const firstName = document.getElementById('input-first-name');
-        const lastName = document.getElementById('input-last-name');
-        const echoText = document.getElementById('input-echo');
-        const bio = document.getElementById('input-bio');
-
-        if (firstName && firstName.value) {
-            updatePreview('preview-first-name', firstName.value);
+            reader.onload = function() {
+                preview.src = reader.result;
+                preview.classList.remove('hidden');
+                if (noPreview) noPreview.classList.add('hidden');
+            }
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
         }
-        if (lastName && lastName.value) {
-            updatePreview('preview-last-name', lastName.value);
-        }
-        if (echoText && echoText.value) {
-            updatePreview('preview-echo', echoText.value);
-        }
-        if (bio && bio.value) {
-            updatePreview('preview-bio', bio.value);
-        }
-    });
-</script>
+    </script>
 @endpush
