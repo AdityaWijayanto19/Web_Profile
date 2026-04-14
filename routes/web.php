@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\HeroSectionController;
+use App\Http\Controllers\PengalamanController;
 
 // ==================== PUBLIC ROUTES ====================
 Route::get('/', function () {
@@ -57,10 +58,10 @@ Route::middleware('auth')->group(function () {
             })->name('edukasi.edit');
         });
 
-        // Pengalaman (Experience)
-        Route::get('/pengalaman', function () {
-            return view('admin/pengalaman');
-        })->name('pengalaman');
+        // Pengalaman (Experience) - Read & Update only (3 fixed records)
+        Route::get('/pengalaman', [PengalamanController::class, 'index'])->name('pengalaman.index');
+        Route::post('/pengalaman', [PengalamanController::class, 'update'])->name('pengalaman.update');
+        Route::post('/pengalaman/reorder', [PengalamanController::class, 'reorder'])->name('pengalaman.reorder');
 
         // Projects - Resource Controller (CRUD Routes)
         Route::bind('project', function ($value) {

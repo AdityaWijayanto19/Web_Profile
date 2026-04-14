@@ -33,7 +33,7 @@
                     'desc' => 'Education history',
                 ],
                 [
-                    'route' => 'pengalaman',
+                    'route' => 'pengalaman.index',
                     'icon' => 'user-star',
                     'name' => 'Experience',
                     'pattern' => 'admin/pengalaman',

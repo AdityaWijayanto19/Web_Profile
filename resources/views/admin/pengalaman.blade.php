@@ -51,6 +51,25 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto">
+    <!-- Flash Messages -->
+    @if ($message = Session::get('success'))
+        <div class="mb-4 p-4 bg-green-900/20 border border-green-700/50 rounded-sm">
+            <div class="text-sm text-green-400 flex items-center gap-2">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                {{ $message }}
+            </div>
+        </div>
+    @endif
+
+    @if ($message = Session::get('error'))
+        <div class="mb-4 p-4 bg-red-900/20 border border-red-700/50 rounded-sm">
+            <div class="text-sm text-red-400 flex items-center gap-2">
+                <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                {{ $message }}
+            </div>
+        </div>
+    @endif
+
     <!-- Header Minimalis -->
     <div class="flex justify-between items-center mb-6">
         <div>
@@ -62,103 +81,44 @@
         </div>
     </div>
 
-    <form action="#" method="POST">
+    <form action="{{ route('pengalaman.update') }}" method="POST">
         @csrf
         <div class="bg-[#1a151d] border border-white/5 rounded-sm">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b border-white/5 bg-black/20 text-[9px] uppercase tracking-[0.2em] text-gray-500">
                         <th class="px-4 py-2 w-14 text-center">Step</th>
-                        <th class="px-4 py-2 w-1/4">Title / Role</th>
-                        <th class="px-4 py-2 w-1/4">Company & Year</th>
-                        <th class="px-4 py-2">Brief Description</th>
-                        <th class="px-4 py-2 w-20 text-center">Icon</th>
+                        <th class="px-4 py-2 w-1/4">Jabatan</th>
+                        <th class="px-4 py-2">Keterangan</th>
+                        <th class="px-4 py-2 w-20 text-center">Urutan</th>
                     </tr>
                 </thead>
                 <tbody id="sortable-table">
-                    <!-- Row 1 -->
-                    <tr class="group border-b border-white/5 transition-colors hover:bg-white/[0.01]" data-id="1">
+                    @forelse($pengalamans as $index => $pengalaman)
+                    <tr class="group border-b border-white/5 transition-colors hover:bg-white/[0.01]" data-id="{{ $pengalaman->id }}">
                         <td class="px-4 py-3 text-center relative">
-                            <span class="row-number text-xl font-black text-gray-800 group-hover:opacity-0 transition-opacity">1</span>
+                            <span class="row-number text-xl font-black text-gray-800 group-hover:opacity-0 transition-opacity">{{ $index + 1 }}</span>
                             <div class="drag-handle absolute inset-0 flex items-center justify-center text-gray-600 group-hover:text-[#730c1e] opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
                                 <i data-lucide="grip-vertical" class="w-5 h-5"></i>
                             </div>
                         </td>
                         <td class="px-4 py-3">
-                            <input type="text" name="title[]" value="Frontend Intern" class="table-input font-bold text-[#730c1e] text-sm" placeholder="Title">
+                            <input type="text" name="pengalamans[{{ $pengalaman->id }}][jabatan]" value="{{ $pengalaman->jabatan }}" class="table-input font-bold text-[#730c1e] text-sm w-full" placeholder="Jabatan">
                         </td>
                         <td class="px-4 py-3">
-                            <input type="text" name="company[]" value="Tech Studio Inc" class="table-input font-medium text-white text-[11px]" placeholder="Company">
-                            <input type="text" name="year[]" value="2021" class="table-input text-gray-500 text-[10px]" placeholder="Year">
+                            <textarea name="pengalamans[{{ $pengalaman->id }}][keterangan]" rows="1" class="table-input text-gray-400 text-[11px] resize-none overflow-hidden w-full" placeholder="Keterangan">{{ $pengalaman->keterangan }}</textarea>
                         </td>
-                        <td class="px-4 py-3">
-                            <textarea name="desc[]" rows="1" class="table-input text-gray-400 text-[11px] resize-none overflow-hidden" placeholder="Desc...">Focus on mastering modern UI architecture.</textarea>
-                        </td>
-                        <td class="px-4 py-3">
-                            <div class="flex flex-col items-center gap-1">
-                                <div class="icon-preview-box shadow-sm">
-                                    <i data-lucide="flag" class="w-3.5 h-3.5 text-[#730c1e]"></i>
-                                </div>
-                                <button type="button" class="text-[8px] text-gray-600 hover:text-white uppercase font-bold tracking-tighter">Edit</button>
-                            </div>
+                        <td class="px-4 py-3 text-center">
+                            <input type="number" name="pengalamans[{{ $pengalaman->id }}][urutan]" value="{{ $pengalaman->urutan }}" class="table-input text-white text-sm w-full text-center" placeholder="Urutan">
                         </td>
                     </tr>
-
-                    <!-- Row 2 -->
-                    <tr class="group border-b border-white/5 transition-colors hover:bg-white/[0.01]" data-id="2">
-                        <td class="px-4 py-3 text-center relative">
-                            <span class="row-number text-xl font-black text-gray-800 group-hover:opacity-0 transition-opacity">2</span>
-                            <div class="drag-handle absolute inset-0 flex items-center justify-center text-gray-600 group-hover:text-[#730c1e] opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
-                                <i data-lucide="grip-vertical" class="w-5 h-5"></i>
-                            </div>
-                        </td>
-                        <td class="px-4 py-3">
-                            <input type="text" name="title[]" value="Junior Developer" class="table-input font-bold text-[#730c1e] text-sm" placeholder="Title">
-                        </td>
-                        <td class="px-4 py-3">
-                            <input type="text" name="company[]" value="Cyber Nexus" class="table-input font-medium text-white text-[11px]" placeholder="Company">
-                            <input type="text" name="year[]" value="2022" class="table-input text-gray-500 text-[10px]" placeholder="Year">
-                        </td>
-                        <td class="px-4 py-3">
-                            <textarea name="desc[]" rows="1" class="table-input text-gray-400 text-[11px] resize-none overflow-hidden" placeholder="Desc...">Developing scalable React applications.</textarea>
-                        </td>
-                        <td class="px-4 py-3">
-                            <div class="flex flex-col items-center gap-1">
-                                <div class="icon-preview-box shadow-sm">
-                                    <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-[#730c1e]"></i>
-                                </div>
-                                <button type="button" class="text-[8px] text-gray-600 hover:text-white uppercase font-bold tracking-tighter">Edit</button>
-                            </div>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="px-4 py-6 text-center text-gray-500 text-sm">
+                            Tidak ada data pengalaman
                         </td>
                     </tr>
-
-                    <!-- Row 3 -->
-                    <tr class="group border-b border-white/5 transition-colors hover:bg-white/[0.01]" data-id="3">
-                        <td class="px-4 py-3 text-center relative">
-                            <span class="row-number text-xl font-black text-gray-800 group-hover:opacity-0 transition-opacity">3</span>
-                            <div class="drag-handle absolute inset-0 flex items-center justify-center text-gray-600 group-hover:text-[#730c1e] opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
-                                <i data-lucide="grip-vertical" class="w-5 h-5"></i>
-                            </div>
-                        </td>
-                        <td class="px-4 py-3">
-                            <input type="text" name="title[]" value="UI Engineer" class="table-input font-bold text-[#730c1e] text-sm" placeholder="Title">
-                        </td>
-                        <td class="px-4 py-3">
-                            <input type="text" name="company[]" value="Freelance" class="table-input font-medium text-white text-[11px]" placeholder="Company">
-                            <input type="text" name="year[]" value="2023 - Now" class="table-input text-gray-500 text-[10px]" placeholder="Year">
-                        </td>
-                        <td class="px-4 py-3">
-                            <textarea name="desc[]" rows="1" class="table-input text-gray-400 text-[11px] resize-none overflow-hidden" placeholder="Desc...">Crafting immersive 3D experiences with Three.js.</textarea>
-                        </td>
-                        <td class="px-4 py-3">
-                            <div class="flex flex-col items-center gap-1">
-                                <div class="icon-preview-box shadow-sm">
-                                    <i data-lucide="flag" class="w-3.5 h-3.5 text-[#730c1e]"></i>
-                                </div>
-                                <button type="button" class="text-[8px] text-gray-600 hover:text-white uppercase font-bold tracking-tighter">Edit</button>
-                            </div>
-                        </td>
-                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -180,6 +140,8 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
+    lucide.createIcons();
+
     document.addEventListener('DOMContentLoaded', function() {
         const el = document.getElementById('sortable-table');
         Sortable.create(el, {
@@ -187,12 +149,27 @@
             handle: '.drag-handle',
             ghostClass: 'sortable-ghost',
             onEnd: function () {
-                const rows = document.querySelectorAll('.row-number');
-                rows.forEach((row, index) => {
-                    row.innerText = index + 1;
-                });
+                updateRowNumbers();
+                updateUrutanValues();
             },
         });
+
+        function updateRowNumbers() {
+            const rows = document.querySelectorAll('.row-number');
+            rows.forEach((row, index) => {
+                row.innerText = index + 1;
+            });
+        }
+
+        function updateUrutanValues() {
+            const rows = document.querySelectorAll('#sortable-table tr[data-id]');
+            rows.forEach((row, index) => {
+                const urutanInput = row.querySelector('input[name*="[urutan]"]');
+                if (urutanInput) {
+                    urutanInput.value = index;
+                }
+            });
+        }
     });
 </script>
 @endpush
