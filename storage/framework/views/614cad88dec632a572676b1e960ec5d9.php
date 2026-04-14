@@ -32,7 +32,6 @@
             border-radius: 2px;
         }
 
-        /* Sidebar Transition Logic */
         aside {
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: visible !important;
@@ -51,7 +50,6 @@
             white-space: nowrap;
         }
 
-        /* Tooltip positioning: JavaScript-controlled */
         .sidebar-tooltip-fixed {
             opacity: 0;
             visibility: hidden;
@@ -59,7 +57,6 @@
             transition: all 0.2s ease;
         }
 
-        /* UBAH DISINI: Hilangkan kata 'body' agar selector bisa kena dari tag <html> */
         .sidebar-collapsed aside {
             width: 64px;
         }
@@ -71,7 +68,6 @@
             pointer-events: none;
         }
 
-        /* Mobile Logic */
         @media (max-width: 768px) {
             aside {
                 position: fixed;
@@ -88,13 +84,11 @@
                 display: block;
             }
 
-            /* Tooltip disabled on mobile */
             .sidebar-tooltip {
                 opacity: 0 !important;
                 visibility: hidden !important;
             }
 
-            /* Jika di mobile, collapsed mode tidak boleh jalan */
             .sidebar-collapsed aside {
                 width: 224px;
                 left: -250px;
@@ -102,7 +96,6 @@
         }
     </style>
 
-    <!-- ANTI-FLICKER: Cek state paling awal -->
     <script>
         (function() {
             const sidebarState = localStorage.getItem('sidebar-collapsed');

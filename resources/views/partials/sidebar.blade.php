@@ -1,6 +1,6 @@
 <aside
     class="w-56 bg-[#210207] text-gray-400 flex flex-col z-50 h-screen relative border-r border-white/5 overflow-visible">
-    <!-- LOGO SECTION -->
+
     <div class="p-4 flex items-center gap-2 mb-2 shrink-0 overflow-hidden">
         <div class="p-1.5 rounded-sm shrink-0">
             <img class="w-7 h-7" src="{{ asset('assets/images/cookie.svg') }}" alt="Cookie">
@@ -8,7 +8,6 @@
         <span class="text-white text-xl font-bold tracking-tight logo-name transition-opacity duration-300">Pie.</span>
     </div>
 
-    <!-- NAVIGATION MENU -->
     <nav class="flex-1 px-2 space-y-1 overflow-y-auto overflow-visible custom-scrollbar">
         @php
             $navItems = [
@@ -77,7 +76,6 @@
         @endforeach
     </nav>
 
-    <!-- MOON ILLUSTRATION -->
     <div class="mt-auto relative w-full shrink-0 overflow-hidden pointer-events-none bg-transparent">
         <div class="w-full leading-[0] bg-transparent translate-y-2">
             <img src="{{ asset('assets/images/moon.svg') }}" class="w-full h-auto object-contain min-w-[224px] block"

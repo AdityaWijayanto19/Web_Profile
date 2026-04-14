@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TechnologyController;
+use App\Http\Controllers\HeroSectionController;
 
 // ==================== PUBLIC ROUTES ====================
 Route::get('/', function () {
@@ -37,12 +38,11 @@ Route::middleware('auth')->group(function () {
             return view('admin/dashboard');
         })->name('dashboard');
 
-        // Profile
-        Route::get('/profile', function () {
-            return view('admin/profile');
-        })->name('profile');
+        // Profile (managed by HeroSectionController)
+        Route::get('/profile', [HeroSectionController::class, 'edit'])->name('profile');
 
-        // Edukasi (Education)
+        // Hero Section (Singleton - only edit/update)
+        Route::put('/hero-section', [HeroSectionController::class, 'update'])->name('hero-section.update');
         Route::prefix('edukasi')->group(function () {
             Route::get('/index', function () {
                 return view('admin/edukasi/index');

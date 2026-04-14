@@ -151,13 +151,11 @@
         <main
             class="relative flex-1 flex flex-col md:flex-row items-center z-10 w-full max-w-7xl mx-auto px-6 md:px-16 py-12">
 
-            <!-- Background Echo Text (REVERSED TO ORIGINAL SCALE & POSITION) -->
             <span
                 class="absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] md:text-[22vw] font-black text-white/[0.02] select-none uppercase tracking-tighter z-0 pointer-events-none whitespace-nowrap">
                 CREATIVE
             </span>
 
-            <!-- 2. LEFT SIDE: PERSONAL IDENTITY -->
             <div class="w-full md:w-3/5 space-y-12 z-10 text-left pt-20 md:pt-0">
                 <div class="space-y-6 pt-14">
                     <h1 class="text-6xl md:text-[100px] font-bold tracking-tighter leading-[0.85] flex flex-col italic">
@@ -198,7 +196,6 @@
                 </div>
             </div>
 
-            <!-- 3. RIGHT SIDE: THE PORTRAIT (REVERSED TO ORIGINAL POSITION & OPACITY) -->
             <div
                 class="absolute right-0 top-16 h-full w-full md:w-[45%] pointer-events-none z-20 flex items-end justify-end opacity-30 md:opacity-100">
                 <img src="assets/images/me.png" alt="Profile"
@@ -209,7 +206,6 @@
         </main>
     </header>
 
-    {{-- EDUCATION SECTION --}}
     <section id="education" class="relative px-6 md:px-8 mt-4 md:mt-4 pb-8 md:pb-12">
         <div class="max-w-4xl mx-auto text-center mb-2">
             <div class="flex items-center justify-center gap-2 mb-2">
@@ -222,10 +218,8 @@
             </h2>
         </div>
 
-        <!-- Container Utama -->
         <div class="max-w-5xl mx-auto relative flex flex-col md:block gap-10 mt-16 md:mt-2 md:h-[480px]">
 
-            <!-- SVG Connectors -->
             <svg class="edu-svg-container hidden md:block" viewBox="0 0 800 480" fill="none"
                 xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <path d="M400 0V480" stroke="#880808" stroke-width="2" stroke-dasharray="10 10" />
@@ -243,7 +237,6 @@
                 </defs>
             </svg>
 
-            <!-- Card 1 -->
             <div class="relative md:absolute md:left-0 md:top-[100px] w-full md:w-[40%] z-10">
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-l-primary relative">
                     <div
@@ -259,7 +252,6 @@
                 </div>
             </div>
 
-            <!-- Card 2 -->
             <div class="relative md:absolute md:right-0 md:top-[320px] w-full md:w-[40%] z-10">
                 <div class="glass-card p-8 rounded-3xl border-r-4 border-r-primary md:text-right relative">
                     <div
@@ -278,11 +270,9 @@
         </div>
     </section>
 
-    {{-- CERTIFICATES SECTION --}}
     <section id="certificates" class="pt-20 pb-10 px-6 md:px-8 relative overflow-hidden bg-base">
         <div class="max-w-7xl mx-auto">
 
-            <!-- Header Section -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
                 <div class="relative">
                     <span
@@ -299,22 +289,18 @@
                 </p>
             </div>
 
-            <!-- Flip Cards Grid (Landscape 16:10 Aspect) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
-                <!-- Certificate Card 1 -->
                 <div class="group h-[250px] [perspective:1000px]">
                     <div
                         class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
 
-                        <!-- FRONT SIDE (Full Color Landscape Image) -->
                         <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
                             <div
                                 class="h-full w-full rounded-2xl overflow-hidden border border-white/10 relative shadow-2xl">
-                                <!-- Image: Full Color, Sharp, No Grayscale -->
+
                                 <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800"
                                     class="h-full w-full object-cover">
-                                <!-- Bottom Aesthetic Overlay -->
                                 <div
                                     class="absolute inset-0 bg-gradient-to-t from-base/90 via-transparent to-transparent opacity-80">
                                 </div>
@@ -334,11 +320,9 @@
                             </div>
                         </div>
 
-                        <!-- BACK SIDE (Compact Information Detail) -->
                         <div
                             class="absolute inset-0 h-full w-full rounded-2xl bg-[#0d0a0f] border-2 border-primary/40 p-6 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
                             <div class="flex flex-col h-full">
-                                <!-- Card Content -->
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-3">
                                         <span
@@ -381,7 +365,6 @@
                     </div>
                 </div>
 
-                <!-- Certificate Card 2 (Copy for another certificate) -->
                 <div class="group h-[250px] [perspective:1000px]">
                     <div
                         class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
@@ -445,7 +428,6 @@
                     </div>
                 </div>
 
-                <!-- Certificate Card 3 -->
                 <div class="group h-[250px] [perspective:1000px]">
                     <div
                         class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
