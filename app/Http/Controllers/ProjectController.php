@@ -133,22 +133,35 @@ class ProjectController extends Controller
     public function reorder(\Illuminate\Http\Request $request)
     {
         try {
-            $orders = $request->validate([
-                'orders' => 'required|array',
-                'orders.*.id' => 'required|integer|exists:proyeks,id',
-                'orders.*.position' => 'required|integer|min:1'
+            $data = $request->validate([
+                'ids' => 'required|array',
+                'ids.*' => 'required|integer|exists:proyeks,id'
             ]);
 
             // Use database transaction for data integrity
-            return \DB::transaction(function () use ($orders) {
-                foreach ($orders['orders'] as $order) {
-                    Proyek::where('id', $order['id'])
-                        ->update(['urutan' => $order['position']]);
+            return \DB::transaction(function () use ($data) {
+                // Assign sequential urutan (1, 2, 3, ...) based on ordered IDs
+                foreach ($data['ids'] as $index => $id) {
+                    Proyek::where('id', $id)
+                        ->update(['urutan' => $index + 1]);
                 }
+
+                // Handle remaining projects (not in the drag list) - assign urutan di belakang
+                $sentIds = $data['ids'];
+                $nextUrutan = count($data['ids']) + 1;
+
+                Proyek::whereNotIn('id', $sentIds)
+                    ->orderBy('urutan')
+                    ->get()
+                    ->each(function ($project) use (&$nextUrutan) {
+                        $project->update(['urutan' => $nextUrutan]);
+                        $nextUrutan++;
+                    });
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Urutan proyek berhasil diperbarui'
+                    'message' => 'Urutan proyek berhasil diperbarui',
+                    'redirect' => route('projects.index') // Redirect ke halaman 1
                 ]);
             });
         } catch (\Illuminate\Validation\ValidationException $e) {

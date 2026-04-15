@@ -182,12 +182,11 @@
                 forceFallback: false,
 
                 onEnd: function(evt) {
-                    // Get all project elements in their new order
+                    // Get all project elements in their new order (IDs only)
                     const projectElements = projectsGrid.querySelectorAll('[data-project-id]');
-                    const orderedIds = Array.from(projectElements).map(el => ({
-                        id: parseInt(el.dataset.projectId),
-                        position: Array.from(projectElements).indexOf(el) + 1
-                    }));
+                    const orderedIds = Array.from(projectElements).map(el =>
+                        parseInt(el.dataset.projectId)
+                    );
 
                     // Add visual feedback
                     projectsGrid.style.opacity = '0.6';
@@ -195,7 +194,7 @@
 
                     // Debounce the API call
                     debounceReorder(() => {
-                        // Send the new order to the backend
+                        // Send the new order to the backend (IDs only, backend assigns urutan)
                         fetch('{{ route('projects.reorder') }}', {
                                 method: 'POST',
                                 headers: {
@@ -206,7 +205,7 @@
                                     'Accept': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    orders: orderedIds
+                                    ids: orderedIds
                                 })
                             })
                             .then(response => {
@@ -218,29 +217,16 @@
                             })
                             .then(data => {
                                 if (data.success) {
-                                    // Update visual sequence numbers for each card
-                                    projectElements.forEach((element, index) => {
-                                        const sequenceIndicator = element
-                                            .querySelector('[data-sequence]');
-                                        if (sequenceIndicator) {
-                                            sequenceIndicator.textContent = String(
-                                                index + 1).padStart(2, '0');
-                                            // Add a subtle animation
-                                            sequenceIndicator.style.animation =
-                                                'none';
-                                            setTimeout(() => {
-                                                sequenceIndicator.style
-                                                    .animation =
-                                                    'pulse 0.5s ease-in-out';
-                                            }, 10);
-                                        }
-                                    });
                                     window.dispatchEvent(new CustomEvent('notify', {
                                         detail: {
                                             message: 'Projects reordered successfully!',
                                             type: 'success'
                                         }
                                     }));
+                                    // Reload ke halaman pertama untuk refresh urutan
+                                    setTimeout(() => {
+                                        window.location.href = data.redirect || '{{ route('projects.index') }}';
+                                    }, 500);
                                 }
                             })
                             .catch(error => {

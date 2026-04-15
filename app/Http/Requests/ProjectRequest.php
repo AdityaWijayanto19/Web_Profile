@@ -21,6 +21,9 @@ class ProjectRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Get project ID for update scenario (ignore in unique check)
+        $projectId = $this->route('project')?->id;
+
         $rules = [
             // Title field
             'judul' => [
@@ -61,12 +64,15 @@ class ProjectRequest extends FormRequest
                 'max:500',
             ],
 
-            // Order/sequence number
+            // Order/sequence number - MUST BE UNIQUE
             'urutan' => [
                 'nullable',
                 'integer',
-                'min:0',
+                'min:1',
                 'max:9999',
+                $projectId
+                    ? "unique:proyeks,urutan,{$projectId},id"  // Update: ignore current project
+                    : 'unique:proyeks,urutan',                 // Create: must be unique
             ],
 
             // Project status
@@ -126,8 +132,9 @@ class ProjectRequest extends FormRequest
 
             // Urutan messages
             'urutan.integer' => 'Urutan harus berupa angka.',
-            'urutan.min' => 'Urutan minimal 0.',
+            'urutan.min' => 'Urutan minimal 1, tidak boleh 0.',
             'urutan.max' => 'Urutan maksimal 9999.',
+            'urutan.unique' => 'Urutan ini sudah digunakan oleh proyek lain. Pilih urutan yang berbeda.',
 
             // Status messages
             'status.required' => 'Status proyek wajib dipilih.',
