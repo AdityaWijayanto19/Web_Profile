@@ -53,25 +53,6 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4">
-        <!-- Flash Messages -->
-        @if ($message = Session::get('success'))
-            <div class="mb-4 p-4 bg-green-900/20 border border-green-700/50 rounded-sm">
-                <div class="text-sm text-green-400 flex items-center gap-2">
-                    <i data-lucide="check-circle" class="w-4 h-4"></i>
-                    {{ $message }}
-                </div>
-            </div>
-        @endif
-
-        @if ($message = Session::get('error'))
-            <div class="mb-4 p-4 bg-red-900/20 border border-red-700/50 rounded-sm">
-                <div class="text-sm text-red-400 flex items-center gap-2">
-                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
-                    {{ $message }}
-                </div>
-            </div>
-        @endif
-
         {{-- HEADER --}}
         <div class="flex justify-between items-end mb-8 border-b border-white/5 pb-6">
             <div>

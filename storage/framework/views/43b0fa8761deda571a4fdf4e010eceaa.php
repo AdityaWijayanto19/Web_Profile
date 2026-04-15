@@ -46,16 +46,6 @@
             </a>
         </div>
 
-        <!-- Alert Messages -->
-        <?php if(session('success')): ?>
-            <div
-                class="mb-8 bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-sm text-[10px] uppercase tracking-widest flex items-center gap-2">
-                <i data-lucide="check-circle" class="w-4 h-4"></i>
-                <?php echo e(session('success')); ?>
-
-            </div>
-        <?php endif; ?>
-
         <!-- GRID 3 KOLOM - Drag & Drop Sortable -->
         <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14">
 
@@ -76,7 +66,7 @@
                         <div
                             class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-4 z-10 backdrop-blur-[2px]">
                             <a href="<?php echo e(route('projects.edit', $proyek)); ?>"
-                                class="p-3 bg-white/10 hover:bg-[#730c1e] rounded-sm text-white transition-colors border border-white/5">
+                                class="p-3 bg-white/10 hover:bg-blue-600 rounded-sm text-white transition-colors border border-white/5">
                                 <i data-lucide="edit-3" class="w-5 h-5"></i>
                             </a>
 
@@ -99,8 +89,7 @@
                                     <p class="text-[8px] font-bold text-white uppercase tracking-widest">
                                         <?php echo e($proyek->status); ?></p>
                                 </div>
-                                <div
-                                    class="w-6 h-6 bg-black/50 backdrop-blur-md flex items-center justify-center rounded-sm border border-white/10 text-white font-mono text-[9px] transition-all duration-300"
+                                <div class="w-6 h-6 bg-black/50 backdrop-blur-md flex items-center justify-center rounded-sm border border-white/10 text-white font-mono text-[9px] transition-all duration-300"
                                     data-sequence>
                                     <?php echo e(str_pad($proyek->urutan, 2, '0', STR_PAD_LEFT)); ?>
 
@@ -150,7 +139,7 @@
                     </div>
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                 <div class="col-span-full py-16 text-center">
+                <div class="col-span-full py-16 text-center">
                     <i data-lucide="inbox" class="w-16 h-16 text-gray-600 mx-auto mb-4"></i>
                     <p class="text-gray-500 text-[11px] uppercase tracking-widest">No Projects yet.</p>
                 </div>
@@ -160,7 +149,7 @@
 
         <!-- Pagination -->
         <div class="mt-16 py-8 border-t border-white/5">
-            <?php echo e($proyeks->links()); ?>
+            <?php echo e($proyeks->links('partials.pagination')); ?>
 
         </div>
     </div>
@@ -210,78 +199,72 @@
                     // Debounce the API call
                     debounceReorder(() => {
                         // Send the new order to the backend
-                        fetch('<?php echo e(route("projects.reorder")); ?>', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                orders: orderedIds
+                        fetch('<?php echo e(route('projects.reorder')); ?>', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]')?.getAttribute(
+                                        'content') || '',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    orders: orderedIds
+                                })
                             })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success) {
-                                // Update visual sequence numbers for each card
-                                projectElements.forEach((element, index) => {
-                                    const sequenceIndicator = element.querySelector('[data-sequence]');
-                                    if (sequenceIndicator) {
-                                        sequenceIndicator.textContent = String(index + 1).padStart(2, '0');
-                                        // Add a subtle animation
-                                        sequenceIndicator.style.animation = 'none';
-                                        setTimeout(() => {
-                                            sequenceIndicator.style.animation = 'pulse 0.5s ease-in-out';
-                                        }, 10);
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(
+                                        `HTTP error! status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.success) {
+                                    // Update visual sequence numbers for each card
+                                    projectElements.forEach((element, index) => {
+                                        const sequenceIndicator = element
+                                            .querySelector('[data-sequence]');
+                                        if (sequenceIndicator) {
+                                            sequenceIndicator.textContent = String(
+                                                index + 1).padStart(2, '0');
+                                            // Add a subtle animation
+                                            sequenceIndicator.style.animation =
+                                                'none';
+                                            setTimeout(() => {
+                                                sequenceIndicator.style
+                                                    .animation =
+                                                    'pulse 0.5s ease-in-out';
+                                            }, 10);
+                                        }
+                                    });
+                                    window.dispatchEvent(new CustomEvent('notify', {
+                                        detail: {
+                                            message: 'Projects reordered successfully!',
+                                            type: 'success'
+                                        }
+                                    }));
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error reordering projects:', error);
+                                window.dispatchEvent(new CustomEvent('notify', {
+                                    detail: {
+                                        message: 'Failed to reorder projects. Please try again.',
+                                        type: 'error'
                                     }
-                                });
-
-                                // Show success feedback
-                                showNotification('Projects reordered successfully!', 'success');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error reordering projects:', error);
-                            showNotification('Failed to reorder projects. Please try again.', 'error');
-                            // Revert the DOM to previous state by reloading
-                            setTimeout(() => location.reload(), 1000);
-                        })
-                        .finally(() => {
-                            // Remove visual feedback
-                            projectsGrid.style.opacity = '1';
-                            projectsGrid.style.pointerEvents = 'auto';
-                        });
+                                }));
+                                // Revert the DOM to previous state by reloading
+                                setTimeout(() => location.reload(), 1000);
+                            })
+                            .finally(() => {
+                                // Remove visual feedback
+                                projectsGrid.style.opacity = '1';
+                                projectsGrid.style.pointerEvents = 'auto';
+                            });
                     });
                 }
             });
-
-            // Helper function to show notifications
-            function showNotification(message, type = 'info') {
-                const notification = document.createElement('div');
-                notification.className = `fixed top-4 right-4 px-6 py-3 rounded-sm text-white text-[10px] font-bold uppercase tracking-widest z-50 backdrop-blur-md transition-all duration-500
-                    ${type === 'success' ? 'bg-green-500/20 border border-green-500/30 text-green-400' : 'bg-red-500/20 border border-red-500/30 text-red-400'}`;
-                notification.textContent = message;
-                document.body.appendChild(notification);
-
-                // Animate in
-                setTimeout(() => {
-                    notification.style.opacity = '1';
-                    notification.style.transform = 'translateY(0)';
-                }, 10);
-
-                // Remove after 3 seconds
-                setTimeout(() => {
-                    notification.style.opacity = '0';
-                    notification.style.transform = 'translateY(-10px)';
-                    setTimeout(() => notification.remove(), 500);
-                }, 3000);
-            }
         });
     </script>
 
@@ -292,9 +275,12 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.1);
             }

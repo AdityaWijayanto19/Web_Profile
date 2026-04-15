@@ -4,12 +4,17 @@
 <?php $__env->startSection('content'); ?>
     <div class="max-w-7xl mx-auto px-4">
         <!-- Breadcrumb -->
-        <div class="mb-6">
+        <div class="mb-6 flex justify-between items-center">
             <a href="<?php echo e(route('projects.index')); ?>"
                 class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
                 <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO PROJECTS
             </a>
+            <div class="flex items-center gap-2">
+                <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">ID:
+                    <?php echo e(str_pad($proyek->id, 4, '0', STR_PAD_LEFT)); ?></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            </div>
         </div>
 
         <form action="<?php echo e(route('projects.update', ['project' => $proyek->id ?? 1])); ?>" method="POST"
@@ -136,13 +141,13 @@ unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
 
-                            <!-- Order Number -->
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Display
-                                    Order</label>
-                                <input type="number" name="urutan" placeholder="0" min="0" max="9999"
-                                    value="<?php echo e(old('urutan', $proyek->urutan)); ?>"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm <?php $__errorArgs = ['urutan'];
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Display
+                                        Order</label>
+                                    <input type="number" name="urutan" placeholder="0" min="0" max="9999"
+                                        value="<?php echo e(old('urutan', $proyek->urutan)); ?>"
+                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm <?php $__errorArgs = ['urutan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -150,39 +155,57 @@ $message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($messag
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                                <?php $__errorArgs = ['urutan'];
+                                    <?php $__errorArgs = ['urutan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <p class="text-xs text-red-500"><?php echo e($message); ?></p>
-                                <?php unset($message);
+                                        <p class="text-xs text-red-500"><?php echo e($message); ?></p>
+                                    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Publish
+                                        Status</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <label class="cursor-pointer group">
+                                            <input type="radio" name="status" value="draft" class="peer sr-only"
+                                                <?php echo e(old('status', $proyek->status) === 'draft' ? 'checked' : ''); ?> />
+                                            <div
+                                                class="text-center py-2.5 text-[10px] border border-white/5 bg-black/40 text-gray-500 peer-checked:border-[#730c1e] peer-checked:text-white peer-checked:bg-[#730c1e]/10 transition-all rounded-sm uppercase font-black">
+                                                DRAFT</div>
+                                        </label>
+                                        <label class="cursor-pointer group">
+                                            <input type="radio" name="status" value="published" class="peer sr-only"
+                                                <?php echo e(old('status', $proyek->status) === 'published' ? 'checked' : ''); ?> />
+                                            <div
+                                                class="text-center py-2.5 text-[10px] border border-white/5 bg-black/40 text-gray-500 peer-checked:border-[#730c1e] peer-checked:text-white peer-checked:bg-[#730c1e]/10 transition-all rounded-sm uppercase font-black">
+                                                PUBLISHED</div>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- FORM ACTIONS -->
-                    <div
-                        class="flex items-center justify-between p-6 bg-[#1a151d] border border-white/5 rounded-sm shadow-xl">
+                    <div class="grid grid-cols-2 gap-3">
                         <a href="<?php echo e(route('projects.index')); ?>"
-                            class="text-xs font-bold text-gray-500 hover:text-white transition-colors uppercase tracking-widest">
-                            Cancel
+                            class="flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 py-3 rounded-sm text-[11px] font-bold transition-all border border-white/5 uppercase tracking-widest">
+                            CANCEL
                         </a>
-                        <div class="flex gap-4">
-                            <button type="submit"
-                                class="bg-[#730c1e] hover:bg-[#8e1227] text-white px-8 py-3 rounded-sm text-xs font-bold transition-all shadow-lg shadow-[#730c1e]/10 flex items-center gap-2">
-                                <i data-lucide="save" class="w-4 h-4"></i>
-                                UPDATE PROJECT
-                            </button>
-                        </div>
+                        <button type="submit"
+                            class="w-full bg-[#730c1e] hover:bg-[#911226] text-white py-3 rounded-sm text-[11px] font-bold tracking-[0.3em] transition-all active:scale-[0.98] shadow-lg shadow-[#730c1e]/20">
+                            UPDATE PROJECT
+                        </button>
                     </div>
                 </div>
 
                 <!-- RIGHT COLUMN: SIDEBAR (4/12) -->
-                <div class="lg:col-span-4 space-y-6">
+                <div class="lg:col-span-4 space-y-2">
 
                     <!-- IMAGE UPLOAD CARD -->
                     <div class="bg-[#1a151d] border border-white/5 rounded-sm p-6 shadow-xl">
@@ -238,38 +261,6 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <!-- PUBLISH & CONFIG CARD -->
-                    <div class="bg-[#1a151d] border border-white/5 rounded-sm p-6 shadow-xl">
-                        <h4
-                            class="text-white text-[11px] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-white/5 flex items-center gap-2">
-                            <i data-lucide="settings-2" class="w-3.5 h-3.5 text-gray-500"></i> Status
-                        </h4>
-
-                        <div class="space-y-4">
-                            <!-- Status Selection -->
-                            <div class="space-y-3">
-                                <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Publish
-                                    Status</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <label class="cursor-pointer group">
-                                        <input type="radio" name="status" value="draft" class="peer sr-only"
-                                            <?php echo e(old('status', $proyek->status) === 'draft' ? 'checked' : ''); ?> />
-                                        <div
-                                            class="text-center py-2.5 text-[10px] border border-white/5 bg-black/40 text-gray-500 peer-checked:border-[#730c1e] peer-checked:text-white peer-checked:bg-[#730c1e]/10 transition-all rounded-sm uppercase font-black">
-                                            DRAFT</div>
-                                    </label>
-                                    <label class="cursor-pointer group">
-                                        <input type="radio" name="status" value="published" class="peer sr-only"
-                                            <?php echo e(old('status', $proyek->status) === 'published' ? 'checked' : ''); ?> />
-                                        <div
-                                            class="text-center py-2.5 text-[10px] border border-white/5 bg-black/40 text-gray-500 peer-checked:border-[#730c1e] peer-checked:text-white peer-checked:bg-[#730c1e]/10 transition-all rounded-sm uppercase font-black">
-                                            PUBLISHED</div>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- TECHNOLOGIES CARD -->
                     <div class="bg-[#1a151d] border border-white/5 rounded-sm p-6 shadow-xl">
                         <h4
@@ -301,41 +292,6 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                    </div>
-
-                    <!-- CONTENT GUIDELINES CARD -->
-                    <div class="bg-[#1a151d] border border-white/5 rounded-sm p-6">
-                        <h4
-                            class="text-white text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <i data-lucide="info" class="w-3.5 h-3.5 text-[#730c1e]"></i> Edit Tips
-                        </h4>
-
-                        <ul class="space-y-4">
-                            <li class="flex gap-3">
-                                <div
-                                    class="w-5 h-5 rounded bg-[#730c1e]/10 border border-[#730c1e]/20 flex items-center justify-center flex-shrink-0">
-                                    <span class="text-[10px] text-[#730c1e] font-bold">1</span>
-                                </div>
-                                <p class="text-[11px] text-gray-400 leading-relaxed">Ubah gambar untuk mengganti yang lama.
-                                    Gambar lama akan dihapus otomatis.</p>
-                            </li>
-                            <li class="flex gap-3">
-                                <div
-                                    class="w-5 h-5 rounded bg-[#730c1e]/10 border border-[#730c1e]/20 flex items-center justify-center flex-shrink-0">
-                                    <span class="text-[10px] text-[#730c1e] font-bold">2</span>
-                                </div>
-                                <p class="text-[11px] text-gray-400 leading-relaxed">Setidaknya satu teknologi harus
-                                    dipilih untuk project.</p>
-                            </li>
-                            <li class="flex gap-3">
-                                <div
-                                    class="w-5 h-5 rounded bg-[#730c1e]/10 border border-[#730c1e]/20 flex items-center justify-center flex-shrink-0">
-                                    <span class="text-[10px] text-[#730c1e] font-bold">3</span>
-                                </div>
-                                <p class="text-[11px] text-gray-400 leading-relaxed">Simpan perubahan untuk memperbarui
-                                    project di portfolio.</p>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>

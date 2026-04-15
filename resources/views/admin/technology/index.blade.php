@@ -90,10 +90,10 @@
     <!-- PAGINATION -->
     @if($technologies->hasPages())
         <div class="mt-6 flex justify-center">
-            {{ $technologies->links() }}
+            {{ $technologies->links('partials.pagination') }}
         </div>
     @endif
-    
+
 </div>
 @endsection
 

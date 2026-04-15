@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <title><?php echo $__env->yieldContent('title', 'FoxHR Dashboard'); ?></title>
+    <title><?php echo $__env->yieldContent('title'); ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -109,6 +110,27 @@
 
 <body class="flex h-screen overflow-hidden text-sm">
 
+    <?php if (isset($component)) { $__componentOriginal5194778a3a7b899dcee5619d0610f5cf = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5194778a3a7b899dcee5619d0610f5cf = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.alert','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('alert'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5194778a3a7b899dcee5619d0610f5cf)): ?>
+<?php $attributes = $__attributesOriginal5194778a3a7b899dcee5619d0610f5cf; ?>
+<?php unset($__attributesOriginal5194778a3a7b899dcee5619d0610f5cf); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5194778a3a7b899dcee5619d0610f5cf)): ?>
+<?php $component = $__componentOriginal5194778a3a7b899dcee5619d0610f5cf; ?>
+<?php unset($__componentOriginal5194778a3a7b899dcee5619d0610f5cf); ?>
+<?php endif; ?>
+
     <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/60 z-[40] hidden md:hidden"></div>
 
     <?php echo $__env->make('partials.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
@@ -130,7 +152,8 @@
                             class="w-4 h-4"></i></button>
                     <button class="hover:text-[#730c1e] transition-colors"><i data-lucide="settings"
                             class="w-4 h-4"></i></button>
-                    <a href="<?php echo e(route('technologies.index')); ?>" class="hover:text-[#730c1e] transition-colors" title="Manage Technologies">
+                    <a href="<?php echo e(route('technologies.index')); ?>" class="hover:text-[#730c1e] transition-colors"
+                        title="Manage Technologies">
                         <i data-lucide="layers" class="w-4 h-4"></i>
                     </a>
                 </div>
@@ -138,7 +161,8 @@
                 <!-- Logout Button (Temporary) -->
                 <form action="<?php echo e(route('logout')); ?>" method="POST" class="inline">
                     <?php echo csrf_field(); ?>
-                    <button type="submit" class="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-md transition-all text-xs font-medium flex items-center gap-2 border border-red-600/30">
+                    <button type="submit"
+                        class="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-md transition-all text-xs font-medium flex items-center gap-2 border border-red-600/30">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </form>
@@ -215,6 +239,25 @@
                     }
                 });
             });
+
+            <?php if(session('success')): ?>
+                window.dispatchEvent(new CustomEvent('notify', {
+                    detail: {
+                        message: "<?php echo e(addslashes(session('success'))); ?>",
+                        type: 'success'
+                    }
+                }));
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
+                window.dispatchEvent(new CustomEvent('notify', {
+                    detail: {
+                        message: "<?php echo e(addslashes(session('error'))); ?>",
+                        type: 'error'
+                    }
+                }));
+            <?php endif; ?>
+
         });
     </script>
 </body>

@@ -56,7 +56,7 @@ class SertifikatController extends Controller
             );
 
             return redirect()
-                ->route('sertifikats.show', $sertifikat)
+                ->route('sertifikats.index', $sertifikat)
                 ->with('success', 'Sertifikat berhasil dibuat!');
         } catch (\Exception $e) {
             return back()
@@ -98,7 +98,7 @@ class SertifikatController extends Controller
             );
 
             return redirect()
-                ->route('sertifikats.show', $sertifikat)
+                ->route('sertifikats.index', $sertifikat)
                 ->with('success', 'Sertifikat berhasil diperbarui!');
         } catch (\Exception $e) {
             return back()

@@ -53,25 +53,6 @@
             </a>
         </div>
 
-        <!-- Alert Messages -->
-        <?php if(session('success')): ?>
-            <div
-                class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-sm text-[11px] font-medium uppercase tracking-widest flex items-center gap-2">
-                <i data-lucide="check-circle" class="w-4 h-4"></i>
-                <?php echo e(session('success')); ?>
-
-            </div>
-        <?php endif; ?>
-
-        <?php if(session('error')): ?>
-            <div
-                class="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-300 rounded-sm text-[11px] font-medium uppercase tracking-widest flex items-center gap-2">
-                <i data-lucide="alert-circle" class="w-4 h-4"></i>
-                <?php echo e(session('error')); ?>
-
-            </div>
-        <?php endif; ?>
-
         <!-- GRID 3 KOLOM (Mirip Project Index) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12" id="sortable-cards">
 
@@ -137,7 +118,7 @@
         <!-- Pagination -->
         <?php if($sertifikats->hasPages()): ?>
             <div class="mt-12 flex justify-center">
-                <?php echo e($sertifikats->links()); ?>
+                <?php echo e($sertifikats->links('partials.pagination')); ?>
 
             </div>
         <?php endif; ?>

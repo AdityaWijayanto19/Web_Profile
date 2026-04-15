@@ -107,10 +107,16 @@
                         </div>
                     </div>
 
-                    <button type="submit"
-                        class="w-full bg-[#730c1e] hover:bg-[#911226] text-white py-3 rounded-sm text-[11px] font-bold tracking-[0.3em] transition-all active:scale-[0.98] shadow-lg shadow-[#730c1e]/20">
-                        PUBLISH CREDENTIAL
-                    </button>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="{{ route('sertifikats.index') }}"
+                            class="flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 py-3 rounded-sm text-[11px] font-bold transition-all border border-white/5 uppercase tracking-widest">
+                            CANCEL
+                        </a>
+                        <button type="submit"
+                            class="w-full bg-[#730c1e] hover:bg-[#911226] text-white py-3 rounded-sm text-[11px] font-bold tracking-[0.3em] transition-all active:scale-[0.98] shadow-lg shadow-[#730c1e]/20">
+                            PUBLISH CREDENTIAL
+                        </button>
+                    </div>
                 </div>
 
                 <!-- RIGHT: PREVIEW & UPLOAD -->

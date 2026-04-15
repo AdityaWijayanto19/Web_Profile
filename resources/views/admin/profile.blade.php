@@ -34,27 +34,6 @@
 @endpush
 
 @section('content')
-    <!-- Flash Messages (Tetap) -->
-    @if ($message = Session::get('success'))
-        <div
-            class="max-w-6xl mx-auto mb-4 p-4 bg-green-900/20 border border-green-700/50 rounded-sm flex items-center gap-2 text-sm text-green-400">
-            <i data-lucide="check-circle" class="w-4 h-4"></i> {{ $message }}
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="max-w-6xl mx-auto mb-4 p-4 bg-red-900/20 border border-red-700/50 rounded-sm">
-            <div class="text-sm text-red-400 mb-2 flex items-center gap-2">
-                <i data-lucide="alert-triangle" class="w-4 h-4"></i> Terjadi kesalahan validasi:
-            </div>
-            <ul class="list-disc list-inside text-xs text-red-300 space-y-1">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <form action="{{ route('hero-section.update') }}" method="POST" enctype="multipart/form-data"
         class="max-w-7xl mx-auto px-4 pb-10">
         @csrf

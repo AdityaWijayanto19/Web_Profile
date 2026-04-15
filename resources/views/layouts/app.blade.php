@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'FoxHR Dashboard')</title>
+    <title>@yield('title')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -109,6 +110,8 @@
 
 <body class="flex h-screen overflow-hidden text-sm">
 
+    <x-alert />
+
     <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/60 z-[40] hidden md:hidden"></div>
 
     @include('partials.sidebar')
@@ -130,7 +133,8 @@
                             class="w-4 h-4"></i></button>
                     <button class="hover:text-[#730c1e] transition-colors"><i data-lucide="settings"
                             class="w-4 h-4"></i></button>
-                    <a href="{{ route('technologies.index') }}" class="hover:text-[#730c1e] transition-colors" title="Manage Technologies">
+                    <a href="{{ route('technologies.index') }}" class="hover:text-[#730c1e] transition-colors"
+                        title="Manage Technologies">
                         <i data-lucide="layers" class="w-4 h-4"></i>
                     </a>
                 </div>
@@ -138,7 +142,8 @@
                 <!-- Logout Button (Temporary) -->
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" class="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-md transition-all text-xs font-medium flex items-center gap-2 border border-red-600/30">
+                    <button type="submit"
+                        class="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-md transition-all text-xs font-medium flex items-center gap-2 border border-red-600/30">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </form>
@@ -215,6 +220,25 @@
                     }
                 });
             });
+
+            @if (session('success'))
+                window.dispatchEvent(new CustomEvent('notify', {
+                    detail: {
+                        message: "{{ addslashes(session('success')) }}",
+                        type: 'success'
+                    }
+                }));
+            @endif
+
+            @if (session('error'))
+                window.dispatchEvent(new CustomEvent('notify', {
+                    detail: {
+                        message: "{{ addslashes(session('error')) }}",
+                        type: 'error'
+                    }
+                }));
+            @endif
+
         });
     </script>
 </body>

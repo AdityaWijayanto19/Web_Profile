@@ -30,10 +30,11 @@
             <h2 class="text-xl font-semibold text-white">Educational Root</h2>
             <p class="text-gray-400 text-xs mt-1">Manage your educational background and timeline order.</p>
         </div>
-        <a href="<?php echo e(route('pendidikans.create')); ?>" class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-xs font-medium">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            ADD NEW
-        </a>
+         <a href="<?php echo e(route('pendidikans.create')); ?>"
+                class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                Add New
+            </a>
     </div>
 
     <!-- Table Container -->
@@ -67,7 +68,7 @@
                     </td>
                     <td class="px-4 py-4 text-right">
                         <div class="flex justify-end gap-2">
-                            <a href="<?php echo e(route('pendidikans.edit', $pendidikan->id)); ?>" class="p-1.5 hover:bg-white/10 rounded text-gray-400 hover:text-white transition-colors">
+                            <a href="<?php echo e(route('pendidikans.edit', $pendidikan->id)); ?>" class="p-1.5 hover:bg-blue-600 rounded text-gray-400 hover:text-white transition-colors">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </a>
                             <form action="<?php echo e(route('pendidikans.destroy', $pendidikan->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?')">

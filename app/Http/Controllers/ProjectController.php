@@ -56,7 +56,7 @@ class ProjectController extends Controller
             );
 
             return redirect()
-                ->route('projects.show', $proyek)
+                ->route('projects.index', $proyek)
                 ->with('success', 'Proyek berhasil dibuat!');
         } catch (\Exception $e) {
             return back()
@@ -101,7 +101,7 @@ class ProjectController extends Controller
             );
 
             return redirect()
-                ->route('projects.show', $proyek)
+                ->route('projects.index', $proyek)
                 ->with('success', 'Proyek berhasil diperbarui!');
         } catch (\Exception $e) {
             return back()
