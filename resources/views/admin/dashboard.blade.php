@@ -22,7 +22,7 @@
 
         <!-- STATS OVERVIEW -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {{-- Satu blok stat --}}
+            {{-- Projects --}}
             <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
@@ -31,13 +31,60 @@
                     <div>
                         <p class="text-[9px] font-black text-gray-500 uppercase tracking-widest leading-none mb-1">Projects</p>
                         <div class="flex items-baseline gap-1">
-                            <span class="text-xl font-bold text-white tracking-tighter">24</span>
+                            <span class="text-xl font-bold text-white tracking-tighter">{{ $statistics['projects_count'] }}</span>
                             <span class="text-[9px] text-gray-600 font-medium">Items</span>
                         </div>
                     </div>
                 </div>
             </div>
-            {{-- Duplikat blok stat lainnya sesuai kebutuhan --}}
+
+            {{-- Sertifikats --}}
+            <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
+                        <i data-lucide="award" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black text-gray-500 uppercase tracking-widest leading-none mb-1">Sertifikats</p>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-xl font-bold text-white tracking-tighter">{{ $statistics['sertifikats_count'] }}</span>
+                            <span class="text-[9px] text-gray-600 font-medium">Items</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Pendidikans --}}
+            <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
+                        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black text-gray-500 uppercase tracking-widest leading-none mb-1">Edukasi</p>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-xl font-bold text-white tracking-tighter">{{ $statistics['pendidikans_count'] }}</span>
+                            <span class="text-[9px] text-gray-600 font-medium">Items</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Placeholder for future metric --}}
+            <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
+                        <i data-lucide="zap" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black text-gray-500 uppercase tracking-widest leading-none mb-1">Views</p>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-xl font-bold text-white tracking-tighter">{{ $engagement['page_views'] }}</span>
+                            <span class="text-[9px] text-gray-600 font-medium">Total</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- ENGAGEMENT STATS -->
@@ -47,19 +94,61 @@
                 <span class="text-[10px] text-gray-600 font-medium">Last 30 Days</span>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {{-- Total Visitors --}}
                 <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
                     <div class="z-10">
                         <div class="flex justify-between items-start">
                             <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Total Visitors</p>
-                            <span class="text-[9px] text-green-500 font-bold">+12%</span>
+                            <span class="text-[9px] text-green-500 font-bold">+{{ round($visitorGrowth, 0) }}%</span>
                         </div>
-                        <h4 class="text-2xl font-bold text-white mt-1">1,284</h4>
+                        <h4 class="text-2xl font-bold text-white mt-1">{{ number_format($engagement['total_visitors']) }}</h4>
                     </div>
                     <div class="absolute bottom-0 left-0 w-full h-12 opacity-40 group-hover:opacity-80 transition-opacity">
                         <svg viewBox="0 0 100 30" class="w-full h-full"><path d="M0,25 Q15,25 25,15 T45,20 T65,10 T85,15 T100,5" fill="none" stroke="#730c1e" stroke-width="2" /></svg>
                     </div>
                 </div>
-                {{-- Duplikat item engagement lainnya --}}
+
+                {{-- Unique Visitors --}}
+                <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
+                    <div class="z-10">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Unique Visitors</p>
+                            <span class="text-[9px] text-blue-500 font-bold">●</span>
+                        </div>
+                        <h4 class="text-2xl font-bold text-white mt-1">{{ number_format($engagement['unique_visitors']) }}</h4>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-12 opacity-40 group-hover:opacity-80 transition-opacity">
+                        <svg viewBox="0 0 100 30" class="w-full h-full"><path d="M0,20 Q20,15 40,18 T80,12 T100,15" fill="none" stroke="#730c1e" stroke-width="2" /></svg>
+                    </div>
+                </div>
+
+                {{-- Page Views --}}
+                <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
+                    <div class="z-10">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Page Views</p>
+                            <span class="text-[9px] text-purple-500 font-bold">▲</span>
+                        </div>
+                        <h4 class="text-2xl font-bold text-white mt-1">{{ number_format($engagement['page_views']) }}</h4>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-12 opacity-40 group-hover:opacity-80 transition-opacity">
+                        <svg viewBox="0 0 100 30" class="w-full h-full"><path d="M0,18 Q25,10 50,15 T100,8" fill="none" stroke="#730c1e" stroke-width="2" /></svg>
+                    </div>
+                </div>
+
+                {{-- Return Visitors --}}
+                <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
+                    <div class="z-10">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Return Visitors</p>
+                            <span class="text-[9px] text-orange-500 font-bold">↩</span>
+                        </div>
+                        <h4 class="text-2xl font-bold text-white mt-1">{{ number_format($engagement['return_visitors']) }}</h4>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-12 opacity-40 group-hover:opacity-80 transition-opacity">
+                        <svg viewBox="0 0 100 30" class="w-full h-full"><path d="M0,22 Q15,12 30,20 T60,14 T100,18" fill="none" stroke="#730c1e" stroke-width="2" /></svg>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

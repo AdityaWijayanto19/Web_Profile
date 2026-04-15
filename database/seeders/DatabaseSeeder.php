@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
         // Seed pendidikan
         $this->call(PendidikanSeeder::class);
 
+        // Seed visitors
+        $this->call(VisitorSeeder::class);
+
         // Create admin user
         User::factory()->create([
             'name' => 'Admin',
@@ -29,4 +32,5 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password123'), // Default admin password
         ]);
     }
+
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\PengalamanController;
 use App\Http\Controllers\PendidikanController;
+use App\Http\Controllers\DashboardController;
 
 // ==================== PUBLIC ROUTES ====================
 Route::get('/', function () {
@@ -36,9 +37,7 @@ Route::middleware('auth')->group(function () {
     // ==================== ADMIN ROUTES ====================
     Route::prefix('admin')->group(function () {
         // Dashboard
-        Route::get('/dashboard', function () {
-            return view('admin/dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Profile (managed by HeroSectionController)
         Route::get('/profile', [HeroSectionController::class, 'edit'])->name('profile');
