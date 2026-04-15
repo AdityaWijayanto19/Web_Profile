@@ -95,12 +95,12 @@
                                 <td class="px-4 py-3 text-center">
                                     <input type="number" name="pengalamans[<?php echo e($pengalaman->id); ?>][urutan]"
                                         value="<?php echo e($pengalaman->urutan); ?>"
-                                        class="table-input text-white text-sm w-full text-center" placeholder="Urutan">
+                                        class="table-input text-white text-sm w-full text-center" placeholder="Urutan" readonly>
                                 </td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
-                                <td colspan="5" class="px-4 py-6 text-center text-gray-500">Tidak ada data pendidikan
+                                <td colspan="5" class="px-4 py-6 text-center text-gray-500">Tidak ada data pengalaman
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -108,11 +108,11 @@
                 </table>
             </div>
 
-            <!-- Action Area Compact -->
+            <!-- Action Area -->
             <div class="mt-4 flex justify-between items-center">
                 <div class="flex justify-center items-center text-xs text-gray-500 italic">
                     <p>* Drag the <span class="inline-block"><i data-lucide="grip-vertical"
-                                class="w-3 h-3 inline"></i></span> icon to reorder positions.</p>
+                                class="w-3 h-3 inline"></i></span> icon to reorder positions (auto-save).</p>
                 </div>
                 <button type="submit"
                     class="btn-save text-white px-6 py-2 rounded-sm flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase shadow-lg shadow-[#730c1e]/10">
@@ -131,6 +131,8 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const el = document.getElementById('sortable-table');
+            let isSaving = false;
+
             Sortable.create(el, {
                 animation: 200,
                 handle: '.drag-handle',
@@ -138,6 +140,7 @@
                 onEnd: function() {
                     updateRowNumbers();
                     updateUrutanValues();
+                    saveOrderWithAjax();
                 },
             });
 
@@ -153,8 +156,54 @@
                 rows.forEach((row, index) => {
                     const urutanInput = row.querySelector('input[name*="[urutan]"]');
                     if (urutanInput) {
-                        urutanInput.value = index;
+                        urutanInput.value = index + 1;
                     }
+                });
+            }
+
+            function saveOrderWithAjax() {
+                if (isSaving) return;
+                isSaving = true;
+
+                const rows = document.querySelectorAll('#sortable-table tr[data-id]');
+                const ids = Array.from(rows).map(row => parseInt(row.dataset.id));
+
+                fetch('<?php echo e(route('pengalaman.reorder')); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ ids: ids })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.dispatchEvent(new CustomEvent('notify', {
+                            detail: {
+                                message: 'Urutan pengalaman berhasil diperbarui!',
+                                type: 'success'
+                            }
+                        }));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error reordering pengalaman:', error);
+                    window.dispatchEvent(new CustomEvent('notify', {
+                        detail: {
+                            message: 'Gagal menyimpan urutan. Silakan coba lagi.',
+                            type: 'error'
+                        }
+                    }));
+                })
+                .finally(() => {
+                    isSaving = false;
                 });
             }
         });

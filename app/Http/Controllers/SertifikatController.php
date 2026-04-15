@@ -143,4 +143,57 @@ class SertifikatController extends Controller
         $sertifikats = $tahun ? $this->sertifikatService->filterByTahun($tahun) : $this->sertifikatService->index();
         return view('admin.sertifikat.index', compact('sertifikats', 'tahun'));
     }
+
+    /**
+     * Handle drag-and-drop reordering of sertifikats
+     */
+    public function reorder(\Illuminate\Http\Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'ids' => 'required|array',
+                'ids.*' => 'required|integer|exists:sertifikats,id'
+            ]);
+
+            // Use database transaction for data integrity
+            return \DB::transaction(function () use ($data) {
+                $orderedIds = $data['ids'];
+
+                // Get all sertifikats to understand the urutan range being dragged
+                $draggedSertifikats = Sertifikat::whereIn('id', $orderedIds)
+                    ->orderBy('urutan')
+                    ->get();
+
+                // Get the Min and Max urutan from dragged items to understand page context
+                $minUrutan = $draggedSertifikats->min('urutan');
+                $maxUrutan = $draggedSertifikats->max('urutan');
+
+                // Assign urutan based on current position in drag list, maintaining their range
+                $startUrutan = $minUrutan;
+                foreach ($orderedIds as $id) {
+                    Sertifikat::where('id', $id)
+                        ->update(['urutan' => $startUrutan]);
+                    $startUrutan++;
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Urutan sertifikat berhasil diperbarui',
+                    'redirect' => route('sertifikats.index')
+                ]);
+            });
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Sertifikat reorder error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui urutan sertifikat'
+            ], 500);
+        }
+    }
 }

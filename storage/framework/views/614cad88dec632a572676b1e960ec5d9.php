@@ -148,10 +148,11 @@
 
             <div class="flex items-center gap-4">
                 <div class="flex gap-3 text-gray-400">
-                    <button class="hover:text-[#730c1e] transition-colors"><i data-lucide="search"
-                            class="w-4 h-4"></i></button>
-                    <button class="hover:text-[#730c1e] transition-colors"><i data-lucide="settings"
-                            class="w-4 h-4"></i></button>
+                    <a href="<?php echo e(route('visitors')); ?>"
+                        class="hover:text-[#730c1e] transition-colors <?php echo e(Request::is('admin/visitors') ? 'text-[#730c1e]' : ''); ?>"
+                        title="View Visitors">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                    </a>
                     <a href="<?php echo e(route('technologies.index')); ?>"
                         class="hover:text-[#730c1e] transition-colors <?php echo e(Request::is('admin/technologies*') ? 'text-[#730c1e]' : ''); ?>"
                         title="Manage Technologies">

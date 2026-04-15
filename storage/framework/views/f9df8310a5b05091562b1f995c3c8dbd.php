@@ -1,0 +1,97 @@
+<?php $__env->startSection('title', 'Edit Education - FoxHR'); ?>
+<?php $__env->startSection('page_title', 'Edit Education'); ?>
+
+<?php $__env->startSection('content'); ?>
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- Breadcrumb -->
+        <div class="mb-6 flex justify-between items-center">
+            <a href="<?php echo e(route('pendidikans.index')); ?>"
+                class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
+                <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO EDUCATION
+            </a>
+            <div class="flex items-center gap-2">
+                <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">ID:
+                    <?php echo e(str_pad($pendidikan->id, 4, '0', STR_PAD_LEFT)); ?></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            </div>
+        </div>
+
+        <!-- Form menggunakan Method PUT untuk Update -->
+        <form action="<?php echo e(route('pendidikans.update', $pendidikan->id)); ?>" method="POST">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
+
+            <!-- LEFT COLUMN: FORM UTAMA (8/12) -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-[#1a151d] border border-white/5 rounded-sm overflow-hidden shadow-2xl">
+                    <div class="p-5 border-b border-white/5 bg-black/20">
+                        <h3 class="text-white text-sm font-semibold flex items-center gap-2">
+                            <i data-lucide="edit-3" class="w-4 h-4 text-[#730c1e]"></i>
+                            Modify Education Entry
+                        </h3>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        <div class="grid grid-cols-2 gap-6">
+                            <!-- Period Start -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start
+                                    Year</label>
+                                <input type="text" name="start_year"
+                                    value="<?php echo e(explode(' - ', $pendidikan->periode)[0] ?? ''); ?>"
+                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                            </div>
+                            <!-- Period End -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year /
+                                    Status</label>
+                                <input type="text" name="end_year"
+                                    value="<?php echo e(explode(' - ', $pendidikan->periode)[1] ?? ''); ?>"
+                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                            </div>
+                        </div>
+
+                        <!-- Degree / Major -->
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Degree &
+                                Major</label>
+                            <input type="text" name="degree" value="<?php echo e($pendidikan->gelar); ?>"
+                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                        </div>
+
+                        <!-- Institution Name -->
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Institution /
+                                University</label>
+                            <input type="text" name="institution" value="<?php echo e($pendidikan->instansi); ?>"
+                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                        </div>
+
+                        <!-- Description -->
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Short
+                                Description</label>
+                            <textarea name="description" rows="6"
+                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-3 text-white outline-none focus:border-[#730c1e] transition-all resize-none text-sm leading-relaxed font-light"><?php echo e($pendidikan->keterangan); ?></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM ACTIONS -->
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="<?php echo e(route('pendidikans.index')); ?>"
+                        class="flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 py-3 rounded-sm text-[11px] font-bold transition-all border border-white/5 uppercase tracking-widest">
+                        CANCEL
+                    </a>
+                    <button type="submit"
+                        class="w-full bg-[#730c1e] hover:bg-[#911226] text-white py-3 rounded-sm text-[11px] font-bold tracking-[0.3em] transition-all active:scale-[0.98] shadow-lg shadow-[#730c1e]/20">
+                        UPDATE EDUCATION
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/edukasi/edit.blade.php ENDPATH**/ ?>

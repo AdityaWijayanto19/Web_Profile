@@ -34,8 +34,7 @@ class SertifikatService
      */
     public function index(): LengthAwarePaginator
     {
-        return Sertifikat::orderBy('tahun', 'desc')
-            ->orderBy('created_at', 'desc')
+        return Sertifikat::ordered()
             ->paginate(self::PER_PAGE);
     }
 

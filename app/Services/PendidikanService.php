@@ -168,18 +168,46 @@ class PendidikanService
     {
         return DB::transaction(function () use ($ids) {
             try {
-                foreach ($ids as $index => $id) {
-                    Pendidikan::where('id', $id)->update(['urutan' => $index]);
+                if (empty($ids)) {
+                    throw new \Exception('IDs array cannot be empty');
+                }
+
+                $orderedIds = $ids;
+
+                // Get pendidikan records being dragged to understand urutan range
+                $draggedPendidikans = Pendidikan::whereIn('id', $orderedIds)
+                    ->orderBy('urutan')
+                    ->get();
+
+                if ($draggedPendidikans->isEmpty()) {
+                    throw new \Exception('No pendidikan found for reordering');
+                }
+
+                // Get the Min and Max urutan from dragged items to understand page context
+                $minUrutan = $draggedPendidikans->min('urutan') ?? 1;
+                $maxUrutan = $draggedPendidikans->max('urutan') ?? count($ids);
+
+                // Assign urutan based on current position in drag list, maintaining their range
+                $startUrutan = $minUrutan;
+                foreach ($orderedIds as $id) {
+                    Pendidikan::where('id', $id)
+                        ->update(['urutan' => $startUrutan]);
+                    $startUrutan++;
                 }
 
                 Log::info('Pendidikan reordered', [
                     'count' => count($ids),
+                    'range' => "$minUrutan - $maxUrutan",
                 ]);
 
-                return $this->getAll();
+                // Return the reordered records as a collection
+                return Pendidikan::whereIn('id', $orderedIds)
+                    ->orderBy('urutan')
+                    ->get();
             } catch (\Exception $e) {
                 Log::error('Failed to reorder pendidikan', [
                     'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
                 ]);
                 throw $e;
             }

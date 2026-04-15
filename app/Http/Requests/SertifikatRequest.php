@@ -22,6 +22,9 @@ class SertifikatRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Get sertifikat ID for update scenario (ignore in unique check)
+        $sertifikatId = $this->route('sertifikat')?->id;
+
         $rules = [
             'nama_sertifikat' => ['required', 'string', 'max:255'],
             'penerbit' => ['required', 'string', 'max:255'],
@@ -31,6 +34,15 @@ class SertifikatRequest extends FormRequest
             'link_kredensial' => ['nullable', 'url', 'max:255'],
             'start_year' => 'required|string|max:10',
             'end_year' => 'required|string|max:10',
+            'urutan' => [
+                'nullable',
+                'integer',
+                'min:1',
+                'max:9999',
+                $sertifikatId
+                    ? "unique:sertifikats,urutan,{$sertifikatId},id"
+                    : 'unique:sertifikats,urutan',
+            ],
         ];
 
         return $rules;
@@ -64,6 +76,11 @@ class SertifikatRequest extends FormRequest
 
             'link_kredensial.url' => 'Link kredensial harus berupa URL yang valid.',
             'link_kredensial.max' => 'Link kredensial maksimal 255 karakter.',
+
+            'urutan.integer' => 'Urutan harus berupa angka.',
+            'urutan.min' => 'Urutan minimal 1, tidak boleh 0.',
+            'urutan.max' => 'Urutan maksimal 9999.',
+            'urutan.unique' => 'Urutan ini sudah digunakan oleh sertifikat lain. Pilih urutan yang berbeda.',
         ];
     }
 

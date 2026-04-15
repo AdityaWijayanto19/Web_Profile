@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SertifikatController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\PengalamanController;
 use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\VisitorController;
 
 // ==================== PUBLIC ROUTES ====================
 Route::get('/', function () {
@@ -68,10 +70,14 @@ Route::middleware('auth')->group(function () {
         Route::bind('sertifikat', function ($value) {
             return \App\Models\Sertifikat::findOrFail($value);
         });
-        Route::resource('sertifikats', 'App\Http\Controllers\SertifikatController');
+        Route::post('/sertifikats/reorder', [SertifikatController::class, 'reorder'])->name('sertifikats.reorder');
+        Route::resource('sertifikats', SertifikatController::class);
 
         // Technologies - Resource Controller (CRUD Routes)
         Route::resource('technologies', TechnologyController::class);
+
+        // Visitors - Read only (Analytics)
+        Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors');
 
         // Articles
         Route::prefix('article')->group(function () {

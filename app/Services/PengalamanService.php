@@ -184,7 +184,7 @@ class PengalamanService
         return DB::transaction(function () use ($ids) {
             try {
                 foreach ($ids as $index => $id) {
-                    Pengalaman::where('id', $id)->update(['urutan' => $index]);
+                    Pengalaman::where('id', $id)->update(['urutan' => $index + 1]);
                 }
 
                 Log::info('Pengalaman reordered', [

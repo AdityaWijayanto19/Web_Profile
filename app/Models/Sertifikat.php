@@ -19,6 +19,7 @@ class Sertifikat extends Model
         'deskripsi',
         'link_kredensial',
         'tahun',
+        'urutan',
     ];
 
     /**
@@ -37,4 +38,12 @@ class Sertifikat extends Model
      * @var string
      */
     protected $table = 'sertifikats';
+
+    /**
+     * Scope untuk sorting by urutan
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('urutan', 'asc')->orderBy('created_at', 'desc');
+    }
 }

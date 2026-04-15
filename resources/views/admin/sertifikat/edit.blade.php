@@ -106,6 +106,18 @@
                                     <p class="text-[9px] text-red-400 mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
+
+                            <!-- Order Number -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Display
+                                    Order</label>
+                                <input type="number" name="urutan" min="1" max="9999"
+                                    value="{{ old('urutan', $sertifikat->urutan) }}"
+                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm @error('urutan') border-red-500 @enderror">
+                                @error('urutan')
+                                    <p class="text-xs text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 

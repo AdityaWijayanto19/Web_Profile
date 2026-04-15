@@ -103,15 +103,18 @@
     <script>
         lucide.createIcons();
 
-        // Simple search filter
+        // Search filter - search di technology name dan icon path
         document.getElementById('search-tech').addEventListener('keyup', function(e) {
             const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('.grid.grid-cols-12 > .col-span-1').forEach(row => {
-                const parent = row.closest('.divide-y');
-                if (!parent) return;
+            const rows = document.querySelectorAll('.divide-y > .grid');
 
-                const text = parent.textContent.toLowerCase();
-                parent.style.display = text.includes(searchTerm) ? '' : 'none';
+            rows.forEach(row => {
+                const techName = row.querySelector('.col-span-4')?.textContent.toLowerCase() || '';
+                const iconPath = row.querySelector('.col-span-3')?.textContent.toLowerCase() || '';
+
+                // Check apakah search term ada di tech name atau icon path
+                const isMatch = techName.includes(searchTerm) || iconPath.includes(searchTerm);
+                row.style.display = isMatch ? '' : 'none';
             });
         });
     </script>

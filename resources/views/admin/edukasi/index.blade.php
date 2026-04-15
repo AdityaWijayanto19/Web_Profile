@@ -61,7 +61,7 @@
                             data-id="{{ $pendidikan->id }}">
                             <td class="px-4 py-4 text-center relative">
                                 <span
-                                    class="row-number text-gray-500 group-hover:opacity-0 transition-opacity">{{ $index + 1 }}</span>
+                                    class="row-number text-gray-500 group-hover:opacity-0 transition-opacity">{{ $pendidikan->urutan }}</span>
                                 <div
                                     class="drag-handle absolute inset-0 flex items-center justify-center text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
                                     <i data-lucide="grip-vertical" class="w-5 h-5"></i>
@@ -95,7 +95,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-4 py-6 text-center text-gray-500">Tidak ada data pendidikan</td>
+                            <td colspan="6" class="px-4 py-6 text-center text-gray-500">Tidak ada data pendidikan</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -104,7 +104,7 @@
 
         <div class="mt-4 flex justify-between items-center text-xs text-gray-500 italic">
             <p>* Drag the <span class="inline-block"><i data-lucide="grip-vertical" class="w-3 h-3 inline"></i></span> icon
-                to reorder positions.</p>
+                to reorder positions. Changes are saved automatically.</p>
         </div>
 
         <div class="border-t border-white/5">
@@ -116,8 +116,14 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script>
+        // Initialize Lucide icons
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const el = document.getElementById('sortable-table');
+            let isSaving = false;
 
             // Inisialisasi SortableJS
             const sortable = Sortable.create(el, {
@@ -126,23 +132,80 @@
                 ghostClass: 'sortable-ghost',
                 chosenClass: 'sortable-chosen',
                 onEnd: function(evt) {
-                    // Update nomor urut di tampilan setelah drag selesai
-                    updateRowNumbers();
+                    // Ambil data ID sesuai urutan baru (filter empty data-id)
+                    const order = Array.from(el.querySelectorAll('tr[data-id]'))
+                        .map(tr => parseInt(tr.dataset.id))
+                        .filter(id => !isNaN(id));
 
-                    // Ambil data ID sesuai urutan baru
-                    const order = Array.from(el.querySelectorAll('tr')).map(tr => tr.dataset.id);
-                    console.log('New Order ID list:', order);
+                    if (order.length === 0) {
+                        return;
+                    }
 
-                    // SINI NANTI TEMPAT AJAX BACKEND (Next Step)
-                    // updateOrderOnServer(order);
+                    // Trigger AJAX untuk simpan order ke backend
+                    saveOrderWithAjax(order);
                 },
             });
 
-            // Fungsi untuk reset nomor urut di kolom pertama
-            function updateRowNumbers() {
-                const rows = document.querySelectorAll('.row-number');
-                rows.forEach((row, index) => {
-                    row.innerText = index + 1;
+            // Fungsi untuk AJAX simpan order (with pagination fix)
+            function saveOrderWithAjax(ids) {
+                if (isSaving) {
+                    return;
+                }
+                isSaving = true;
+
+                const payload = { ids: ids };
+
+                fetch('{{ route('pendidikans.reorder') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Update urutan values dari response
+                        if (data.data && Array.isArray(data.data)) {
+                            data.data.forEach(item => {
+                                const row = el.querySelector(`tr[data-id="${item.id}"]`);
+                                if (row) {
+                                    const rowNumber = row.querySelector('.row-number');
+                                    if (rowNumber) {
+                                        rowNumber.innerText = item.urutan;
+                                    }
+                                }
+                            });
+                        }
+
+                        window.dispatchEvent(new CustomEvent('notify', {
+                            detail: {
+                                message: 'Urutan edukasi berhasil diperbarui!',
+                                type: 'success'
+                            }
+                        }));
+                    } else {
+                        throw new Error(data.message || 'Unknown error from server');
+                    }
+                })
+                .catch(error => {
+                    const errorMessage = error.message || 'Gagal menyimpan urutan';
+                    window.dispatchEvent(new CustomEvent('notify', {
+                        detail: {
+                            message: 'Gagal menyimpan urutan: ' + errorMessage,
+                            type: 'error'
+                        }
+                    }));
+                })
+                .finally(() => {
+                    isSaving = false;
                 });
             }
         });

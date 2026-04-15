@@ -148,17 +148,37 @@ class PendidikanController extends Controller
     public function reorder(\Illuminate\Http\Request $request): JsonResponse
     {
         try {
-            $ids = $request->input('ids', []);
-            $this->pendidikanService->reorder($ids);
+            // Validate input
+            $validated = $request->validate([
+                'ids' => 'required|array',
+                'ids.*' => 'required|integer|exists:pendidikans,id'
+            ]);
+
+            // Get updated records with new urutan values
+            $updatedPendidikans = $this->pendidikanService->reorder($validated['ids']);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Order updated successfully',
-            ]);
-        } catch (\Exception $e) {
+                'message' => 'Urutan edukasi berhasil diperbarui',
+                'data' => $updatedPendidikans->map(fn($p) => [
+                    'id' => $p->id,
+                    'urutan' => $p->urutan
+                ])
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to reorder pendidikan',
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            $errorMsg = $e->getMessage();
+            \Log::error('Pendidikan reorder error: ' . $errorMsg, [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui urutan edukasi: ' . $errorMsg
             ], 500);
         }
     }
