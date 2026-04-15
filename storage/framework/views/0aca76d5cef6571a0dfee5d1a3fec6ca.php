@@ -116,12 +116,10 @@
         </div>
 
         <!-- Pagination -->
-        <?php if($sertifikats->hasPages()): ?>
-            <div class="mt-12 flex justify-center">
-                <?php echo e($sertifikats->links('partials.pagination')); ?>
+        <div class="mt-16 py-8 border-t border-white/5">
+            <?php echo e($sertifikats->links('partials.pagination')); ?>
 
-            </div>
-        <?php endif; ?>
+        </div>
     </div>
 <?php $__env->stopSection(); ?>
 

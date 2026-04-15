@@ -6,17 +6,22 @@ use App\Models\Pendidikan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Intervention\Image\Length;
 
 class PendidikanService
 {
+
+    private const PER_PAGE = 5;
+
     /**
      * Get all pendidikan ordered by urutan
      *
      * @return Collection
      */
-    public function getAll(): Collection
+    public function getAll(): LengthAwarePaginator
     {
-        return Pendidikan::ordered()->get();
+        return Pendidikan::orderBy('urutan', 'asc')->paginate($this::PER_PAGE);
     }
 
     /**

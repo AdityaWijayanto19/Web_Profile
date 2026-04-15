@@ -1,21 +1,19 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Add New Technology - Pie'); ?>
+<?php $__env->startSection('page_title', 'Add New Technology'); ?>
 
-@section('title', 'Add New Technology - Pie')
-@section('page_title', 'Add New Technology')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="max-w-7xl px-4 mx-auto">
         <!-- Breadcrumb -->
         <div class="mb-6">
-            <a href="{{ route('technologies.index') }}"
+            <a href="<?php echo e(route('technologies.index')); ?>"
                 class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
                 <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO TECHNOLOGIES
             </a>
         </div>
 
-        <form action="{{ route('technologies.store') }}" method="POST">
-            @csrf
+        <form action="<?php echo e(route('technologies.store')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
             <div class="space-y-6">
                 <!-- FORM CARD -->
                 <div class="bg-[#1a151d] border border-white/5 rounded-sm overflow-hidden shadow-2xl">
@@ -32,11 +30,25 @@
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Technology
                                 Name</label>
                             <input type="text" name="nama" placeholder="e.g. React, Laravel, PostgreSQL"
-                                value="{{ old('nama') }}"
-                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm @error('nama') border-red-500 @enderror">
-                            @error('nama')
-                                <p class="text-xs text-red-500">{{ $message }}</p>
-                            @enderror
+                                value="<?php echo e(old('nama')); ?>"
+                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm <?php $__errorArgs = ['nama'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                            <?php $__errorArgs = ['nama'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <p class="text-xs text-red-500"><?php echo e($message); ?></p>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Icon Selection -->
@@ -45,11 +57,25 @@
                                 Name</label>
                             <div class="space-y-2">
                                 <input type="text" name="path_icon" id="icon-input"
-                                    placeholder="e.g. react, laravel, ubuntu, python" value="{{ old('path_icon') }}"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm @error('path_icon') border-red-500 @enderror">
-                                @error('path_icon')
-                                    <p class="text-xs text-red-500">{{ $message }}</p>
-                                @enderror
+                                    placeholder="e.g. react, laravel, ubuntu, python" value="<?php echo e(old('path_icon')); ?>"
+                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm <?php $__errorArgs = ['path_icon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                                <?php $__errorArgs = ['path_icon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="text-xs text-red-500"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Live Preview -->
@@ -75,7 +101,7 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <a href="{{ route('technologies.index') }}"
+                    <a href="<?php echo e(route('technologies.index')); ?>"
                         class="flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 py-3 rounded-sm text-[11px] font-bold transition-all border border-white/5 uppercase tracking-widest">
                         CANCEL
                     </a>
@@ -87,9 +113,9 @@
             </div>
         </form>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         lucide.createIcons();
 
@@ -150,4 +176,6 @@
             iconInput.dispatchEvent(new Event('input'));
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/technology/create.blade.php ENDPATH**/ ?>

@@ -17,7 +17,7 @@ class SertifikatService
     /**
      * Perpage items for pagination
      */
-    private const PER_PAGE = 10;
+    private const PER_PAGE = 6;
 
     /**
      * Inject dependencies

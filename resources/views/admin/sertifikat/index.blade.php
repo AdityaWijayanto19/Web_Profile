@@ -117,11 +117,9 @@
         </div>
 
         <!-- Pagination -->
-        @if ($sertifikats->hasPages())
-            <div class="mt-12 flex justify-center">
-                {{ $sertifikats->links('partials.pagination') }}
-            </div>
-        @endif
+        <div class="mt-16 py-8 border-t border-white/5">
+            {{ $sertifikats->links('partials.pagination') }}
+        </div>
     </div>
 @endsection
 

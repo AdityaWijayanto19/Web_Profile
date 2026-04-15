@@ -152,7 +152,8 @@
                             class="w-4 h-4"></i></button>
                     <button class="hover:text-[#730c1e] transition-colors"><i data-lucide="settings"
                             class="w-4 h-4"></i></button>
-                    <a href="<?php echo e(route('technologies.index')); ?>" class="hover:text-[#730c1e] transition-colors"
+                    <a href="<?php echo e(route('technologies.index')); ?>"
+                        class="hover:text-[#730c1e] transition-colors <?php echo e(Request::is('admin/technologies*') ? 'text-[#730c1e]' : ''); ?>"
                         title="Manage Technologies">
                         <i data-lucide="layers" class="w-4 h-4"></i>
                     </a>

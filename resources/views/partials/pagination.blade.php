@@ -18,8 +18,8 @@
         {{-- Desktop View --}}
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
-                <p class="text-[11px] text-gray-500 uppercase tracking-tighter">
-                    Showing <span class="font-bold text-white">{{ $paginator->firstItem() }}</span> to <span class="font-bold text-white">{{ $paginator->lastItem() }}</span> of <span class="font-bold text-white">{{ $paginator->total() }}</span> results
+                <p class="text-[11px] text-gray-500 tracking-tighter">
+                    Showing <span class="font-bold text-white">{{ $paginator->firstItem() }}</span> - <span class="font-bold text-white">{{ $paginator->lastItem() }}</span> of <span class="font-bold text-white">{{ $paginator->total() }}</span>
                 </p>
             </div>
 
