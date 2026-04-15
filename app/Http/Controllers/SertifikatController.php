@@ -50,7 +50,8 @@ class SertifikatController extends Controller
             $sertifikat = $this->sertifikatService->create(
                 array_merge(
                     $request->validated(),
-                    $request->hasFile('path_gambar') ? ['gambar' => $request->file('path_gambar')] : []
+                    $request->hasFile('path_gambar') ? ['gambar' => $request->file('path_gambar')] : [],
+                    ['tahun' => $request->validated()['start_year'] . ' - ' . $request->validated()['end_year']]
                 )
             );
 
@@ -91,7 +92,8 @@ class SertifikatController extends Controller
                 $sertifikat,
                 array_merge(
                     $request->validated(),
-                    $request->hasFile('path_gambar') ? ['gambar' => $request->file('path_gambar')] : []
+                    $request->hasFile('path_gambar') ? ['gambar' => $request->file('path_gambar')] : [],
+                    ['tahun' => $request->validated()['start_year'] . ' - ' . $request->validated()['end_year']]
                 )
             );
 

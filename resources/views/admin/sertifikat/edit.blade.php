@@ -55,18 +55,20 @@
                                 @enderror
                             </div>
 
-                            <div>
-                                <label
-                                    class="text-[10px] text-gray-500 uppercase font-bold mb-1.5 block tracking-widest">Year
-                                    Obtained</label>
-                                <input type="number" name="tahun" placeholder="e.g. 2024" min="1900"
-                                    max="{{ date('Y') }}"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all @error('tahun') border-red-500 @enderror"
-                                    value="{{ old('tahun', $sertifikat->tahun) }}">
-                                @error('tahun')
-                                    <p class="text-[9px] text-red-400 mt-1">{{ $message }}</p>
-                                @enderror
+                            <div class="grid grid-cols-2 gap-6">
+                            <!-- Period Start -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start Year</label>
+                                <input type="text" name="start_year" value="{{ explode(' - ', $sertifikat->tahun)[0] ?? '' }}"
+                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
                             </div>
+                            <!-- Period End -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year / Status</label>
+                                <input type="text" name="end_year" value="{{ explode(' - ', $sertifikat->tahun)[1] ?? '' }}"
+                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                            </div>
+                        </div>
 
                             <div>
                                 <label

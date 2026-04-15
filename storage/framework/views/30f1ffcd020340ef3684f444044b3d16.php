@@ -74,21 +74,35 @@ endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
 
-                            <div>
-                                <label
-                                    class="text-[10px] text-gray-500 uppercase font-bold mb-1.5 block tracking-widest">Year
-                                    Obtained</label>
-                                <input type="number" name="tahun" placeholder="e.g. 2024" min="1900"
-                                    max="<?php echo e(date('Y')); ?>"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all <?php $__errorArgs = ['tahun'];
+                            <div class="grid grid-cols-2 gap-6">
+                                <!-- Period Start -->
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start
+                                        Year</label>
+                                    <input type="text" name="start_year" placeholder="e.g. 2016"
+                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all <?php $__errorArgs = ['start_year'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                    value="<?php echo e(old('tahun')); ?>">
+unset($__errorArgs, $__bag); ?>">
+                                </div>
+                                <!-- Period End -->
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year /
+                                        Status</label>
+                                    <input type="text" name="end_year" placeholder="e.g. 2020 or Present"
+                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all <?php $__errorArgs = ['end_year'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                                </div>
                                 <?php $__errorArgs = ['tahun'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

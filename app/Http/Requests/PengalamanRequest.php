@@ -67,24 +67,4 @@ class PengalamanRequest extends FormRequest
             'urutan' => 'Urutan',
         ];
     }
-
-            'urutan.*.required' => 'Urutan wajib diisi.',
-            'urutan.*.integer' => 'Urutan harus berupa angka.',
-            'urutan.*.min' => 'Urutan minimal 0.',
-        ];
-    }
-
-    /**
-     * Get custom attribute names for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function attributes(): array
-    {
-        return [
-            'jabatan' => 'Jabatan',
-            'keterangan' => 'Keterangan',
-            'urutan' => 'Urutan',
-        ];
-    }
 }

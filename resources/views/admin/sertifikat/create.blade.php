@@ -48,14 +48,21 @@
                                 @enderror
                             </div>
 
-                            <div>
-                                <label
-                                    class="text-[10px] text-gray-500 uppercase font-bold mb-1.5 block tracking-widest">Year
-                                    Obtained</label>
-                                <input type="number" name="tahun" placeholder="e.g. 2024" min="1900"
-                                    max="{{ date('Y') }}"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all @error('tahun') border-red-500 @enderror"
-                                    value="{{ old('tahun') }}">
+                            <div class="grid grid-cols-2 gap-6">
+                                <!-- Period Start -->
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start
+                                        Year</label>
+                                    <input type="text" name="start_year" placeholder="e.g. 2016"
+                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all @error('start_year') border-red-500 @enderror">
+                                </div>
+                                <!-- Period End -->
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year /
+                                        Status</label>
+                                    <input type="text" name="end_year" placeholder="e.g. 2020 or Present"
+                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all @error('end_year') border-red-500 @enderror">
+                                </div>
                                 @error('tahun')
                                     <p class="text-[9px] text-red-400 mt-1">{{ $message }}</p>
                                 @enderror

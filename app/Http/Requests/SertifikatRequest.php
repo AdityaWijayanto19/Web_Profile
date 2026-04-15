@@ -29,7 +29,8 @@ class SertifikatRequest extends FormRequest
             'id_kredensial' => ['nullable', 'string', 'max:255'],
             'deskripsi' => ['nullable', 'string', 'max:1000'],
             'link_kredensial' => ['nullable', 'url', 'max:255'],
-            'tahun' => ['required', 'digits:4', 'integer', 'min:1900', 'max:' . date('Y')],
+            'start_year' => 'required|string|max:10',
+            'end_year' => 'required|string|max:10',
         ];
 
         return $rules;
@@ -63,12 +64,6 @@ class SertifikatRequest extends FormRequest
 
             'link_kredensial.url' => 'Link kredensial harus berupa URL yang valid.',
             'link_kredensial.max' => 'Link kredensial maksimal 255 karakter.',
-
-            'tahun.required' => 'Tahun wajib diisi.',
-            'tahun.digits' => 'Tahun harus 4 digit.',
-            'tahun.integer' => 'Tahun harus berupa angka.',
-            'tahun.min' => 'Tahun tidak boleh lebih awal dari 1900.',
-            'tahun.max' => 'Tahun tidak boleh lebih dari tahun saat ini.',
         ];
     }
 
