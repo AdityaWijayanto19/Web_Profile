@@ -8,6 +8,7 @@ use App\Models\Pendidikan;
 use App\Services\PendidikanService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class PendidikanController extends Controller
@@ -173,7 +174,7 @@ class PendidikanController extends Controller
             ], 422);
         } catch (\Exception $e) {
             $errorMsg = $e->getMessage();
-            \Log::error('Pendidikan reorder error: ' . $errorMsg, [
+            Log::error('Pendidikan reorder error: ' . $errorMsg, [
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json([

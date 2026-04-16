@@ -7,6 +7,8 @@ use App\Models\Sertifikat;
 use App\Services\SertifikatService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class SertifikatController extends Controller
@@ -156,7 +158,7 @@ class SertifikatController extends Controller
             ]);
 
             // Use database transaction for data integrity
-            return \DB::transaction(function () use ($data) {
+            return DB::transaction(function () use ($data) {
                 $orderedIds = $data['ids'];
 
                 // Get all sertifikats to understand the urutan range being dragged
@@ -189,7 +191,7 @@ class SertifikatController extends Controller
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
-            \Log::error('Sertifikat reorder error: ' . $e->getMessage());
+            Log::error('Sertifikat reorder error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal memperbarui urutan sertifikat'

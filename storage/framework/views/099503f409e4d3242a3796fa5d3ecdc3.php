@@ -45,10 +45,12 @@
 
                 <!-- Center illustration -->
                 <div class="flex justify-center items-center py-8">
-                    <img src="{{ asset('assets/images/Illustration-3.svg') }}"
+                    <img src="<?php echo e(asset('assets/images/Illustration-3.svg')); ?>"
                          alt="Admin Illustration"
                          class="w-96 mr-16 h-auto object-contain drop-shadow-xl opacity-95 hover:opacity-100 transition-opacity duration-300">
                 </div>
+
+                <!-- Bottom spacer -->
             </div>
         </div>
 
@@ -61,36 +63,37 @@
                     <p class="text-gray-500 mt-2">Enter your email address to receive a password reset link.</p>
                 </div>
 
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-                        @foreach ($errors->all() as $error)
-                            <p>• {{ $error }}</p>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <p>• <?php echo e($error); ?></p>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @if (session('error'))
+                <?php if(session('error')): ?>
                     <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-2">
                         <i class="fa-solid fa-circle-xmark"></i>
-                        {{ session('error') }}
+                        <?php echo e(session('error')); ?>
+
                     </div>
 
-                    @if (session('debug_error') && app()->environment('local'))
+                    <?php if(session('debug_error') && app()->environment('local')): ?>
                         <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-yellow-800 text-xs font-mono">
                             <p class="font-bold mb-2">🔧 Debug Info (Development Only):</p>
-                            <p class="break-words">{{ session('debug_error') }}</p>
+                            <p class="break-words"><?php echo e(session('debug_error')); ?></p>
                         </div>
-                    @endif
-                @endif
+                    <?php endif; ?>
+                <?php endif; ?>
 
-                @if (session('success'))
+                <?php if(session('success')): ?>
                     <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
                         <div class="flex items-start gap-3">
                             <i class="fa-solid fa-circle-check text-green-600 mt-1"></i>
                             <div>
                                 <p class="text-green-700 font-bold text-sm mb-3">Password Reset Link Sent</p>
                                 <p class="text-green-600 text-sm leading-relaxed mb-3">
-                                    We've sent a password reset link to <strong>{{ request('email', 'your email') }}</strong>.
+                                    We've sent a password reset link to <strong><?php echo e(request('email', 'your email')); ?></strong>.
                                     Please check your inbox (and spam folder, just in case) within the next hour to reset your password.
                                 </p>
                                 <p class="text-green-600 text-xs leading-relaxed">
@@ -121,9 +124,9 @@
                             Try another email address
                         </button>
                     </div>
-                @else
-                    <form action="{{ route('password.send-reset') }}" method="POST" class="space-y-6">
-                    @csrf
+                <?php else: ?>
+                    <form action="<?php echo e(route('password.send-reset')); ?>" method="POST" class="space-y-6">
+                    <?php echo csrf_field(); ?>
 
                     <!-- Email -->
                     <div class="space-y-2">
@@ -132,7 +135,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
                                 <i class="fa-solid fa-envelope"></i>
                             </span>
-                            <input type="email" name="email" required value="{{ old('email') }}"
+                            <input type="email" name="email" required value="<?php echo e(old('email')); ?>"
                                 class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-pink-50 focus:border-pink-main outline-none transition-all duration-300"
                                 placeholder="admin@example.com">
                         </div>
@@ -150,13 +153,14 @@
                 <div class="mt-8 text-center">
                     <p class="text-gray-500 text-sm">
                         Remember your password?
-                        <a href="{{ route('login') }}" class="font-bold text-pink-main hover:underline">Back to Login</a>
+                        <a href="<?php echo e(route('login')); ?>" class="font-bold text-pink-main hover:underline">Back to Login</a>
                     </p>
                 </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
     </div>
 </body>
 </html>
+<?php /**PATH C:\laragon\www\Web Profile\resources\views/auth/forgot-password.blade.php ENDPATH**/ ?>

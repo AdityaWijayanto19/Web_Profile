@@ -13,23 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed technologies first
-        $this->call(TechnologySeeder::class);
-
-        // Seed pengalaman
         $this->call(PengalamanSeeder::class);
-
-        // Seed pendidikan
-        $this->call(PendidikanSeeder::class);
-
-        // Seed visitors
-        $this->call(VisitorSeeder::class);
 
         // Create admin user
         User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'), // Default admin password
+            'name' => 'Yunnappie',
+            'email' => 'adityaputraw49@gmail.com',
+            'password' => bcrypt('password123'),
         ]);
     }
 

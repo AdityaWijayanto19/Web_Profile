@@ -84,6 +84,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/index', function () {
                 return view('admin/article/index');
             })->name('article.index');
+
+            Route::get('/create', function () {
+                return view('admin/article/create');
+            })->name('article.create');
         });
     });
 });

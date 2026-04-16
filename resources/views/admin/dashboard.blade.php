@@ -12,8 +12,8 @@
         <div class="bg-gradient-to-r from-black via-[#1a0f14] to-[#140f17] rounded-md p-6 relative flex items-center overflow-hidden min-h-[160px] shadow-sm">
             <div class="z-10 w-2/3">
                 <h2 class="text-white text-2xl font-bold mb-1">Hello Yunnappie!</h2>
-                <p class="text-gray-300 text-xs leading-relaxed">Consistency is the key to <span class="font-bold border-b border-gray-500">mastery</span>. Keep updating, keep growing, and keep inspiring.</p>
-                <button class="mt-4 text-[10px] font-bold text-white border border-white/30 px-3 py-1.5 rounded-sm hover:bg-[#730c1e] hover:border-[#730c1e] hover:text-white transition-all uppercase tracking-tighter">Manage Now</button>
+                <p class="text-gray-300 text-xs leading-relaxed mb-4">Consistency is the key to <span class="font-bold border-b border-gray-500">mastery</span>. Keep updating, keep growing, and keep inspiring.</p>
+                <a href="{{ route('projects.index') }}" class="text-[10px] font-bold text-white border border-white/30 px-3 py-1.5 rounded-sm hover:bg-[#730c1e] hover:border-[#730c1e] hover:text-white transition-all uppercase tracking-tighter">Manage Now</a>
             </div>
             <div class="absolute -right-28 opacity-60 bottom-0 w-52 pointer-events-none">
                 <img src="{{ asset('assets/images/Illustration-1.svg') }}" class="object-contain w-full h-full" alt="Programmer">
@@ -154,7 +154,7 @@
     </div>
 
     <!-- RIGHT COLUMN -->
-    <div class="col-span-12 lg:col-span-4 space-y-4">
+    <div class="col-span-12 lg:col-span-4 space-y-2">
         <!-- CALENDAR -->
         <div class="bg-[#1a0f14] rounded-lg p-4 shadow-xl text-white">
             <div class="flex justify-between items-center mb-4">
@@ -175,8 +175,8 @@
 
         <!-- PROFILE & CLOCK -->
         <div class="bg-[#1a0f14] rounded-lg shadow-xl overflow-hidden text-white">
-            <div class="p-4 border-b">
-                <div class="flex items-center justify-between mb-4">
+            <div class="px-4 pt-4 pb-2 border-b">
+                <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <i data-lucide="user" class="w-11 h-11 rounded-lg bg-white/5 p-2"></i>
                         <div>
@@ -184,11 +184,6 @@
                             <p class="text-[9px] text-[#730c1e] font-black uppercase tracking-widest">Undergraduate Student</p>
                         </div>
                     </div>
-                </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <button class="flex justify-center py-2 rounded-md bg-white/5 hover:text-[#730c1e]"><i data-lucide="phone" class="w-3.5 h-3.5"></i></button>
-                    <button class="flex justify-center py-2 rounded-md bg-white/5 hover:text-[#730c1e]"><i data-lucide="mail" class="w-3.5 h-3.5"></i></button>
-                    <button class="flex justify-center py-2 rounded-md bg-white/5 hover:text-[#730c1e]"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></button>
                 </div>
             </div>
             <div class="p-4 bg-white/[0.02]">

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Visitor;
+use Illuminate\Support\Facades\Log;
 
 class RecordVisitor
 {
@@ -31,7 +32,7 @@ class RecordVisitor
                     'visited_at' => now(),
                 ]);
             } catch (\Exception $e) {
-                \Log::error('Failed to record visitor: ' . $e->getMessage());
+                Log::error('Failed to record visitor: ' . $e->getMessage());
             }
         }
 

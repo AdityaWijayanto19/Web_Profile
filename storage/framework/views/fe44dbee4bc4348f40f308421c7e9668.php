@@ -214,7 +214,7 @@
                 <span class="w-8 h-[1px] bg-primary"></span>
             </div>
             <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                Process <span class="text-primary">section.</span>
+                Education <span class="text-primary">section.</span>
             </h2>
         </div>
 
@@ -238,7 +238,7 @@
             </svg>
 
             <div class="relative md:absolute md:left-0 md:top-[100px] w-full md:w-[40%] z-10">
-                <div class="glass-card p-8 rounded-3xl border-l-4 border-l-primary relative">
+                <div class="glass-card p-8 rounded-xl border-l-4 border-l-primary relative">
                     <div
                         class="absolute -right-[15px] top-[87px] w-8 h-8 bg-base border-2 border-primary rounded-full hidden md:flex items-center justify-center">
                         <div class="w-2 h-2 bg-primary rounded-full"></div>
@@ -253,7 +253,7 @@
             </div>
 
             <div class="relative md:absolute md:right-0 md:top-[320px] w-full md:w-[40%] z-10">
-                <div class="glass-card p-8 rounded-3xl border-r-4 border-r-primary md:text-right relative">
+                <div class="glass-card p-8 rounded-xl border-r-4 border-r-primary md:text-right relative">
                     <div
                         class="absolute -left-[15px] top-[87px] w-8 h-8 bg-base border-2 border-primary rounded-full hidden md:flex items-center justify-center">
                         <div class="w-2 h-2 bg-primary rounded-full"></div>
@@ -292,17 +292,14 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
                 <div class="group h-[250px] [perspective:1000px]">
-                    <div
-                        class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
+                    <div class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
 
                         <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
-                            <div
-                                class="h-full w-full rounded-2xl overflow-hidden border border-white/10 relative shadow-2xl">
+                            <div class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-2xl">
 
                                 <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800"
                                     class="h-full w-full object-cover">
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-base/90 via-transparent to-transparent opacity-80">
+                                <div class="absolute inset-0 bg-gradient-to-t from-base/90 via-transparent to-transparent opacity-80">
                                 </div>
                                 <div class="absolute bottom-5 left-5 flex items-center gap-3">
                                     <div class="bg-primary p-2 rounded-lg shadow-[0_0_20px_rgba(244,63,94,0.6)]">
@@ -310,8 +307,7 @@
                                             class="text-white text-xl block"></iconify-icon>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span
-                                            class="text-white font-black text-[10px] uppercase tracking-widest">Google
+                                        <span class="text-white font-black text-[10px] uppercase tracking-widest">Google
                                             Certified</span>
                                         <span class="text-white/60 text-[8px] uppercase tracking-tighter">UX
                                             Architecture</span>
@@ -320,8 +316,7 @@
                             </div>
                         </div>
 
-                        <div
-                            class="absolute inset-0 h-full w-full rounded-2xl bg-[#0d0a0f] border-2 border-primary/40 p-6 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
+                        <div class="absolute inset-0 h-full w-full rounded-2xl bg-[#0d0a0f] border-2 border-primary/40 p-6 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
                             <div class="flex flex-col h-full">
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-3">
@@ -370,7 +365,7 @@
                         class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
                         <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
                             <div
-                                class="h-full w-full rounded-2xl overflow-hidden border border-white/10 relative shadow-2xl">
+                                class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-2xl">
                                 <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800"
                                     class="h-full w-full object-cover">
                                 <div
@@ -433,7 +428,7 @@
                         class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
                         <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
                             <div
-                                class="h-full w-full rounded-2xl overflow-hidden border border-white/10 relative shadow-2xl">
+                                class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-2xl">
                                 <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800"
                                     class="h-full w-full object-cover">
                                 <div
@@ -506,7 +501,7 @@
                 <span class="w-8 h-[1px] bg-primary"></span>
             </div>
             <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                Process <span class="text-primary">section.</span>
+                Experience <span class="text-primary">section.</span>
             </h2>
         </div>
 

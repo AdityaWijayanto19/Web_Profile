@@ -7,6 +7,8 @@ use App\Models\Proyek;
 use App\Models\Teknologi;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -139,7 +141,7 @@ class ProjectController extends Controller
             ]);
 
             // Use database transaction for data integrity
-            return \DB::transaction(function () use ($data) {
+            return DB::transaction(function () use ($data) {
                 // Assign sequential urutan (1, 2, 3, ...) based on ordered IDs
                 foreach ($data['ids'] as $index => $id) {
                     Proyek::where('id', $id)
@@ -171,7 +173,7 @@ class ProjectController extends Controller
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
-            \Log::error('Project reorder error: ' . $e->getMessage());
+            Log::error('Project reorder error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal memperbarui urutan proyek'

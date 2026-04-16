@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="flex justify-center items-center py-8">
-                    <img src="{{ asset('assets/images/Illustration-4.svg') }}" alt="Admin Illustration"
+                    <img src="<?php echo e(asset('assets/images/Illustration-4.svg')); ?>" alt="Admin Illustration"
                         class="w-96 mr-16 h-auto object-contain drop-shadow-xl opacity-95 hover:opacity-100 transition-opacity duration-300">
                 </div>
             </div>
@@ -81,28 +81,29 @@
                     <p class="text-gray-500 mt-2">Create a new password for your account.</p>
                 </div>
 
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-                        @foreach ($errors->all() as $error)
-                            <p>• {{ $error }}</p>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <p>• <?php echo e($error); ?></p>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @if (session('error'))
+                <?php if(session('error')): ?>
                     <div
                         class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-2">
                         <i class="fa-solid fa-circle-xmark"></i>
-                        {{ session('error') }}
-                    </div>
-                @endif
+                        <?php echo e(session('error')); ?>
 
-                <form action="{{ route('password.update') }}" method="POST" class="space-y-6">
-                    @csrf
+                    </div>
+                <?php endif; ?>
+
+                <form action="<?php echo e(route('password.update')); ?>" method="POST" class="space-y-6">
+                    <?php echo csrf_field(); ?>
 
                     <!-- Email (Hidden) -->
-                    <input type="hidden" name="email" value="{{ $email }}">
-                    <input type="hidden" name="token" value="{{ $token }}">
+                    <input type="hidden" name="email" value="<?php echo e($email); ?>">
+                    <input type="hidden" name="token" value="<?php echo e($token); ?>">
 
                     <!-- New Password -->
                     <div class="space-y-2">
@@ -152,7 +153,7 @@
                 <!-- Back to Login -->
                 <div class="mt-8 text-center">
                     <p class="text-gray-500 text-sm">
-                        <a href="{{ route('login') }}" class="font-bold text-pink-main hover:underline">Back to
+                        <a href="<?php echo e(route('login')); ?>" class="font-bold text-pink-main hover:underline">Back to
                             Login</a>
                     </p>
                 </div>
@@ -184,3 +185,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\Web Profile\resources\views/auth/reset-password.blade.php ENDPATH**/ ?>

@@ -36,9 +36,20 @@
                 <path d="M0 0 C 50 0, 50 100, 100 100 L 100 0 Z" />
             </svg>
 
-            <div class="z-20 text-white space-y-6">
-                <h1 class="text-5xl font-bold leading-tight">Web Profile Admin</h1>
-                <p class="text-lg text-white/80">Manage your portfolio and professional content.</p>
+            <!-- Content wrapper with flexible centering -->
+            <div class="z-20 flex flex-col justify-between h-full">
+                <!-- Top text -->
+                <div class="text-white space-y-6">
+                    <h1 class="text-5xl font-bold leading-tight">Web Profile Admin</h1>
+                    <p class="text-lg text-white/80">Manage your portfolio and professional content.</p>
+                </div>
+
+                <!-- Center illustration -->
+                <div class="flex justify-center items-center py-8">
+                    <img src="{{ asset('assets/images/Illustration-2.svg') }}"
+                         alt="Admin Illustration"
+                         class="w-96 mr-16 h-auto object-contain drop-shadow-xl opacity-95 hover:opacity-100 transition-opacity duration-300">
+                </div>
             </div>
         </div>
 
