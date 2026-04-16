@@ -10,6 +10,7 @@ use App\Http\Controllers\PengalamanController;
 use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\ArticleController;
 
 // ==================== PUBLIC ROUTES ====================
 Route::get('/', function () {
@@ -81,13 +82,13 @@ Route::middleware('auth')->group(function () {
 
         // Articles
         Route::prefix('article')->group(function () {
-            Route::get('/index', function () {
-                return view('admin/article/index');
-            })->name('article.index');
-
-            Route::get('/create', function () {
-                return view('admin/article/create');
-            })->name('article.create');
+            Route::get('/index', [ArticleController::class, 'index'])->name('article.index');
+            Route::get('/create', [ArticleController::class, 'create'])->name('article.create');
+            Route::get('/{id}/edit', [ArticleController::class, 'edit'])->name('article.edit');
+            Route::post('/{id}/save-content', [ArticleController::class, 'saveContent'])->name('article.save-content');
+            Route::get('/{id}/publish', [ArticleController::class, 'showPublishForm'])->name('article.publish-form');
+            Route::post('/{id}/publish-finalize', [ArticleController::class, 'publishFinalize'])->name('article.publish-finalize');
+            Route::delete('/{id}', [ArticleController::class, 'destroy'])->name('article.destroy');
         });
     });
 });

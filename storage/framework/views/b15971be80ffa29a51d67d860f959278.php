@@ -16,7 +16,7 @@
 
         ::-moz-selection {
             background-color: var(--m-green) !important;
-            color: # !important;
+            color: #000000 !important;
         }
 
         /* 1. Layout & Typography */
@@ -143,7 +143,7 @@
 
 <?php $__env->startSection('content'); ?>
     <div class="max-w-4xl mx-auto py-16 px-6 pb-40">
-        <input type="text" id="article-title" class="title-input" placeholder="Title" autocomplete="off">
+        <input type="text" id="article-title" class="title-input" placeholder="Title" autocomplete="off" value="<?php echo e($artikel->judul ?? ''); ?>">
         <div id="editorjs" class="min-h-[500px]"></div>
 
         <div class="fixed bottom-10 right-10 z-50">
@@ -165,6 +165,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const titleInput = document.getElementById('article-title');
             const editorContainer = document.getElementById('editorjs');
+            const artikelContent = <?php echo $artikelContent ? json_encode($artikelContent) : json_encode(['blocks' => []]); ?>;
 
             const uploader = (file) => new Promise((res) => {
                 const reader = new FileReader();
@@ -180,6 +181,7 @@
             const editor = new EditorJS({
                 holder: 'editorjs',
                 placeholder: 'Tell your story...',
+                data: artikelContent,
                 tools: {
                     header: {
                         class: Header,
@@ -658,12 +660,36 @@
             }
 
             document.getElementById('publishBtn').onclick = async () => {
-                const output = await editor.save();
-                console.log("FINAL DATA:", {
-                    title: titleInput.value,
-                    content: output
-                });
-                alert('JSON exported to console!');
+                try {
+                    // Save editor content
+                    const output = await editor.save();
+                    const artikelId = <?php echo e($artikel->id); ?>;
+
+                    // Save to database
+                    const response = await fetch(`/admin/article/${artikelId}/save-content`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({
+                            judul: titleInput.value,
+                            isi_konten: JSON.stringify(output),
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        alert('Gagal menyimpan konten: ' + (error.error || 'Unknown error'));
+                        return;
+                    }
+
+                    // Redirect to publish form
+                    window.location.href = `/admin/article/${artikelId}/publish`;
+                } catch (err) {
+                    console.error('Publish error:', err);
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
             };
 
             if (window.lucide) window.lucide.createIcons();
