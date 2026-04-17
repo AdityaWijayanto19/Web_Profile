@@ -179,27 +179,5 @@
 @endsection
 
 @push('scripts')
-    <script>
-        lucide.createIcons();
-
-        function updatePreview(id, val) {
-            const el = document.getElementById(id);
-            if (el) el.innerText = val;
-        }
-
-        function previewImage(event) {
-            const reader = new FileReader();
-            const preview = document.getElementById('preview-portrait');
-            const noPreview = document.getElementById('no-preview');
-
-            reader.onload = function() {
-                preview.src = reader.result;
-                preview.classList.remove('hidden');
-                if (noPreview) noPreview.classList.add('hidden');
-            }
-            if (event.target.files[0]) {
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        }
-    </script>
+    @vite(['resources/js/profile.js'])
 @endpush

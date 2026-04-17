@@ -10,7 +10,6 @@
             background-color: rgba(115, 12, 30, 0.2) !important;
         }
 
-        /* Input sangat rapat */
         .table-input {
             background: transparent;
             border: 1px solid transparent;
