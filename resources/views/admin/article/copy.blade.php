@@ -1,7 +1,9 @@
-<?php $__env->startSection('title', 'Write Story'); ?>
-<?php $__env->startSection('page_title', 'Medium Draft'); ?>
+@extends('layouts.app')
 
-<?php $__env->startPush('styles'); ?>
+@section('title', 'Write Story')
+@section('page_title', 'Medium Draft')
+
+@push('styles')
     <style>
         :root {
             --m-green: #2c974b;
@@ -23,7 +25,6 @@
         .ce-block__content,
         .ce-toolbar__content {
             max-width: 720px;
-            margin-left: 60px;
         }
 
         .ce-paragraph {
@@ -61,16 +62,13 @@
             background: transparent;
             border: none;
             outline: none;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             font-weight: 800;
             font-family: serif;
             width: 100%;
             color: white;
+            margin-bottom: 10px;
             letter-spacing: -0.04em;
-            resize: none;
-            overflow: hidden;
-            min-height: auto;
-            line-height: 1;
         }
 
         /* 2. IMAGE SELECTION LOGIC (ROBUST IMPLEMENTATION) */
@@ -143,101 +141,125 @@
             border: 1px solid var(--m-border) !important;
         }
     </style>
-<?php $__env->stopPush(); ?>
+@endpush
 
-<?php $__env->startSection('content'); ?>
-    <div class="max-w-7xl mx-auto px-4 pb-40">
+@section('content')
+    <!-- Alert Pop-up Component -->
+    <x-alert-pop-up />
+
+    <div class="max-w-4xl mx-auto py-16 px-6 pb-40">
         <!-- Unsaved Indicator & Title Section -->
-
-        
-        <header class="flex sticky -top-4 z-50 bg-[#140f17] items-center justify-between py-2 border-b border-white/10 mb-4">
-            <div class="flex items-center gap-4">
-                <!-- Back Link -->
-                <a href="<?php echo e(route('article.index')); ?>"
-                    class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-white transition-colors group">
-                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
-                    BACK TO PROJECTS
-                </a>
-
-                <!-- Status Indicator (Style mirip tab di gambar) -->
-                <div class="flex items-center gap-2 px-1 relative">
-                    <span id="saveStatusText" class="text-sm font-medium text-gray-400">
-                        Draft
-                    </span>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center gap-4">
-                <button id="publishBtn"
-                    class="text-sm font-semibold bg-white text-black px-5 py-1.5 rounded-md hover:bg-gray-200 transition-all">
-                    Publish
-                </button>
-            </div>
-        </header>
-
-
-        <div class="flex items-center gap-3 mb-2">
+        <div class="flex items-center gap-3 mb-6">
             <div class="flex-1">
-                <textarea id="article-title" class="title-input" placeholder="Title" autocomplete="off"><?php echo e($artikel->judul ?? ''); ?></textarea>
+                <input type="text" id="article-title" class="title-input" placeholder="Title" autocomplete="off" value="{{ $artikel->judul ?? '' }}">
+            </div>
+            <!-- Save Status Indicator -->
+            <div id="saveStatus" class="flex items-center gap-2 px-4 py-2 rounded-sm bg-[#2c974b]/10 border border-[#2c974b]/30 min-w-fit">
+                <i id="saveStatusIcon" data-lucide="alert-circle" class="w-4 h-4 text-yellow-500"></i>
+                <span id="saveStatusText" class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Unsaved</span>
             </div>
         </div>
 
-        <div id="editorjs" class="min-h-10"></div>
-    </div>
-<?php $__env->stopSection(); ?>
+        <div id="editorjs" class="min-h-[500px]"></div>
 
-<?php $__env->startPush('scripts'); ?>
+        <!-- DEBUG TEST BUTTON -->
+        <button id="testAlertBtn" class="fixed bottom-32 right-10 z-50 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-sm text-xs font-bold">
+            TEST ALERT
+        </button>
+
+        <div class="fixed bottom-10 right-10 z-50">
+            <button id="publishBtn"
+                class="bg-[#2c974b] hover:bg-[#237a3d] text-white px-8 py-2.5 rounded-full font-bold shadow-2xl flex items-center gap-2 transition-all">
+                Publish <i data-lucide="check" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@1.10.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.9.3"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // SETUP IMMEDIATELY - not waiting for DOMContentLoaded
+        console.log('⚡ Script loaded');
+
+        function initArticleEditor() {
+            console.log('🚀 Initializing article editor');
+
             const titleInput = document.getElementById('article-title');
             const editorContainer = document.getElementById('editorjs');
-            const saveStatusText = document.getElementById('saveStatusText');
-            const saveStatus = document.getElementById('saveStatus');
-            const artikelContent = <?php echo $artikelContent ? json_encode($artikelContent) : json_encode(['blocks' => []]); ?>;
+
+            if (!titleInput || !editorContainer) {
+                console.error('❌ Elements not found, retrying...');
+                setTimeout(initArticleEditor, 100);
+                return;
+            }
+
+            console.log('✅ Elements found, starting init');
+
+            const artikelContent = {!! $artikelContent ? json_encode($artikelContent) : json_encode(['blocks' => []]) !!};
 
             // =============== SAVE STATE MANAGEMENT ===============
             let hasUnsavedChanges = false;
             let isSaving = false;
-            let lastSavedContent = JSON.stringify({
-                judul: titleInput.value,
-                isi_konten: JSON.stringify(artikelContent)
-            });
+            const saveStatusIcon = document.getElementById('saveStatusIcon');
+            const saveStatusText = document.getElementById('saveStatusText');
+            const saveStatus = document.getElementById('saveStatus');
+
+            let originalTitle = titleInput.value;
+
+            function hasRealChanges() {
+                console.log('🔍 hasRealChanges check:', {
+                    hasUnsavedChanges: hasUnsavedChanges,
+                    titleChanged: titleInput.value !== originalTitle,
+                    currentTitle: titleInput.value,
+                    originalTitle: originalTitle
+                });
+
+                return hasUnsavedChanges;
+            }
 
             function updateSaveStatus(isSaved) {
+                console.log('🔄 updateSaveStatus called:', isSaved);
+
                 if (isSaved) {
                     hasUnsavedChanges = false;
+                    originalTitle = titleInput.value;
+                    saveStatusIcon.setAttribute('data-lucide', 'check-circle');
                     saveStatusText.textContent = 'Saved';
                     saveStatus.classList.remove('bg-yellow-500/10', 'border-yellow-500/30');
                     saveStatus.classList.add('bg-[#2c974b]/10', 'border-[#2c974b]/30');
+                    saveStatusIcon.classList.remove('text-yellow-500');
+                    saveStatusIcon.classList.add('text-[#2c974b]');
                     saveStatusText.classList.remove('text-yellow-500');
                     saveStatusText.classList.add('text-[#2c974b]');
+                    if (window.lucide) window.lucide.createIcons();
+                    console.log('✅ Status set to SAVED');
                 } else {
                     hasUnsavedChanges = true;
+                    console.log('⚠️ Status set to UNSAVED, hasUnsavedChanges:', hasUnsavedChanges);
+                    saveStatusIcon.setAttribute('data-lucide', 'alert-circle');
                     saveStatusText.textContent = 'Unsaved';
                     saveStatus.classList.remove('bg-[#2c974b]/10', 'border-[#2c974b]/30');
                     saveStatus.classList.add('bg-yellow-500/10', 'border-yellow-500/30');
+                    saveStatusIcon.classList.remove('text-[#2c974b]');
+                    saveStatusIcon.classList.add('text-yellow-500');
                     saveStatusText.classList.remove('text-[#2c974b]');
                     saveStatusText.classList.add('text-yellow-500');
+                    if (window.lucide) window.lucide.createIcons();
                 }
             }
 
             async function saveArticleContent() {
-                if (isSaving || !hasUnsavedChanges) return;
+                if (isSaving || !hasRealChanges()) return;
 
                 isSaving = true;
                 try {
                     const output = await editor.save();
-                    const artikelId = <?php echo e($artikel->id); ?>;
-                    const currentContent = {
-                        judul: titleInput.value,
-                        isi_konten: JSON.stringify(output)
-                    };
+                    const artikelId = {{ $artikel->id }};
 
                     const response = await fetch(`/admin/article/${artikelId}/save-content`, {
                         method: 'POST',
@@ -245,39 +267,293 @@
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         },
-                        body: JSON.stringify(currentContent)
+                        body: JSON.stringify({
+                            judul: titleInput.value,
+                            isi_konten: JSON.stringify(output),
+                        })
                     });
 
-                    if (response.ok) {
-                        lastSavedContent = JSON.stringify(currentContent);
-                        updateSaveStatus(true);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.error('Save error:', error);
+                        updateSaveStatus(false);
+                        isSaving = false;
+                        return false;
                     }
+
+                    updateSaveStatus(true);
                     isSaving = false;
+                    return true;
                 } catch (err) {
                     console.error('Save error:', err);
-                    isSaving = false;
-                }
-            }
-
-            // Check if content changed from last saved
-            async function checkContentChanged() {
-                const output = await editor.save();
-                const currentContent = {
-                    judul: titleInput.value,
-                    isi_konten: JSON.stringify(output)
-                };
-                const currentContentStr = JSON.stringify(currentContent);
-
-                if (currentContentStr !== lastSavedContent) {
                     updateSaveStatus(false);
+                    isSaving = false;
+                    return false;
                 }
             }
 
-            // Track changes
-            titleInput.addEventListener('input', checkContentChanged);
-            editorContainer.addEventListener('input', checkContentChanged);
-            editorContainer.addEventListener('drop', () => setTimeout(checkContentChanged, 500));
-            editorContainer.addEventListener('paste', () => setTimeout(checkContentChanged, 300));
+            // TRACK CHANGES IMMEDIATELY
+            console.log('📝 Attaching title input listeners');
+            titleInput.addEventListener('input', () => {
+                console.log('✏️ Title input event fired');
+                updateSaveStatus(false);
+            });
+
+            titleInput.addEventListener('change', () => {
+                console.log('✏️ Title change event fired');
+                updateSaveStatus(false);
+            });
+
+            titleInput.addEventListener('keyup', () => {
+                console.log('✏️ Title keyup event fired');
+                updateSaveStatus(false);
+            });
+
+            // HANDLE NAVIGATION
+            console.log('📍 Attaching click event listener');
+            document.addEventListener('click', function(e) {
+                console.log('🖱️ CLICK EVENT on', e.target.tagName);
+
+                const target = e.target.closest('a');
+                if (!target) return;
+
+                const href = target.getAttribute('href');
+                const hasChanges = hasRealChanges();
+
+                console.log('🔗 LINK DETECTED:', { href, hasChanges });
+
+                if (!hasChanges) {
+                    console.log('✅ No changes - allowing');
+                    return;
+                }
+
+                if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('//')) {
+                    console.log('⏭️ External/hash link - skipping');
+                    return;
+                }
+
+                console.log('🛑 BLOCKING NAVIGATION');
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+
+                console.log('📤 Dispatching show-alert event');
+                window.dispatchEvent(new CustomEvent('show-alert', {
+                    detail: {
+                        title: 'Perubahan Belum Tersimpan',
+                        message: 'Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpannya sebelum meninggalkan halaman?',
+                        type: 'warning',
+                        buttons: [
+                            {
+                                label: 'Simpan',
+                                type: 'primary',
+                                action: async () => {
+                                    console.log('✅ Simpan clicked');
+                                    const saved = await saveArticleContent();
+                                    if (saved) window.location.href = href;
+                                }
+                            },
+                            {
+                                label: 'Tidak Disimpan',
+                                type: 'secondary',
+                                action: () => {
+                                    console.log('✅ Tidak Disimpan clicked');
+                                    window.location.href = href;
+                                }
+                            },
+                            {
+                                label: 'Batalkan',
+                                type: 'secondary',
+                                action: () => console.log('✅ Batalkan clicked')
+                            }
+                        ]
+                    }
+                }));
+
+                return false;
+            }, true);
+
+            // TEST BUTTON
+            document.getElementById('testAlertBtn').addEventListener('click', () => {
+                console.log('🟥 TEST BUTTON CLICKED');
+                window.dispatchEvent(new CustomEvent('show-alert', {
+                    detail: {
+                        title: '🧪 TEST ALERT',
+                        message: 'Ini adalah test alert',
+                        type: 'warning',
+                        buttons: [{
+                            label: 'OK',
+                            type: 'primary',
+                            action: () => console.log('✅ OK clicked')
+                        }]
+                    }
+                }));
+            });
+
+            // PUBLISH BUTTON HANDLER
+            document.getElementById('publishBtn').onclick = async () => {
+                try {
+                    // Save editor content
+                    const output = await editor.save();
+                    const artikelId = {{ $artikel->id }};
+
+                    // Save to database
+                    const response = await fetch(`/admin/article/${artikelId}/save-content`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({
+                            judul: titleInput.value,
+                            isi_konten: JSON.stringify(output),
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        alert('Gagal menyimpan konten: ' + (error.error || 'Unknown error'));
+                        return;
+                    }
+
+                    // Redirect to publish form
+                    updateSaveStatus(true);
+                    window.location.href = `/admin/article/${artikelId}/publish`;
+                } catch (err) {
+                    console.error('Publish error:', err);
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
+            };
+
+            console.log('✅ Article editor initialized');
+        }
+
+        // Try init immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initArticleEditor);
+        } else {
+            initArticleEditor();
+        }
+    </script>
+            const titleInput = document.getElementById('article-title');
+            const editorContainer = document.getElementById('editorjs');
+            const artikelContent = {!! $artikelContent ? json_encode($artikelContent) : json_encode(['blocks' => []]) !!};
+
+            // =============== SAVE STATE MANAGEMENT ===============
+            let hasUnsavedChanges = false;
+            let isSaving = false;
+            const saveStatusIcon = document.getElementById('saveStatusIcon');
+            const saveStatusText = document.getElementById('saveStatusText');
+            const saveStatus = document.getElementById('saveStatus');
+
+            // Store original content for comparison
+            let originalTitle = titleInput.value;
+
+            /**
+             * Check if there are actual unsaved changes
+             */
+            function hasRealChanges() {
+                console.log('🔍 hasRealChanges check:', {
+                    hasUnsavedChanges: hasUnsavedChanges,
+                    titleChanged: titleInput.value !== originalTitle,
+                    currentTitle: titleInput.value,
+                    originalTitle: originalTitle
+                });
+
+                return hasUnsavedChanges;
+            }
+
+            /**
+             * Update save status indicator
+             */
+            function updateSaveStatus(isSaved) {
+                console.log('🔄 updateSaveStatus called:', isSaved);
+
+                if (isSaved) {
+                    hasUnsavedChanges = false;
+                    originalTitle = titleInput.value;
+                    saveStatusIcon.setAttribute('data-lucide', 'check-circle');
+                    saveStatusText.textContent = 'Saved';
+                    saveStatus.classList.remove('bg-yellow-500/10', 'border-yellow-500/30');
+                    saveStatus.classList.add('bg-[#2c974b]/10', 'border-[#2c974b]/30');
+                    saveStatusIcon.classList.remove('text-yellow-500');
+                    saveStatusIcon.classList.add('text-[#2c974b]');
+                    saveStatusText.classList.remove('text-yellow-500');
+                    saveStatusText.classList.add('text-[#2c974b]');
+                    if (window.lucide) window.lucide.createIcons();
+                    console.log('✅ Status set to SAVED, hasUnsavedChanges:', hasUnsavedChanges);
+                } else {
+                    hasUnsavedChanges = true;
+                    console.log('⚠️ Status set to UNSAVED, hasUnsavedChanges:', hasUnsavedChanges);
+                    saveStatusIcon.setAttribute('data-lucide', 'alert-circle');
+                    saveStatusText.textContent = 'Unsaved';
+                    saveStatus.classList.remove('bg-[#2c974b]/10', 'border-[#2c974b]/30');
+                    saveStatus.classList.add('bg-yellow-500/10', 'border-yellow-500/30');
+                    saveStatusIcon.classList.remove('text-[#2c974b]');
+                    saveStatusIcon.classList.add('text-yellow-500');
+                    saveStatusText.classList.remove('text-[#2c974b]');
+                    saveStatusText.classList.add('text-yellow-500');
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            }
+
+            /**
+             * Save article content to database
+             */
+            async function saveArticleContent() {
+                if (isSaving || !hasRealChanges()) return;
+
+                isSaving = true;
+                try {
+                    const output = await editor.save();
+                    const artikelId = {{ $artikel->id }};
+
+                    const response = await fetch(`/admin/article/${artikelId}/save-content`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({
+                            judul: titleInput.value,
+                            isi_konten: JSON.stringify(output),
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.error('Save error:', error);
+                        updateSaveStatus(false);
+                        isSaving = false;
+                        return false;
+                    }
+
+                    updateSaveStatus(true);
+                    isSaving = false;
+                    return true;
+                } catch (err) {
+                    console.error('Save error:', err);
+                    updateSaveStatus(false);
+                    isSaving = false;
+                    return false;
+                }
+            }
+
+
+                updateSaveStatus(false);
+            });
+
+            editorContainer.addEventListener('input', () => {
+                updateSaveStatus(false);
+            });
+
+            editorContainer.addEventListener('drop', () => {
+                updateSaveStatus(false);
+            });
+
+            editorContainer.addEventListener('paste', () => {
+                updateSaveStatus(false);
+            });
 
             const uploader = (file) => new Promise((res) => {
                 const reader = new FileReader();
@@ -333,6 +609,7 @@
 
                     // Only save if state changed
                     if (dataStr === lastSavedState) {
+                        console.log('↻ State unchanged - skipping save');
                         return;
                     }
 
@@ -345,6 +622,7 @@
                     if (undoStack.length > MAX_HISTORY) {
                         undoStack.shift();
                     }
+                    console.log('✓ State saved - Undo stack:', undoStack.length, 'blocks:', data.blocks.length);
                 } catch (err) {
                     console.warn('Error saving state:', err);
                 }
@@ -357,6 +635,7 @@
 
             async function undo() {
                 if (undoStack.length < 2) {
+                    console.log('✗ Nothing to undo');
                     return;
                 }
 
@@ -371,6 +650,7 @@
                     await editor.render(previousData);
                     lastSavedState = JSON.stringify(previousData);
 
+                    console.log('✓ Undo executed - Undo:', undoStack.length, '| Redo:', redoStack.length);
                 } catch (err) {
                     console.warn('Undo error:', err);
                 }
@@ -378,6 +658,7 @@
 
             async function redo() {
                 if (redoStack.length === 0) {
+                    console.log('✗ Nothing to redo');
                     return;
                 }
 
@@ -390,6 +671,8 @@
                     // Clear editor dan render next state
                     await editor.render(nextData);
                     lastSavedState = JSON.stringify(nextData);
+
+                    console.log('✓ Redo executed - Undo:', undoStack.length, '| Redo:', redoStack.length);
                 } catch (err) {
                     console.warn('Redo error:', err);
                 }
@@ -423,6 +706,8 @@
                         await redo();
                     }
                 });
+
+                console.log('✓ Custom Undo/Redo initialized with state monitoring');
             }
 
             function bindEvents() {
@@ -433,6 +718,7 @@
                         editor.focus();
                         // Move to first block at start
                         editor.blocks.getBlockByIndex(0);
+                        console.log('✓ Arrow down/Enter from title - Navigated to editor');
                     }
                 });
 
@@ -449,6 +735,7 @@
                             titleInput.focus();
                             // Move cursor to end of title
                             titleInput.setSelectionRange(titleInput.value.length, titleInput.value.length);
+                            console.log('✓ Arrow up - Navigated to title');
                             return;
                         }
                     }
@@ -462,6 +749,8 @@
                         e.target.closest('.image-tool');
 
                     if (captionElem || isEditableInImageTool) {
+                        // Jika klik caption atau editable text dalam image, biarkan focus naturally
+                        console.log('✓ Caption/editable clicked - allowing text editing');
                         return;
                     }
 
@@ -480,6 +769,8 @@
                             // Blur any text elements to remove cursor
                             editorContainer.querySelectorAll('[contenteditable="true"]').forEach(el => el
                                 .blur());
+                            console.log('✓ Added ce-block--focused class');
+                            console.log('Current class:', imgBlock.className);
                         }
                     } else {
                         // Jika klik di text/non-image area, remove focus dari semua image blocks
@@ -488,6 +779,9 @@
                             // Hanya remove jika block itu image
                             if (block.querySelector('.image-tool')) {
                                 block.classList.remove('ce-block--focused');
+                                console.log(
+                                    '✓ Removed ce-block--focused from image block (clicked elsewhere)'
+                                    );
                             }
                         });
                     }
@@ -497,6 +791,7 @@
                 const removeImageFocus = () => {
                     editorContainer.querySelectorAll('.ce-block--focused').forEach(block => {
                         block.classList.remove('ce-block--focused');
+                        console.log('✓ Removed image focus because text got focus');
                     });
                 };
 
@@ -518,11 +813,16 @@
                     if (e.key === 'Backspace' || e.key === 'Delete') {
                         const focusedBlock = editorContainer.querySelector('.ce-block--focused');
 
+                        // Debug log
+                        console.log('Backspace/Delete pressed, focused block:', focusedBlock);
+
                         if (focusedBlock && focusedBlock.querySelector('.image-tool')) {
+                            console.log('✓ Deleting image block...');
                             e.preventDefault();
 
                             const allBlocks = Array.from(editorContainer.querySelectorAll('.ce-block'));
                             const blockIndex = allBlocks.indexOf(focusedBlock);
+                            console.log('Block index to delete:', blockIndex);
 
                             if (editor.blocks && editor.blocks.delete && blockIndex >= 0) {
                                 try {
@@ -530,6 +830,9 @@
                                     // Delay slightly untuk memastikan DOM updated sebelum save
                                     setTimeout(async () => {
                                         await saveEditorState();
+                                        console.log(
+                                            '✓ Image block deleted & state saved to undo stack'
+                                            );
                                     }, 50);
                                 } catch (err) {
                                     console.warn('Delete error:', err);
@@ -546,6 +849,9 @@
                         if (e.key === 'ArrowUp') {
                             const index = editor.blocks.getCurrentBlockIndex();
                             if (index === 0 || index === -1) {
+                                // Already handled by EDITOR TO TITLE handler
+                                console.log(
+                                '✓ ArrowUp on first block - skip image selection (go to title)');
                                 return;
                             }
                         }
@@ -553,12 +859,15 @@
                         setTimeout(() => {
                             // Skip if title is now focused (already moved by editor to title handler)
                             if (document.activeElement === titleInput) {
+                                console.log('✓ Title is focused - skip arrow nav image selection');
                                 return;
                             }
 
                             const currentIndex = editor.blocks.getCurrentBlockIndex();
                             const allBlocks = Array.from(editorContainer.querySelectorAll(
                                 '.ce-block'));
+
+                            console.log('Arrow key pressed, current block index:', currentIndex);
 
                             if (currentIndex >= 0 && allBlocks[currentIndex]) {
                                 const currentBlock = allBlocks[currentIndex];
@@ -573,12 +882,15 @@
                                     // Blur any text elements to remove cursor
                                     editorContainer.querySelectorAll('[contenteditable="true"]')
                                         .forEach(el => el.blur());
+                                    console.log('✓ Arrow nav - Image selected at index:',
+                                        currentIndex);
                                 } else {
                                     // If current block is text, re-focus it to show cursor
                                     const textBlock = currentBlock.querySelector(
                                         '[contenteditable="true"]');
                                     if (textBlock) {
                                         textBlock.focus();
+                                        console.log('✓ Arrow nav - Text block focused');
                                     }
                                 }
                             }
@@ -649,6 +961,7 @@
                                 }
                             }, 50);
 
+                            console.log('✓ Auto list created -', isOrdered ? 'Ordered' : 'Unordered');
                             await saveEditorState();
 
                         } catch (err) {
@@ -727,42 +1040,22 @@
                         'drag-over'));
                 });
 
-                // =============== MAKE FOCUSED STATE VISIBLE (FALLBACK) ===============
-                // Monitor DOM untuk memastikan styling diterapkan
-                // REMOVED: MutationObserver causing freeze - not needed
-
 
             }
 
-            // Ctrl+S save handler
-            document.addEventListener('keydown', async (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    await saveArticleContent();
-                }
-            });
-
-            // Browser warning on unsaved changes
-            window.addEventListener('beforeunload', (e) => {
-                if (hasUnsavedChanges) {
-                    e.preventDefault();
-                    e.returnValue = '';
-                }
-            });
-
+            // PUBLISH BUTTON HANDLER
             document.getElementById('publishBtn').onclick = async () => {
                 try {
                     // Save editor content
                     const output = await editor.save();
-                    const artikelId = <?php echo e($artikel->id); ?>;
+                    const artikelId = {{ $artikel->id }};
 
                     // Save to database
                     const response = await fetch(`/admin/article/${artikelId}/save-content`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content,
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         },
                         body: JSON.stringify({
                             judul: titleInput.value,
@@ -785,9 +1078,11 @@
                 }
             };
 
-            if (window.lucide) window.lucide.createIcons();
-        });
+        // Try init immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initArticleEditor);
+        } else {
+            initArticleEditor();
+        }
     </script>
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/article/create.blade.php ENDPATH**/ ?>
+@endpush

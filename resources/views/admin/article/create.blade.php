@@ -25,6 +25,7 @@
         .ce-block__content,
         .ce-toolbar__content {
             max-width: 720px;
+            margin-left: 60px;
         }
 
         .ce-paragraph {
@@ -62,13 +63,16 @@
             background: transparent;
             border: none;
             outline: none;
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 800;
             font-family: serif;
             width: 100%;
             color: white;
-            margin-bottom: 10px;
             letter-spacing: -0.04em;
+            resize: none;
+            overflow: hidden;
+            min-height: auto;
+            line-height: 1;
         }
 
         /* 2. IMAGE SELECTION LOGIC (ROBUST IMPLEMENTATION) */
@@ -144,16 +148,44 @@
 @endpush
 
 @section('content')
-    <div class="max-w-4xl mx-auto py-16 px-6 pb-40">
-        <input type="text" id="article-title" class="title-input" placeholder="Title" autocomplete="off" value="{{ $artikel->judul ?? '' }}">
-        <div id="editorjs" class="min-h-[500px]"></div>
+    <div class="max-w-7xl mx-auto px-4 pb-40">
+        <!-- Unsaved Indicator & Title Section -->
 
-        <div class="fixed bottom-10 right-10 z-50">
-            <button id="publishBtn"
-                class="bg-[#2c974b] hover:bg-[#237a3d] text-white px-8 py-2.5 rounded-full font-bold shadow-2xl flex items-center gap-2 transition-all">
-                Publish <i data-lucide="check" class="w-4 h-4"></i>
-            </button>
+        {{-- header article --}}
+        <header class="flex sticky -top-4 z-50 bg-[#140f17] items-center justify-between py-2 border-b border-white/10 mb-4">
+            <div class="flex items-center gap-4">
+                <!-- Back Link -->
+                <a href="{{ route('article.index') }}"
+                    class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-white transition-colors group">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    BACK TO PROJECTS
+                </a>
+
+                <!-- Status Indicator (Style mirip tab di gambar) -->
+                <div class="flex items-center gap-2 px-1 relative">
+                    <span id="saveStatusText" class="text-sm font-medium text-gray-400">
+                        Draft
+                    </span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-4">
+                <button id="publishBtn"
+                    class="text-sm font-semibold bg-white text-black px-5 py-1.5 rounded-md hover:bg-gray-200 transition-all">
+                    Publish
+                </button>
+            </div>
+        </header>
+
+
+        <div class="flex items-center gap-3 mb-2">
+            <div class="flex-1">
+                <textarea id="article-title" class="title-input" placeholder="Title" autocomplete="off">{{ $artikel->judul ?? '' }}</textarea>
+            </div>
         </div>
+
+        <div id="editorjs" class="min-h-10"></div>
     </div>
 @endsection
 
@@ -167,7 +199,87 @@
         document.addEventListener('DOMContentLoaded', () => {
             const titleInput = document.getElementById('article-title');
             const editorContainer = document.getElementById('editorjs');
+            const saveStatusText = document.getElementById('saveStatusText');
+            const saveStatus = document.getElementById('saveStatus');
             const artikelContent = {!! $artikelContent ? json_encode($artikelContent) : json_encode(['blocks' => []]) !!};
+
+            // =============== SAVE STATE MANAGEMENT ===============
+            let hasUnsavedChanges = false;
+            let isSaving = false;
+            let lastSavedContent = JSON.stringify({
+                judul: titleInput.value,
+                isi_konten: JSON.stringify(artikelContent)
+            });
+
+            function updateSaveStatus(isSaved) {
+                if (isSaved) {
+                    hasUnsavedChanges = false;
+                    saveStatusText.textContent = 'Saved';
+                    saveStatus.classList.remove('bg-yellow-500/10', 'border-yellow-500/30');
+                    saveStatus.classList.add('bg-[#2c974b]/10', 'border-[#2c974b]/30');
+                    saveStatusText.classList.remove('text-yellow-500');
+                    saveStatusText.classList.add('text-[#2c974b]');
+                } else {
+                    hasUnsavedChanges = true;
+                    saveStatusText.textContent = 'Unsaved';
+                    saveStatus.classList.remove('bg-[#2c974b]/10', 'border-[#2c974b]/30');
+                    saveStatus.classList.add('bg-yellow-500/10', 'border-yellow-500/30');
+                    saveStatusText.classList.remove('text-[#2c974b]');
+                    saveStatusText.classList.add('text-yellow-500');
+                }
+            }
+
+            async function saveArticleContent() {
+                if (isSaving || !hasUnsavedChanges) return;
+
+                isSaving = true;
+                try {
+                    const output = await editor.save();
+                    const artikelId = {{ $artikel->id }};
+                    const currentContent = {
+                        judul: titleInput.value,
+                        isi_konten: JSON.stringify(output)
+                    };
+
+                    const response = await fetch(`/admin/article/${artikelId}/save-content`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify(currentContent)
+                    });
+
+                    if (response.ok) {
+                        lastSavedContent = JSON.stringify(currentContent);
+                        updateSaveStatus(true);
+                    }
+                    isSaving = false;
+                } catch (err) {
+                    console.error('Save error:', err);
+                    isSaving = false;
+                }
+            }
+
+            // Check if content changed from last saved
+            async function checkContentChanged() {
+                const output = await editor.save();
+                const currentContent = {
+                    judul: titleInput.value,
+                    isi_konten: JSON.stringify(output)
+                };
+                const currentContentStr = JSON.stringify(currentContent);
+
+                if (currentContentStr !== lastSavedContent) {
+                    updateSaveStatus(false);
+                }
+            }
+
+            // Track changes
+            titleInput.addEventListener('input', checkContentChanged);
+            editorContainer.addEventListener('input', checkContentChanged);
+            editorContainer.addEventListener('drop', () => setTimeout(checkContentChanged, 500));
+            editorContainer.addEventListener('paste', () => setTimeout(checkContentChanged, 300));
 
             const uploader = (file) => new Promise((res) => {
                 const reader = new FileReader();
@@ -223,7 +335,6 @@
 
                     // Only save if state changed
                     if (dataStr === lastSavedState) {
-                        console.log('↻ State unchanged - skipping save');
                         return;
                     }
 
@@ -236,7 +347,6 @@
                     if (undoStack.length > MAX_HISTORY) {
                         undoStack.shift();
                     }
-                    console.log('✓ State saved - Undo stack:', undoStack.length, 'blocks:', data.blocks.length);
                 } catch (err) {
                     console.warn('Error saving state:', err);
                 }
@@ -249,7 +359,6 @@
 
             async function undo() {
                 if (undoStack.length < 2) {
-                    console.log('✗ Nothing to undo');
                     return;
                 }
 
@@ -264,7 +373,6 @@
                     await editor.render(previousData);
                     lastSavedState = JSON.stringify(previousData);
 
-                    console.log('✓ Undo executed - Undo:', undoStack.length, '| Redo:', redoStack.length);
                 } catch (err) {
                     console.warn('Undo error:', err);
                 }
@@ -272,7 +380,6 @@
 
             async function redo() {
                 if (redoStack.length === 0) {
-                    console.log('✗ Nothing to redo');
                     return;
                 }
 
@@ -285,8 +392,6 @@
                     // Clear editor dan render next state
                     await editor.render(nextData);
                     lastSavedState = JSON.stringify(nextData);
-
-                    console.log('✓ Redo executed - Undo:', undoStack.length, '| Redo:', redoStack.length);
                 } catch (err) {
                     console.warn('Redo error:', err);
                 }
@@ -320,8 +425,6 @@
                         await redo();
                     }
                 });
-
-                console.log('✓ Custom Undo/Redo initialized with state monitoring');
             }
 
             function bindEvents() {
@@ -332,7 +435,6 @@
                         editor.focus();
                         // Move to first block at start
                         editor.blocks.getBlockByIndex(0);
-                        console.log('✓ Arrow down/Enter from title - Navigated to editor');
                     }
                 });
 
@@ -349,7 +451,6 @@
                             titleInput.focus();
                             // Move cursor to end of title
                             titleInput.setSelectionRange(titleInput.value.length, titleInput.value.length);
-                            console.log('✓ Arrow up - Navigated to title');
                             return;
                         }
                     }
@@ -363,8 +464,6 @@
                         e.target.closest('.image-tool');
 
                     if (captionElem || isEditableInImageTool) {
-                        // Jika klik caption atau editable text dalam image, biarkan focus naturally
-                        console.log('✓ Caption/editable clicked - allowing text editing');
                         return;
                     }
 
@@ -383,8 +482,6 @@
                             // Blur any text elements to remove cursor
                             editorContainer.querySelectorAll('[contenteditable="true"]').forEach(el => el
                                 .blur());
-                            console.log('✓ Added ce-block--focused class');
-                            console.log('Current class:', imgBlock.className);
                         }
                     } else {
                         // Jika klik di text/non-image area, remove focus dari semua image blocks
@@ -393,9 +490,6 @@
                             // Hanya remove jika block itu image
                             if (block.querySelector('.image-tool')) {
                                 block.classList.remove('ce-block--focused');
-                                console.log(
-                                    '✓ Removed ce-block--focused from image block (clicked elsewhere)'
-                                    );
                             }
                         });
                     }
@@ -405,7 +499,6 @@
                 const removeImageFocus = () => {
                     editorContainer.querySelectorAll('.ce-block--focused').forEach(block => {
                         block.classList.remove('ce-block--focused');
-                        console.log('✓ Removed image focus because text got focus');
                     });
                 };
 
@@ -427,16 +520,11 @@
                     if (e.key === 'Backspace' || e.key === 'Delete') {
                         const focusedBlock = editorContainer.querySelector('.ce-block--focused');
 
-                        // Debug log
-                        console.log('Backspace/Delete pressed, focused block:', focusedBlock);
-
                         if (focusedBlock && focusedBlock.querySelector('.image-tool')) {
-                            console.log('✓ Deleting image block...');
                             e.preventDefault();
 
                             const allBlocks = Array.from(editorContainer.querySelectorAll('.ce-block'));
                             const blockIndex = allBlocks.indexOf(focusedBlock);
-                            console.log('Block index to delete:', blockIndex);
 
                             if (editor.blocks && editor.blocks.delete && blockIndex >= 0) {
                                 try {
@@ -444,9 +532,6 @@
                                     // Delay slightly untuk memastikan DOM updated sebelum save
                                     setTimeout(async () => {
                                         await saveEditorState();
-                                        console.log(
-                                            '✓ Image block deleted & state saved to undo stack'
-                                            );
                                     }, 50);
                                 } catch (err) {
                                     console.warn('Delete error:', err);
@@ -463,9 +548,6 @@
                         if (e.key === 'ArrowUp') {
                             const index = editor.blocks.getCurrentBlockIndex();
                             if (index === 0 || index === -1) {
-                                // Already handled by EDITOR TO TITLE handler
-                                console.log(
-                                '✓ ArrowUp on first block - skip image selection (go to title)');
                                 return;
                             }
                         }
@@ -473,15 +555,12 @@
                         setTimeout(() => {
                             // Skip if title is now focused (already moved by editor to title handler)
                             if (document.activeElement === titleInput) {
-                                console.log('✓ Title is focused - skip arrow nav image selection');
                                 return;
                             }
 
                             const currentIndex = editor.blocks.getCurrentBlockIndex();
                             const allBlocks = Array.from(editorContainer.querySelectorAll(
                                 '.ce-block'));
-
-                            console.log('Arrow key pressed, current block index:', currentIndex);
 
                             if (currentIndex >= 0 && allBlocks[currentIndex]) {
                                 const currentBlock = allBlocks[currentIndex];
@@ -496,15 +575,12 @@
                                     // Blur any text elements to remove cursor
                                     editorContainer.querySelectorAll('[contenteditable="true"]')
                                         .forEach(el => el.blur());
-                                    console.log('✓ Arrow nav - Image selected at index:',
-                                        currentIndex);
                                 } else {
                                     // If current block is text, re-focus it to show cursor
                                     const textBlock = currentBlock.querySelector(
                                         '[contenteditable="true"]');
                                     if (textBlock) {
                                         textBlock.focus();
-                                        console.log('✓ Arrow nav - Text block focused');
                                     }
                                 }
                             }
@@ -575,7 +651,6 @@
                                 }
                             }, 50);
 
-                            console.log('✓ Auto list created -', isOrdered ? 'Ordered' : 'Unordered');
                             await saveEditorState();
 
                         } catch (err) {
@@ -661,6 +736,22 @@
 
             }
 
+            // Ctrl+S save handler
+            document.addEventListener('keydown', async (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    await saveArticleContent();
+                }
+            });
+
+            // Browser warning on unsaved changes
+            window.addEventListener('beforeunload', (e) => {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+
             document.getElementById('publishBtn').onclick = async () => {
                 try {
                     // Save editor content
@@ -672,7 +763,8 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .content,
                         },
                         body: JSON.stringify({
                             judul: titleInput.value,
@@ -687,6 +779,7 @@
                     }
 
                     // Redirect to publish form
+                    updateSaveStatus(true);
                     window.location.href = `/admin/article/${artikelId}/publish`;
                 } catch (err) {
                     console.error('Publish error:', err);
