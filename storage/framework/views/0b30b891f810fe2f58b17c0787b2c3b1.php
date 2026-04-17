@@ -112,7 +112,7 @@
                                     <td class="px-4 py-4">
                                         <div>
                                             <div class="text-white font-medium text-sm leading-tight truncate">
-                                                <?php echo e($artikel->judul); ?>
+                                                <?php echo e(strlen($artikel->judul) > 35 ? substr($artikel->judul, 0, 35) . '...' : $artikel->judul); ?>
 
                                             </div>
                                             <div class="text-gray-500 text-[10px] mt-1 line-clamp-1">
@@ -197,7 +197,7 @@
                                     <td class="px-4 py-4">
                                         <div>
                                             <div class="text-white font-medium text-sm leading-tight truncate">
-                                                <?php echo e($artikel->judul); ?>
+                                                <?php echo e(strlen($artikel->judul) > 35 ? substr($artikel->judul, 0, 35) . '...' : $artikel->judul); ?>
 
                                             </div>
                                             <div class="text-gray-500 text-[10px] mt-1 line-clamp-1">

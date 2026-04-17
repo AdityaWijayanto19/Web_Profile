@@ -114,7 +114,7 @@
                                     <td class="px-4 py-4">
                                         <div>
                                             <div class="text-white font-medium text-sm leading-tight truncate">
-                                                {{ $artikel->judul }}
+                                                {{ strlen($artikel->judul) > 35 ? substr($artikel->judul, 0, 35) . '...' : $artikel->judul }}
                                             </div>
                                             <div class="text-gray-500 text-[10px] mt-1 line-clamp-1">
                                                 {{ $artikel->meta_description ?: 'No description' }}
@@ -196,7 +196,7 @@
                                     <td class="px-4 py-4">
                                         <div>
                                             <div class="text-white font-medium text-sm leading-tight truncate">
-                                                {{ $artikel->judul }}
+                                                {{ strlen($artikel->judul) > 35 ? substr($artikel->judul, 0, 35) . '...' : $artikel->judul }}
                                             </div>
                                             <div class="text-gray-500 text-[10px] mt-1 line-clamp-1">
                                                 {{ $artikel->meta_description ?: 'No description' }}

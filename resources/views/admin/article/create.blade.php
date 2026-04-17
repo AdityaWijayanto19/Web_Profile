@@ -200,32 +200,36 @@
             const titleInput = document.getElementById('article-title');
             const editorContainer = document.getElementById('editorjs');
             const saveStatusText = document.getElementById('saveStatusText');
-            const saveStatus = document.getElementById('saveStatus');
+            const saveStatus = document.getElementById('saveStatus'); // Bisa null, akan di-check di updateSaveStatus
             const artikelContent = {!! $artikelContent ? json_encode($artikelContent) : json_encode(['blocks' => []]) !!};
 
             // =============== SAVE STATE MANAGEMENT ===============
             let hasUnsavedChanges = false;
             let isSaving = false;
             let lastSavedContent = JSON.stringify({
-                judul: titleInput.value,
+                judul: titleInput ? titleInput.value : '',
                 isi_konten: JSON.stringify(artikelContent)
             });
 
             function updateSaveStatus(isSaved) {
                 if (isSaved) {
                     hasUnsavedChanges = false;
-                    saveStatusText.textContent = 'Saved';
-                    saveStatus.classList.remove('bg-yellow-500/10', 'border-yellow-500/30');
-                    saveStatus.classList.add('bg-[#2c974b]/10', 'border-[#2c974b]/30');
-                    saveStatusText.classList.remove('text-yellow-500');
-                    saveStatusText.classList.add('text-[#2c974b]');
+                    if (saveStatusText) saveStatusText.textContent = 'Saved';
+                    if (saveStatus) {
+                        saveStatus.classList.remove('bg-yellow-500/10', 'border-yellow-500/30');
+                        saveStatus.classList.add('bg-[#2c974b]/10', 'border-[#2c974b]/30');
+                        saveStatusText.classList.remove('text-yellow-500');
+                        saveStatusText.classList.add('text-[#2c974b]');
+                    }
                 } else {
                     hasUnsavedChanges = true;
-                    saveStatusText.textContent = 'Unsaved';
-                    saveStatus.classList.remove('bg-[#2c974b]/10', 'border-[#2c974b]/30');
-                    saveStatus.classList.add('bg-yellow-500/10', 'border-yellow-500/30');
-                    saveStatusText.classList.remove('text-[#2c974b]');
-                    saveStatusText.classList.add('text-yellow-500');
+                    if (saveStatusText) saveStatusText.textContent = 'Unsaved';
+                    if (saveStatus) {
+                        saveStatus.classList.remove('bg-[#2c974b]/10', 'border-[#2c974b]/30');
+                        saveStatus.classList.add('bg-yellow-500/10', 'border-yellow-500/30');
+                        saveStatusText.classList.remove('text-[#2c974b]');
+                        saveStatusText.classList.add('text-yellow-500');
+                    }
                 }
             }
 
@@ -237,7 +241,7 @@
                     const output = await editor.save();
                     const artikelId = {{ $artikel->id }};
                     const currentContent = {
-                        judul: titleInput.value,
+                        judul: titleInput ? titleInput.value : '',
                         isi_konten: JSON.stringify(output)
                     };
 
@@ -265,7 +269,7 @@
             async function checkContentChanged() {
                 const output = await editor.save();
                 const currentContent = {
-                    judul: titleInput.value,
+                    judul: titleInput ? titleInput.value : '',
                     isi_konten: JSON.stringify(output)
                 };
                 const currentContentStr = JSON.stringify(currentContent);
@@ -276,10 +280,12 @@
             }
 
             // Track changes
-            titleInput.addEventListener('input', checkContentChanged);
-            editorContainer.addEventListener('input', checkContentChanged);
-            editorContainer.addEventListener('drop', () => setTimeout(checkContentChanged, 500));
-            editorContainer.addEventListener('paste', () => setTimeout(checkContentChanged, 300));
+            if (titleInput) titleInput.addEventListener('input', checkContentChanged);
+            if (editorContainer) {
+                editorContainer.addEventListener('input', checkContentChanged);
+                editorContainer.addEventListener('drop', () => setTimeout(checkContentChanged, 500));
+                editorContainer.addEventListener('paste', () => setTimeout(checkContentChanged, 300));
+            }
 
             const uploader = (file) => new Promise((res) => {
                 const reader = new FileReader();
@@ -767,7 +773,7 @@
                                 .content,
                         },
                         body: JSON.stringify({
-                            judul: titleInput.value,
+                            judul: titleInput ? titleInput.value : '',
                             isi_konten: JSON.stringify(output),
                         })
                     });

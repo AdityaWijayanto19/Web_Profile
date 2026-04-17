@@ -95,11 +95,62 @@
             color: rgba(255, 255, 255, 0.5);
             margin-top: 0.25rem;
         }
+
+        .image-selector {
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            aspect-ratio: 16/9;
+        }
+
+        .image-selector:hover {
+            border-color: rgba(44, 151, 75, 0.5);
+            transform: scale(1.02);
+        }
+
+        .image-selector.selected {
+            border-color: #2c974b;
+            box-shadow: 0 0 0 3px rgba(44, 151, 75, 0.2);
+        }
+
+        .image-selector img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-selector-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .image-selector:hover .image-selector-overlay {
+            opacity: 1;
+        }
+
+        .image-selector.selected .image-selector-overlay {
+            opacity: 1;
+            background: rgba(44, 151, 75, 0.7);
+        }
+
+        .checkmark {
+            color: white;
+            font-size: 1.5rem;
+        }
     </style>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
-    <div class="max-w-2xl mx-auto py-16 px-6">
+    <div class="max-w-7xl mx-auto px-4">
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-white mb-2">Ready to Publish?</h1>
             <p class="text-gray-400">Add metadata and finalize your article before publishing.</p>
@@ -179,13 +230,36 @@ endif;
 unset($__errorArgs, $__bag); ?>
             </div>
 
+            <!-- Featured Image Selection -->
+            <div class="form-group">
+                <label class="form-label">Featured Image</label>
+                <p class="form-description mb-3">Select an image from your article to use as featured image</p>
+
+                <div id="images-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <p class="text-gray-400 text-sm col-span-full" id="loading-images">Loading images...</p>
+                </div>
+
+                <input type="hidden" id="path_gambar" name="path_gambar" value="<?php echo e(old('path_gambar', $artikel->path_gambar)); ?>">
+
+                <?php $__errorArgs = ['path_gambar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <span class="text-red-400 text-sm"><?php echo e($message); ?></span>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+
             <!-- Reading Time -->
             <div class="form-group">
                 <label for="menit_baca" class="form-label">Estimated Reading Time (minutes)</label>
                 <input
                     type="number"
                     id="menit_baca"
-                    name="menit_baca"
+                    name="minet_baca"
                     class="form-input w-full <?php $__errorArgs = ['menit_baca'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -197,10 +271,10 @@ unset($__errorArgs, $__bag); ?>"
                     value="<?php echo e(old('menit_baca', $artikel->menit_baca)); ?>"
                     min="1"
                     max="1000"
-                    placeholder="e.g., 5"
+                    readonly
                 >
                 <p class="form-description">
-                    How many minutes do you think it takes to read this article?
+                    Automatically calculated based on article content (200 words per minute)
                 </p>
                 <?php $__errorArgs = ['menit_baca'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -281,6 +355,92 @@ unset($__errorArgs, $__bag); ?>
         const metaCount = document.getElementById('meta-count');
         const miniBacaInput = document.getElementById('menit_baca');
         const slugInput = document.getElementById('slug');
+        const pathGambarInput = document.getElementById('path_gambar');
+        const imagesContainer = document.getElementById('images-container');
+
+        // Article content from server
+        const artikelContent = <?php echo $artikel->isi_konten ? json_encode(json_decode($artikel->isi_konten, true)) : json_encode(['blocks' => []]); ?>;
+
+        // Extract images from EditorJS content
+        function extractImages() {
+            const images = [];
+            if (artikelContent.blocks && Array.isArray(artikelContent.blocks)) {
+                artikelContent.blocks.forEach(block => {
+                    if (block.type === 'image' && block.data && block.data.file) {
+                        images.push(block.data.file.url);
+                    }
+                });
+            }
+            return images;
+        }
+
+        // Display image options
+        function displayImages() {
+            const images = extractImages();
+            imagesContainer.innerHTML = '';
+
+            if (images.length === 0) {
+                imagesContainer.innerHTML = '<p class="text-gray-400 text-sm col-span-full">No images found in your article. Add images to select as featured image.</p>';
+                return;
+            }
+
+            images.forEach((imageUrl, index) => {
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'image-selector';
+                imageDiv.innerHTML = `
+                    <img src="${imageUrl}" alt="Image ${index + 1}">
+                    <div class="image-selector-overlay">
+                        <span class="checkmark">✓</span>
+                    </div>
+                `;
+
+                if (pathGambarInput.value === imageUrl) {
+                    imageDiv.classList.add('selected');
+                }
+
+                imageDiv.addEventListener('click', () => {
+                    // Remove selected from all
+                    document.querySelectorAll('.image-selector').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    // Add selected to clicked
+                    imageDiv.classList.add('selected');
+                    pathGambarInput.value = imageUrl;
+                });
+
+                imagesContainer.appendChild(imageDiv);
+            });
+        }
+
+        // Calculate reading time from word count
+        function calculateReadingTime() {
+            let totalText = '';
+
+            if (artikelContent.blocks && Array.isArray(artikelContent.blocks)) {
+                artikelContent.blocks.forEach(block => {
+                    if (block.type === 'paragraph' && block.data && block.data.text) {
+                        totalText += block.data.text + ' ';
+                    } else if (block.type === 'header' && block.data && block.data.text) {
+                        totalText += block.data.text + ' ';
+                    } else if (block.type === 'list' && block.data && block.data.items) {
+                        block.data.items.forEach(item => {
+                            if (typeof item === 'string') {
+                                totalText += item + ' ';
+                            } else if (item.content) {
+                                totalText += item.content + ' ';
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Count words
+            const wordCount = totalText.trim().split(/\s+/).length;
+            const readingTime = Math.ceil(wordCount / 200); // 200 words per minute
+
+            miniBacaInput.value = Math.max(1, readingTime); // Min 1 minute
+            updatePreview();
+        }
 
         // Update character counts
         judulInput.addEventListener('input', () => {
@@ -290,10 +450,6 @@ unset($__errorArgs, $__bag); ?>
 
         metaInput.addEventListener('input', () => {
             metaCount.textContent = metaInput.value.length;
-            updatePreview();
-        });
-
-        miniBacaInput.addEventListener('input', () => {
             updatePreview();
         });
 
@@ -317,7 +473,12 @@ unset($__errorArgs, $__bag); ?>
             }
         });
 
-        if (window.lucide) window.lucide.createIcons();
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            displayImages();
+            calculateReadingTime();
+            if (window.lucide) window.lucide.createIcons();
+        });
     </script>
 <?php $__env->stopPush(); ?>
 
