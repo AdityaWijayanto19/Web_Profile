@@ -13,9 +13,8 @@
             transform: translateY(-1px);
         }
 
-        /* Efek Sortable */
         .sortable-ghost {
-            opacity: 0.2;
+            opacity: 0.3;
             border: 2px dashed #730c1e;
         }
 
@@ -24,22 +23,40 @@
             transform: scale(1.02);
         }
 
-        /* Thumbnail Style - Mirip Project */
         .cert-thumb {
             aspect-ratio: 16 / 9;
             border-radius: 2px;
-            /* rounded-sm sesuai request */
             overflow: hidden;
             background: #0f0d11;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        #sertifikatsGrid {
+            transition: opacity 0.2s ease, pointer-events 0.2s ease;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
     </style>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
     <div class="max-w-7xl mx-auto px-4">
 
-        <!-- Header Section (Identik dengan Project) -->
         <div class="flex justify-between items-end mb-8 border-b border-white/5 pb-6">
             <div>
                 <h2 class="text-xl font-bold text-white tracking-tight">Certifications</h2>
@@ -53,12 +70,12 @@
             </a>
         </div>
 
-        <!-- GRID 3 KOLOM (Mirip Project Index) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12" id="sertifikatsGrid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12" id="sertifikatsGrid"
+            data-redirect-url="<?php echo e(route('sertifikats.index')); ?>">
 
             <?php $__empty_1 = true; $__currentLoopData = $sertifikats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sertifikat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <!-- Sertifikat Card -->
-                <div class="group cursor-grab active:cursor-grabbing" data-sertifikat-id="<?php echo e($sertifikat->id); ?>">
+                <div class="group cursor-grab active:cursor-grabbing" data-sertifikat-id="<?php echo e($sertifikat->id); ?>"
+                    data-reorder-url="<?php echo e(route('sertifikats.reorder')); ?>">
                     <div class="cert-thumb relative mb-4">
                         <?php if($sertifikat->path_gambar): ?>
                             <img src="<?php echo e(asset('storage/' . $sertifikat->path_gambar)); ?>"
@@ -70,7 +87,6 @@
                                 No Preview</div>
                         <?php endif; ?>
 
-                        <!-- Hover Overlay Buttons -->
                         <div
                             class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10">
                             <a href="<?php echo e(route('sertifikats.edit', $sertifikat)); ?>"
@@ -88,7 +104,6 @@
                             </form>
                         </div>
 
-                        <!-- Year Badge -->
                         <div class="absolute top-2 right-2 z-10">
                             <div class="px-2 py-1 bg-[#730c1e] rounded-sm">
                                 <span class="text-[9px] font-bold text-white"><?php echo e($sertifikat->tahun); ?></span>
@@ -125,7 +140,6 @@
 
         </div>
 
-        <!-- Pagination -->
         <div class="mt-16 py-8 border-t border-white/5">
             <?php echo e($sertifikats->links('partials.pagination')); ?>
 
@@ -135,137 +149,7 @@
 
 <?php $__env->startPush('scripts'); ?>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script>
-        lucide.createIcons();
-
-        function openEditor() {
-            document.getElementById('editor-panel').classList.remove('translate-x-full');
-        }
-
-        function closeEditor() {
-            document.getElementById('editor-panel').classList.add('translate-x-full');
-        }
-
-        // Initialize Sortable.js for drag-and-drop reordering
-        document.addEventListener('DOMContentLoaded', function() {
-            const sertifikatsGrid = document.getElementById('sertifikatsGrid');
-
-            if (!sertifikatsGrid) return;
-
-            // Create debounce function to avoid multiple requests
-            let reorderTimeout;
-            const debounceReorder = (callback, delay = 300) => {
-                clearTimeout(reorderTimeout);
-                reorderTimeout = setTimeout(callback, delay);
-            };
-
-            // Initialize Sortable
-            const sortable = Sortable.create(sertifikatsGrid, {
-                animation: 150,
-                ghostClass: 'opacity-50',
-                dragClass: 'dragging',
-                touchStartThreshold: 5,
-                fallbackOnBody: true,
-                forceFallback: false,
-
-                onEnd: function(evt) {
-                    // Get all sertifikat elements in their new order (IDs only)
-                    const sertifikatElements = sertifikatsGrid.querySelectorAll('[data-sertifikat-id]');
-                    const orderedIds = Array.from(sertifikatElements).map(el =>
-                        parseInt(el.dataset.sertifikatId)
-                    );
-
-                    // Add visual feedback
-                    sertifikatsGrid.style.opacity = '0.6';
-                    sertifikatsGrid.style.pointerEvents = 'none';
-
-                    // Debounce the API call
-                    debounceReorder(() => {
-                        // Send the new order to the backend (IDs only, backend assigns urutan)
-                        fetch('<?php echo e(route('sertifikats.reorder')); ?>', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]')?.getAttribute(
-                                        'content') || '',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    ids: orderedIds
-                                })
-                            })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(
-                                        `HTTP error! status: ${response.status}`);
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                if (data.success) {
-                                    window.dispatchEvent(new CustomEvent('notify', {
-                                        detail: {
-                                            message: 'Sertifikat berhasil diurutkan!',
-                                            type: 'success'
-                                        }
-                                    }));
-                                    // Reload ke halaman pertama untuk refresh urutan
-                                    setTimeout(() => {
-                                        window.location.href = data.redirect ||
-                                            '<?php echo e(route('sertifikats.index')); ?>';
-                                    }, 500);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error reordering sertifikats:', error);
-                                window.dispatchEvent(new CustomEvent('notify', {
-                                    detail: {
-                                        message: 'Gagal mengurutkan sertifikat. Silakan coba lagi.',
-                                        type: 'error'
-                                    }
-                                }));
-                                // Revert the DOM to previous state by reloading
-                                setTimeout(() => location.reload(), 1000);
-                            })
-                            .finally(() => {
-                                // Remove visual feedback
-                                sertifikatsGrid.style.opacity = '1';
-                                sertifikatsGrid.style.pointerEvents = 'auto';
-                            });
-                    });
-                }
-            });
-        });
-    </script>
-
-    <style>
-        /* Drag and drop animations */
-        .dragging {
-            opacity: 0.5;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        #sertifikatsGrid {
-            transition: opacity 0.2s ease, pointer-events 0.2s ease;
-        }
-
-        /* Sortable ghost element styling */
-        .sortable-ghost {
-            opacity: 0.3;
-        }
-    </style>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/sertifikat/index.js']); ?>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/sertifikat/index.blade.php ENDPATH**/ ?>
