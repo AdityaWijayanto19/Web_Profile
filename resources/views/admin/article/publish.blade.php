@@ -162,7 +162,6 @@
             @csrf
             @method('POST')
 
-            <!-- Title -->
             <div class="form-group">
                 <label for="judul" class="form-label">Article Title</label>
                 <input
@@ -182,7 +181,6 @@
                 @enderror
             </div>
 
-            <!-- Meta Description -->
             <div class="form-group">
                 <label for="meta_description" class="form-label">Meta Description</label>
                 <textarea
@@ -204,7 +202,6 @@
                 @enderror
             </div>
 
-            <!-- Featured Image Selection -->
             <div class="form-group">
                 <label class="form-label">Featured Image</label>
                 <p class="form-description mb-3">Select an image from your article to use as featured image</p>
@@ -220,7 +217,6 @@
                 @enderror
             </div>
 
-            <!-- Reading Time -->
             <div class="form-group">
                 <label for="menit_baca" class="form-label">Estimated Reading Time (minutes)</label>
                 <input
@@ -241,7 +237,6 @@
                 @enderror
             </div>
 
-            <!-- Slug (Optional) -->
             <div class="form-group">
                 <label for="slug" class="form-label">Slug (URL Friendly)</label>
                 <input
@@ -261,7 +256,6 @@
                 @enderror
             </div>
 
-            <!-- Preview -->
             <div class="preview-box">
                 <h3 class="text-white font-semibold mb-4">Preview</h3>
                 <div class="preview-title" id="preview-title">{{ $artikel->judul }}</div>
@@ -273,7 +267,6 @@
                 </div>
             </div>
 
-            <!-- Button Group -->
             <div class="button-group">
                 <a href="{{ route('article.edit', $artikel->id) }}" class="btn btn-secondary">
                     Back to Editor

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Certifications - FoxHR')
+@section('title', 'Certifications')
 @section('page_title', 'Certifications Manager')
 
 @push('styles')

@@ -10,28 +10,14 @@ use Illuminate\Http\UploadedFile;
 
 class HeroSectionService
 {
-    /**
-     * Storage folder for hero images
-     */
+
     private const STORAGE_FOLDER = 'uploads/hero';
 
-    /**
-     * Get single hero section or null
-     *
-     * @return HeroSection|null
-     */
     public function getHero(): ?HeroSection
     {
         return HeroSection::first();
     }
 
-    /**
-     * Create or update hero section (since there's only one hero)
-     *
-     * @param array $data
-     * @return HeroSection
-     * @throws \Exception
-     */
     public function upsert(array $data): HeroSection
     {
         return DB::transaction(function () use ($data) {
@@ -43,21 +29,18 @@ class HeroSectionService
                     'has_path_foto' => isset($data['path_foto']),
                 ]);
 
-                // Process image jika ada upload baru
                 if (isset($data['path_foto']) && $data['path_foto'] instanceof UploadedFile) {
-                    // Delete old image jika update
+
                     if ($hero && $hero->path_foto) {
                         $this->deleteImage($hero->path_foto);
                     }
 
-                    // Store new image
                     $imagePath = $this->storeImage($data['path_foto']);
                     if ($imagePath) {
                         $data['path_foto'] = $imagePath;
                     }
                 }
 
-                // Create or update hero
                 if ($hero) {
                     $hero->update($data);
                     Log::info('Hero section updated', [
@@ -85,25 +68,16 @@ class HeroSectionService
         });
     }
 
-    /**
-     * Store uploaded image
-     *
-     * @param UploadedFile $file
-     * @return string|null
-     */
     public function storeImage(UploadedFile $file): ?string
     {
         try {
-            // Ensure directory exists
             if (!Storage::disk('public')->exists(self::STORAGE_FOLDER)) {
                 Storage::disk('public')->makeDirectory(self::STORAGE_FOLDER, 0755, true);
             }
 
-            // Generate unique filename
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $path = self::STORAGE_FOLDER . '/' . $filename;
 
-            // Store file
             Storage::disk('public')->putFileAs(
                 self::STORAGE_FOLDER,
                 $file,
@@ -126,12 +100,6 @@ class HeroSectionService
         }
     }
 
-    /**
-     * Delete image from storage
-     *
-     * @param string|null $path
-     * @return bool
-     */
     public function deleteImage(?string $path): bool
     {
         if (empty($path)) {
@@ -153,13 +121,6 @@ class HeroSectionService
         }
     }
 
-    /**
-     * Delete hero section
-     *
-     * @param HeroSection $hero
-     * @return bool
-     * @throws \Exception
-     */
     public function delete(HeroSection $hero): bool
     {
         return DB::transaction(function () use ($hero) {
@@ -169,12 +130,10 @@ class HeroSectionService
                     'nama_lengkap' => $hero->nama_lengkap,
                 ]);
 
-                // Delete image if exists
                 if ($hero->path_foto) {
                     $this->deleteImage($hero->path_foto);
                 }
 
-                // Delete hero
                 $deleted = $hero->delete();
 
                 Log::info('Hero section deleted', [
@@ -194,12 +153,6 @@ class HeroSectionService
         });
     }
 
-    /**
-     * Get image url
-     *
-     * @param string|null $path
-     * @return string|null
-     */
     public function getImageUrl(?string $path): ?string
     {
         if (!$path) {

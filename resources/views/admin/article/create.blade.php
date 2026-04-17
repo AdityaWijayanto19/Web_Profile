@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Write Story')
-@section('page_title', 'Medium Draft')
+@section('page_title', 'Article Editor')
 
 @push('styles')
     <style>
@@ -149,19 +149,16 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4 pb-40">
-        <!-- Unsaved Indicator & Title Section -->
 
-        {{-- header article --}}
         <header class="flex sticky -top-4 z-50 bg-[#140f17] items-center justify-between py-2 border-b border-white/10 mb-4">
             <div class="flex items-center gap-4">
-                <!-- Back Link -->
+
                 <a href="{{ route('article.index') }}"
                     class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-white transition-colors group">
                     <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
                     BACK TO PROJECTS
                 </a>
 
-                <!-- Status Indicator (Style mirip tab di gambar) -->
                 <div class="flex items-center gap-2 px-1 relative">
                     <span id="saveStatusText" class="text-sm font-medium text-gray-400">
                         Draft
@@ -169,7 +166,6 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex items-center gap-4">
                 <button id="publishBtn"
                     class="text-sm font-semibold bg-white text-black px-5 py-1.5 rounded-md hover:bg-gray-200 transition-all">
@@ -191,7 +187,6 @@
     </div>
 
     <script>
-        // Pass editor content via window variable (safer than data attributes for complex JSON)
         window.artikelContent = {!! json_encode($artikelContent ?? ['blocks' => []]) !!};
     </script>
 @endsection

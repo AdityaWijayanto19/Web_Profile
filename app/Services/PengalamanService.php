@@ -9,34 +9,16 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PengalamanService
 {
-    /**
-     * Get all pengalaman ordered by urutan
-     *
-     * @return Collection
-     */
     public function getAll(): Collection
     {
         return Pengalaman::ordered()->get();
     }
 
-    /**
-     * Get pengalaman by ID
-     *
-     * @param int $id
-     * @return Pengalaman|null
-     */
     public function getById(int $id): ?Pengalaman
     {
         return Pengalaman::find($id);
     }
 
-    /**
-     * Batch update pengalaman (for reordering and editing)
-     *
-     * @param array $pengalamans Array of pengalaman data with ID and fields
-     * @return Collection
-     * @throws \Exception
-     */
     public function batchUpdate(array $pengalamans): Collection
     {
         return DB::transaction(function () use ($pengalamans) {
@@ -48,11 +30,9 @@ class PengalamanService
                 $updateCount = 0;
 
                 foreach ($pengalamans as $index => $data) {
-                    // Assume data contains ID or we get existing records
                     $pengalaman = Pengalaman::ordered()->skip($index)->first();
 
                     if ($pengalaman) {
-                        // Update urutan and other fields
                         $pengalaman->update([
                             'jabatan' => $data['jabatan'] ?? $pengalaman->jabatan,
                             'keterangan' => $data['keterangan'] ?? $pengalaman->keterangan,
@@ -78,18 +58,10 @@ class PengalamanService
         });
     }
 
-    /**
-     * Create new pengalaman
-     *
-     * @param array $data
-     * @return Pengalaman
-     * @throws \Exception
-     */
     public function create(array $data): Pengalaman
     {
         return DB::transaction(function () use ($data) {
             try {
-                // Get next urutan order
                 $maxUrutan = Pengalaman::max('urutan') ?? 0;
 
                 $pengalaman = Pengalaman::create([
@@ -113,14 +85,6 @@ class PengalamanService
         });
     }
 
-    /**
-     * Update single pengalaman
-     *
-     * @param Pengalaman $pengalaman
-     * @param array $data
-     * @return Pengalaman
-     * @throws \Exception
-     */
     public function update(Pengalaman $pengalaman, array $data): Pengalaman
     {
         return DB::transaction(function () use ($pengalaman, $data) {
@@ -143,13 +107,6 @@ class PengalamanService
         });
     }
 
-    /**
-     * Delete pengalaman
-     *
-     * @param Pengalaman $pengalaman
-     * @return bool
-     * @throws \Exception
-     */
     public function delete(Pengalaman $pengalaman): bool
     {
         return DB::transaction(function () use ($pengalaman) {
@@ -172,13 +129,6 @@ class PengalamanService
         });
     }
 
-    /**
-     * Reorder pengalaman based on new sequence
-     *
-     * @param array $ids Array of IDs in new order
-     * @return Collection
-     * @throws \Exception
-     */
     public function reorder(array $ids): Collection
     {
         return DB::transaction(function () use ($ids) {

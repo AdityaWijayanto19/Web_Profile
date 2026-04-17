@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $proyek->judul . ' - FoxHR')
+@section('title', $proyek->judul)
 @section('page_title', 'Project Details')
 
 @push('styles')

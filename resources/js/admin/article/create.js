@@ -4,14 +4,12 @@
             const titleInput = document.getElementById('article-title');
             const editorContainer = document.getElementById('editorjs');
             const saveStatusText = document.getElementById('saveStatusText');
-            const saveStatus = document.getElementById('saveStatus'); // Bisa null, akan di-check di updateSaveStatus
+            const saveStatus = document.getElementById('saveStatus');
 
-            // Get data dari data attributes dan window variable
             const artikelId = editorContainer?.dataset.artikelId;
             const uploadUrl = editorContainer?.dataset.uploadUrl;
             const artikelContent = window.artikelContent || { blocks: [] };
 
-            // =============== SAVE STATE MANAGEMENT ===============
             let hasUnsavedChanges = false;
             let isSaving = false;
             let lastSavedContent = JSON.stringify({
@@ -72,7 +70,6 @@
                 }
             }
 
-            // Check if content changed from last saved
             async function checkContentChanged() {
                 const output = await editor.save();
                 const currentContent = {
@@ -86,7 +83,6 @@
                 }
             }
 
-            // Track changes
             if (titleInput) titleInput.addEventListener('input', checkContentChanged);
             if (editorContainer) {
                 editorContainer.addEventListener('input', checkContentChanged);
@@ -157,7 +153,6 @@
                 }
             });
 
-            // =============== CUSTOM UNDO/REDO MANAGER ===============
             let undoStack = [];
             let redoStack = [];
             const MAX_HISTORY = 50;
@@ -169,17 +164,14 @@
                     const data = await editor.save();
                     const dataStr = JSON.stringify(data);
 
-                    // Only save if state changed
                     if (dataStr === lastSavedState) {
                         return;
                     }
 
                     lastSavedState = dataStr;
-                    // Remove redo stack saat ada changes baru
                     redoStack = [];
-                    // Add to undo stack
                     undoStack.push(data);
-                    // Limit history size
+
                     if (undoStack.length > MAX_HISTORY) {
                         undoStack.shift();
                     }
@@ -199,13 +191,10 @@
                 }
 
                 try {
-                    // Get previous state
                     const previousData = undoStack[undoStack.length - 2];
-                    // Current state push to redo
                     const currentData = undoStack.pop();
                     redoStack.push(currentData);
 
-                    // Clear editor dan render previous state
                     await editor.render(previousData);
                     lastSavedState = JSON.stringify(previousData);
 
@@ -220,12 +209,9 @@
                 }
 
                 try {
-                    // Get next state from redo
                     const nextData = redoStack.pop();
-                    // Current state back to undo
                     undoStack.push(nextData);
 
-                    // Clear editor dan render next state
                     await editor.render(nextData);
                     lastSavedState = JSON.stringify(nextData);
                 } catch (err) {
@@ -234,23 +220,23 @@
             }
 
             async function initCustomUndoRedo() {
-                // Save initial empty state
+
                 await saveEditorState();
 
-                // Monitor ALL text input dalam editor via input event bubbling
+
                 editorContainer.addEventListener('input', debouncedSaveState, true);
 
-                // Monitor image uploads via drop event
+
                 editorContainer.addEventListener('drop', () => {
                     setTimeout(debouncedSaveState, 500);
                 });
 
-                // Monitor image tool changes via custom events
+
                 editorContainer.addEventListener('paste', () => {
                     setTimeout(debouncedSaveState, 300);
                 });
 
-                // Handle Ctrl+Z and Ctrl+Y globally untuk undo/redo
+
                 document.addEventListener('keydown', async (e) => {
                     if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
                         e.preventDefault();
@@ -264,37 +250,31 @@
             }
 
             function bindEvents() {
-                // =============== TITLE TO EDITOR NAVIGATION ===============
                 titleInput.addEventListener('keydown', (e) => {
                     if (e.key === 'ArrowDown' || e.key === 'Enter') {
                         e.preventDefault();
                         editor.focus();
-                        // Move to first block at start
+
                         editor.blocks.getBlockByIndex(0);
                     }
                 });
 
-                // =============== EDITOR TO TITLE NAVIGATION ===============
                 editorContainer.addEventListener('keydown', (e) => {
                     if (e.key === 'ArrowUp') {
                         const index = editor.blocks.getCurrentBlockIndex();
                         const currentBlock = editor.blocks.getBlockByIndex(index);
 
-                        // If at first block (index 0), move to title
                         if (index === 0 || index === -1) {
                             e.preventDefault();
                             e.stopImmediatePropagation();
                             titleInput.focus();
-                            // Move cursor to end of title
                             titleInput.setSelectionRange(titleInput.value.length, titleInput.value.length);
                             return;
                         }
                     }
                 });
 
-                // =============== IMAGE SELECTION VIA CLICK ===============
                 editorContainer.addEventListener('click', (e) => {
-                    // Check if clicking on caption or contenteditable inside image tool
                     const captionElem = e.target.closest('.image-tool__caption');
                     const isEditableInImageTool = e.target.hasAttribute('contenteditable') &&
                         e.target.closest('.image-tool');
@@ -305,25 +285,22 @@
 
                     const imageToolElem = e.target.closest('.image-tool');
                     if (imageToolElem) {
-                        console.log('✓ Image click detected!', imageToolElem);
+
                         const imgBlock = imageToolElem.closest('.ce-block');
                         if (imgBlock) {
-                            // Remove focused class dari semua blocks
+
                             editorContainer.querySelectorAll('.ce-block').forEach(block => {
                                 block.classList.remove('ce-block--focused');
                             });
 
-                            // Add focused class ke clicked block
                             imgBlock.classList.add('ce-block--focused');
-                            // Blur any text elements to remove cursor
+
                             editorContainer.querySelectorAll('[contenteditable="true"]').forEach(el => el
                                 .blur());
                         }
                     } else {
-                        // Jika klik di text/non-image area, remove focus dari semua image blocks
                         const focusedBlocks = editorContainer.querySelectorAll('.ce-block--focused');
                         focusedBlocks.forEach(block => {
-                            // Hanya remove jika block itu image
                             if (block.querySelector('.image-tool')) {
                                 block.classList.remove('ce-block--focused');
                             }
@@ -331,26 +308,22 @@
                     }
                 });
 
-                // =============== REMOVE IMAGE FOCUS WHEN TEXT GETS FOCUS ===============
                 const removeImageFocus = () => {
                     editorContainer.querySelectorAll('.ce-block--focused').forEach(block => {
                         block.classList.remove('ce-block--focused');
                     });
                 };
 
-                // Monitor ALL contenteditable elements untuk remove image focus saat text focused
                 editorContainer.addEventListener('focus', (e) => {
                     if (e.target.hasAttribute('contenteditable')) {
                         removeImageFocus();
                     }
                 }, true);
 
-                // =============== IMAGE DELETE ON BACKSPACE (tapi allow Ctrl+Z,Y) ===============
                 document.addEventListener('keydown', async (e) => {
-                    // Allow Ctrl+Z (Undo) dan Ctrl+Y (Redo) - handled by custom manager
                     if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'y' || (e.shiftKey && e
                             .key === 'z'))) {
-                        return; // Let custom undo/redo handle it
+                        return;
                     }
 
                     if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -365,7 +338,7 @@
                             if (editor.blocks && editor.blocks.delete && blockIndex >= 0) {
                                 try {
                                     editor.blocks.delete(blockIndex);
-                                    // Delay slightly untuk memastikan DOM updated sebelum save
+
                                     setTimeout(async () => {
                                         await saveEditorState();
                                     }, 50);
@@ -377,10 +350,8 @@
                     }
                 });
 
-                // =============== ARROW NAVIGATION - SELECT IMAGE ===============
                 editorContainer.addEventListener('keydown', (e) => {
                     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                        // Check if ArrowUp on first block - should go to title instead
                         if (e.key === 'ArrowUp') {
                             const index = editor.blocks.getCurrentBlockIndex();
                             if (index === 0 || index === -1) {
@@ -389,7 +360,6 @@
                         }
 
                         setTimeout(() => {
-                            // Skip if title is now focused (already moved by editor to title handler)
                             if (document.activeElement === titleInput) {
                                 return;
                             }
@@ -401,18 +371,14 @@
                             if (currentIndex >= 0 && allBlocks[currentIndex]) {
                                 const currentBlock = allBlocks[currentIndex];
 
-                                // Remove focused from all blocks
                                 allBlocks.forEach(block => block.classList.remove(
                                     'ce-block--focused'));
 
-                                // If current block is image, add focused class
                                 if (currentBlock.querySelector('.image-tool')) {
                                     currentBlock.classList.add('ce-block--focused');
-                                    // Blur any text elements to remove cursor
                                     editorContainer.querySelectorAll('[contenteditable="true"]')
                                         .forEach(el => el.blur());
                                 } else {
-                                    // If current block is text, re-focus it to show cursor
                                     const textBlock = currentBlock.querySelector(
                                         '[contenteditable="true"]');
                                     if (textBlock) {
@@ -424,7 +390,6 @@
                     }
                 });
 
-                // =============== AUTO LIST FORMATTING (Ordered & Unordered) ===============
                 editorContainer.addEventListener('input', async (e) => {
                     const block = e.target.closest('[contenteditable="true"]');
                     if (!block) return;
@@ -433,12 +398,11 @@
                     let isList = false;
                     let isOrdered = false;
 
-                    // Check untuk ordered list: "1. " atau "1) "
                     if (/^1[\.\)]\s/.test(text)) {
                         isList = true;
                         isOrdered = true;
                     }
-                    // Check untuk unordered list: "- " atau "* "
+
                     else if (/^[\-\*]\s/.test(text)) {
                         isList = true;
                         isOrdered = false;
@@ -449,7 +413,6 @@
                             const currentIndex = editor.blocks.getCurrentBlockIndex();
                             const currentData = editor.blocks.getBlockByIndex(currentIndex).data;
 
-                            // Get content without the list marker
                             let content = text;
                             if (isOrdered) {
                                 content = text.replace(/^1[\.\)]\s/, '').trim();
@@ -457,10 +420,8 @@
                                 content = text.replace(/^[\-\*]\s/, '').trim();
                             }
 
-                            // Delete current paragraph block
                             await editor.blocks.delete(currentIndex);
 
-                            // Insert list block
                             await editor.blocks.insert(
                                 'list', {
                                     style: isOrdered ? 'ordered' : 'unordered',
@@ -469,14 +430,12 @@
                                 currentIndex
                             );
 
-                            // Focus to newly created list
                             setTimeout(() => {
                                 const newBlock = editor.blocks.getBlockByIndex(currentIndex);
                                 if (newBlock && newBlock.holder) {
                                     const listItem = newBlock.holder.querySelector('li');
                                     if (listItem) {
                                         listItem.focus();
-                                        // Move cursor ke end of content
                                         const range = document.createRange();
                                         const sel = window.getSelection();
                                         range.selectNodeContents(listItem);
@@ -495,7 +454,6 @@
                     }
                 });
 
-                // =============== DELETE LIST ITEM ON BACKSPACE AT START ===============
                 editorContainer.addEventListener('keydown', async (e) => {
                     if (e.key !== 'Backspace') return;
 
@@ -505,49 +463,44 @@
                     const range = sel.getRangeAt(0);
                     const focusNode = range.commonAncestorContainer;
 
-                    // Find the LI element
                     const liElement = focusNode.nodeType === 3 ?
                         focusNode.parentElement.closest('li') :
                         focusNode.closest('li');
 
-                    if (!liElement) return; // Not in a list
+                    if (!liElement) return;
 
-                    // Find the list container (OL or UL)
                     const listContainer = liElement.closest('.cdx-list');
                     if (!listContainer) return;
 
-                    // Check if item is EMPTY
                     const itemText = liElement.textContent.trim();
                     const isEmpty = itemText === '';
 
-                    if (!isEmpty) return; // Only delete if item is empty
+                    if (!isEmpty) return;
 
-                    // Fully prevent all default behavior
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     e.stopPropagation();
 
                     try {
-                        // Remove LI from DOM
+
                         liElement.remove();
 
-                        // Check apakah masih ada LI lain
                         const remainingItems = listContainer.querySelectorAll('li');
 
                         if (remainingItems.length === 0) {
-                            // List kosong, hapus block
+
                             const currentIndex = editor.blocks.getCurrentBlockIndex();
                             await editor.blocks.delete(currentIndex);
                             await editor.blocks.insert('paragraph', {
                                 text: ''
                             }, {}, currentIndex);
                         } else {
-                            // Focus ke item sebelumnya
+
                             const itemIndex = Math.max(0, remainingItems.length - 1);
                             remainingItems[itemIndex]?.focus();
                         }
 
-                        // Save state untuk undo/redo
+
                         saveEditorState();
 
                     } catch (err) {
@@ -555,7 +508,6 @@
                     }
                 });
 
-                // =============== DRAG & DROP STYLING ===============
                 editorContainer.addEventListener('dragover', (e) => {
                     e.preventDefault();
                     editorContainer.classList.add('drag-over');
@@ -565,14 +517,8 @@
                         'drag-over'));
                 });
 
-                // =============== MAKE FOCUSED STATE VISIBLE (FALLBACK) ===============
-                // Monitor DOM untuk memastikan styling diterapkan
-                // REMOVED: MutationObserver causing freeze - not needed
-
-
             }
 
-            // Ctrl+S save handler
             document.addEventListener('keydown', async (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                     e.preventDefault();
@@ -580,7 +526,6 @@
                 }
             });
 
-            // Browser warning on unsaved changes
             window.addEventListener('beforeunload', (e) => {
                 if (hasUnsavedChanges) {
                     e.preventDefault();
@@ -590,10 +535,8 @@
 
             document.getElementById('publishBtn').onclick = async () => {
                 try {
-                    // Save editor content
                     const output = await editor.save();
 
-                    // Save to database
                     const response = await fetch(`/admin/article/${artikelId}/save-content`, {
                         method: 'POST',
                         headers: {
@@ -613,7 +556,6 @@
                         return;
                     }
 
-                    // Redirect to publish form
                     updateSaveStatus(true);
                     window.location.href = `/admin/article/${artikelId}/publish`;
                 } catch (err) {

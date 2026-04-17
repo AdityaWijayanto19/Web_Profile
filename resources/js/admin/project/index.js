@@ -7,7 +7,6 @@
             const projectsGrid = document.getElementById('projectsGrid');
             const redirectUrl = projectsGrid?.dataset.redirectUrl;
 
-            // Get reorderUrl from first project card
             const firstCard = projectsGrid?.querySelector('[data-project-id]');
             const reorderUrl = firstCard?.dataset.reorderUrl;
 
@@ -65,7 +64,6 @@
                                             type: 'success'
                                         }
                                     }));
-                                    // Reload ke halaman pertama untuk refresh urutan
                                     setTimeout(() => {
                                         window.location.href = redirectUrl;
                                     }, 500);
@@ -79,11 +77,9 @@
                                         type: 'error'
                                     }
                                 }));
-                                // Revert the DOM to previous state by reloading
                                 setTimeout(() => location.reload(), 1000);
                             })
                             .finally(() => {
-                                // Remove visual feedback
                                 projectsGrid.style.opacity = '1';
                                 projectsGrid.style.pointerEvents = 'auto';
                             });

@@ -49,7 +49,6 @@
 
     <div class="flex h-full w-full relative">
 
-        <!-- ================= PANEL KIRI (VISUAL) ================= -->
         <div class="relative hidden lg:flex lg:w-[55%] bg-pink-main flex-col justify-between p-16 overflow-hidden">
             <div class="absolute inset-0 leaf-pattern pointer-events-none"></div>
             <svg class="absolute top-0 -right-1 h-full w-32 z-10 fill-white" viewBox="0 0 100 100"
@@ -58,7 +57,6 @@
             </svg>
 
             <div class="z-20 flex flex-col justify-between h-full">
-                <!-- Top text -->
                 <div class="text-white space-y-6">
                     <h1 class="text-5xl font-bold leading-tight">Reset Password</h1>
                     <p class="text-lg text-white/80">Create a new password for your account.</p>
@@ -72,7 +70,6 @@
 
         </div>
 
-        <!-- ================= PANEL KANAN (FORM) ================= -->
         <div class="w-full lg:w-[45%] h-full flex flex-col justify-center items-center px-8 md:px-20 bg-white">
 
             <div class="w-full max-w-md animate-up">
@@ -104,7 +101,6 @@
                     <input type="hidden" name="email" value="{{ $email }}">
                     <input type="hidden" name="token" value="{{ $token }}">
 
-                    <!-- New Password -->
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">New
                             Password</label>

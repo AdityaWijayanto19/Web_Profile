@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Manage Journey - FoxHR')
+@section('title', 'Manage Experience')
 @section('page_title', 'Experience Journey')
 
 @push('styles')
@@ -36,7 +36,6 @@
             background-color: #921126;
         }
 
-        /* Icon box lebih kecil & compact */
         .icon-preview-box {
             width: 28px;
             height: 28px;
@@ -52,7 +51,6 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4">
-        {{-- HEADER --}}
         <div class="flex justify-between items-end mb-8 border-b border-white/5 pb-6">
             <div>
                 <h2 class="text-xl font-bold text-white tracking-tight">Experience Timeline</h2>
@@ -110,7 +108,6 @@
                 </table>
             </div>
 
-            <!-- Action Area -->
             <div class="mt-4 flex justify-between items-center">
                 <div class="flex justify-center items-center text-xs text-gray-500 italic">
                     <p>* Drag the <span class="inline-block"><i data-lucide="grip-vertical"

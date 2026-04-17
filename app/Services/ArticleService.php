@@ -11,30 +11,16 @@ use Illuminate\Support\Str;
 
 class ArticleService
 {
-    /**
-     * ImageService instance for image processing
-     */
-    private ImageService $imageService;
 
-    /**
-     * Per page items for pagination
-     */
+    private ImageService $imageService;
     private const PER_PAGE = 10;
 
-    /**
-     * Inject dependencies
-     */
+
     public function __construct(ImageService $imageService)
     {
         $this->imageService = $imageService;
     }
 
-    /**
-     * Get paginated draft articles for a user
-     *
-     * @param User $user
-     * @return LengthAwarePaginator
-     */
     public function getDrafts(User $user): LengthAwarePaginator
     {
         return Artikel::where('user_id', $user->id)
@@ -43,12 +29,6 @@ class ArticleService
             ->paginate(self::PER_PAGE);
     }
 
-    /**
-     * Get paginated published articles for a user
-     *
-     * @param User $user
-     * @return LengthAwarePaginator
-     */
     public function getPublished(User $user): LengthAwarePaginator
     {
         return Artikel::where('user_id', $user->id)
@@ -57,13 +37,6 @@ class ArticleService
             ->paginate(self::PER_PAGE);
     }
 
-    /**
-     * Create a new draft article automatically
-     *
-     * @param User $user
-     * @return Artikel
-     * @throws \Exception
-     */
     public function createDraft(User $user): Artikel
     {
         return DB::transaction(function () use ($user) {
@@ -92,14 +65,6 @@ class ArticleService
         });
     }
 
-    /**
-     * Save article content (both title and editor content)
-     *
-     * @param Artikel $artikel
-     * @param array $data
-     * @return Artikel
-     * @throws \Exception
-     */
     public function saveContent(Artikel $artikel, array $data): Artikel
     {
         return DB::transaction(function () use ($artikel, $data) {
@@ -137,14 +102,6 @@ class ArticleService
         });
     }
 
-    /**
-     * Update article with metadata (before publish)
-     *
-     * @param Artikel $artikel
-     * @param array $data
-     * @return Artikel
-     * @throws \Exception
-     */
     public function updateMetadata(Artikel $artikel, array $data): Artikel
     {
         return DB::transaction(function () use ($artikel, $data) {
@@ -153,7 +110,6 @@ class ArticleService
 
                 if (isset($data['judul'])) {
                     $updateData['judul'] = $data['judul'];
-                    // Auto generate slug if not provided
                     if (!isset($data['slug'])) {
                         $updateData['slug'] = Str::slug($data['judul']) . '-' . time();
                     }
@@ -193,13 +149,6 @@ class ArticleService
         });
     }
 
-    /**
-     * Publish article
-     *
-     * @param Artikel $artikel
-     * @return Artikel
-     * @throws \Exception
-     */
     public function publish(Artikel $artikel): Artikel
     {
         return DB::transaction(function () use ($artikel) {
@@ -226,13 +175,6 @@ class ArticleService
         });
     }
 
-    /**
-     * Get article by ID and verify ownership
-     *
-     * @param int $id
-     * @param User $user
-     * @return Artikel|null
-     */
     public function getByIdForUser(int $id, User $user): ?Artikel
     {
         return Artikel::where('id', $id)
@@ -240,18 +182,10 @@ class ArticleService
             ->first();
     }
 
-    /**
-     * Delete article
-     *
-     * @param Artikel $artikel
-     * @return bool
-     * @throws \Exception
-     */
     public function delete(Artikel $artikel): bool
     {
         return DB::transaction(function () use ($artikel) {
             try {
-                // Delete associated images
                 $this->deleteArticleImages($artikel);
 
                 $artikel->delete();
@@ -272,22 +206,9 @@ class ArticleService
         });
     }
 
-    /**
-     * Process and save article image using ImageService
-     *
-     * Uploads image to storage/app/uploads/articles/{article_id}/
-     * Compresses to WebP format automatically
-     *
-     * @param Artikel $artikel
-     * @param \Illuminate\Http\UploadedFile $file
-     * @return string Path to saved image (relative to storage disk)
-     * @throws \Exception
-     */
     public function processArticleImage(Artikel $artikel, \Illuminate\Http\UploadedFile $file): string
     {
         try {
-            // Process image using ImageService
-            // Format: articles/{article_id}
             $imagePath = $this->imageService->processUpload($file, "articles/{$artikel->id}");
 
             if (!$imagePath) {
@@ -309,24 +230,13 @@ class ArticleService
         }
     }
 
-    /**
-     * Delete all images associated with article
-     *
-     * Removes article folder from storage/app/uploads/articles/{article_id}/
-     * Also deletes featured image if exists
-     *
-     * @param Artikel $artikel
-     * @return void
-     */
     public function deleteArticleImages(Artikel $artikel): void
     {
         try {
-            // Delete featured image if exists
             if (!empty($artikel->path_gambar)) {
                 $this->imageService->deleteFile($artikel->path_gambar);
             }
 
-            // Delete entire article images directory
             $articleImagePath = "uploads/articles/{$artikel->id}";
             if (\Illuminate\Support\Facades\Storage::disk('public')->exists($articleImagePath)) {
                 \Illuminate\Support\Facades\Storage::disk('public')->deleteDirectory($articleImagePath);
@@ -340,7 +250,6 @@ class ArticleService
                 'artikel_id' => $artikel->id,
                 'error' => $e->getMessage(),
             ]);
-            // Don't throw - cleanup failure shouldn't block article deletion
         }
     }
 }

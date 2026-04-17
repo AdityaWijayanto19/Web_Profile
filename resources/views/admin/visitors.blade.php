@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Visitors Analytics - FoxHR')
+@section('title', 'Visitors Analytics')
 @section('page_title', 'Visitors Analytics')
 
 @push('styles')
@@ -31,15 +31,13 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4">
-        <!-- Header Section -->
+
         <div class="mb-6">
             <h2 class="text-xl font-semibold text-white">Visitor Statistics</h2>
             <p class="text-gray-400 text-xs mt-1">Real-time tracking of your profile visitors and engagement metrics.</p>
         </div>
 
-        <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <!-- Total Visitors -->
             <div class="stat-card rounded-sm p-4">
                 <div class="flex items-center justify-between">
                     <div>
@@ -52,7 +50,6 @@
                 </div>
             </div>
 
-            <!-- Unique Visitors -->
             <div class="stat-card rounded-sm p-4">
                 <div class="flex items-center justify-between">
                     <div>
@@ -65,7 +62,6 @@
                 </div>
             </div>
 
-            <!-- Page Views -->
             <div class="stat-card rounded-sm p-4">
                 <div class="flex items-center justify-between">
                     <div>
@@ -79,7 +75,6 @@
             </div>
         </div>
 
-        <!-- Visitors Table -->
         <div class="bg-[#1a151d] border border-white/5 rounded-sm overflow-hidden">
             <table class="w-full text-left border-collapse">
                 <thead>

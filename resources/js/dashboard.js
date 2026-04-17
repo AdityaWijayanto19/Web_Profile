@@ -1,8 +1,7 @@
-// --- STATE ---
+
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 
-// --- KALENDER ---
 function renderCalendar() {
     const monthYearLabel = document.getElementById('calendar-month-year');
     const daysContainer = document.getElementById('calendar-days');
@@ -35,7 +34,6 @@ window.changeMonth = function(step) {
     renderCalendar();
 };
 
-// --- JAM ---
 function updateClock() {
     const clockMain = document.getElementById('clock-main');
     const clockSeconds = document.getElementById('clock-seconds');
@@ -46,7 +44,6 @@ function updateClock() {
     clockSeconds.textContent = String(now.getSeconds()).padStart(2, '0');
 }
 
-// --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
     updateClock();

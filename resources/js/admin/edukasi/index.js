@@ -9,14 +9,12 @@
             const redirectUrl = table?.dataset.redirectUrl;
             let isSaving = false;
 
-            // Inisialisasi SortableJS
             const sortable = Sortable.create(el, {
                 animation: 150,
-                handle: '.drag-handle', // Drag handle selector
+                handle: '.drag-handle',
                 ghostClass: 'sortable-ghost',
                 chosenClass: 'sortable-chosen',
                 onEnd: function(evt) {
-                    // Ambil data ID sesuai urutan baru (filter empty data-id)
                     const order = Array.from(el.querySelectorAll('tr[data-id]'))
                         .map(tr => parseInt(tr.dataset.id))
                         .filter(id => !isNaN(id));
@@ -25,12 +23,10 @@
                         return;
                     }
 
-                    // Trigger AJAX untuk simpan order ke backend
                     saveOrderWithAjax(order);
                 },
             });
 
-            // Fungsi untuk AJAX simpan order (with pagination fix)
             function saveOrderWithAjax(ids) {
                 if (isSaving) {
                     return;
@@ -56,7 +52,6 @@
                 })
                 .then(data => {
                     if (data.success) {
-                        // Update urutan values dari response
                         if (data.data && Array.isArray(data.data)) {
                             data.data.forEach(item => {
                                 const row = el.querySelector(`tr[data-id="${item.id}"]`);

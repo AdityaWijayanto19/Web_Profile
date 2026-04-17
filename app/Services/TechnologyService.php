@@ -9,29 +9,14 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TechnologyService
 {
-    /**
-     * Perpage items for pagination
-     */
     private const PER_PAGE = 15;
 
-    /**
-     * Get paginated technologies list
-     *
-     * @return LengthAwarePaginator
-     */
     public function index(): LengthAwarePaginator
     {
         return Teknologi::ordered()
             ->paginate(self::PER_PAGE);
     }
 
-    /**
-     * Create new technology
-     *
-     * @param array $data
-     * @return Teknologi
-     * @throws \Exception
-     */
     public function create(array $data): Teknologi
     {
         try {
@@ -53,14 +38,6 @@ class TechnologyService
         }
     }
 
-    /**
-     * Update existing technology
-     *
-     * @param Teknologi $technology
-     * @param array $data
-     * @return Teknologi
-     * @throws \Exception
-     */
     public function update(Teknologi $technology, array $data): Teknologi
     {
         try {
@@ -85,13 +62,7 @@ class TechnologyService
         }
     }
 
-    /**
-     * Delete technology
-     *
-     * @param Teknologi $technology
-     * @return bool
-     * @throws \Exception
-     */
+
     public function delete(Teknologi $technology): bool
     {
         try {
@@ -115,34 +86,17 @@ class TechnologyService
         }
     }
 
-    /**
-     * Get technology by ID with relationships
-     *
-     * @param int|string $id
-     * @return Teknologi|null
-     */
     public function findById(int|string $id): ?Teknologi
     {
         return Teknologi::with('proyeks')
             ->find($id);
     }
 
-    /**
-     * Check if technology exists
-     *
-     * @param string $nama
-     * @return bool
-     */
     public function existsByName(string $nama): bool
     {
         return Teknologi::whereName($nama)->exists();
     }
 
-    /**
-     * Get all technologies for dropdown (optimized query)
-     *
-     * @return Collection
-     */
     public function getAllForDropdown(): Collection
     {
         return Teknologi::ordered()
@@ -150,11 +104,6 @@ class TechnologyService
             ->get();
     }
 
-    /**
-     * Get statistics about technologies
-     *
-     * @return array
-     */
     public function getStatistics(): array
     {
         return [
@@ -164,12 +113,6 @@ class TechnologyService
         ];
     }
 
-    /**
-     * Get most used technologies in projects
-     *
-     * @param int $limit
-     * @return Collection
-     */
     private function getMostUsedTechnologies(int $limit = 5): Collection
     {
         return Teknologi::withCount('proyeks')

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Manage Projects - FoxHR')
+@section('title', 'Manage Projects')
 @section('page_title', 'Projects Manager')
 
 @push('styles')
@@ -73,14 +73,12 @@
             </a>
         </div>
 
-        <!-- GRID 3 KOLOM - Drag & Drop Sortable -->
         <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14"
             data-redirect-url="{{ route('projects.index') }}">
 
             @forelse ($proyeks as $proyek)
                 <div class="group" data-project-id="{{ $proyek->id }}"
                     data-reorder-url="{{ route('projects.reorder') }}">
-                    <!-- Thumbnail & Hover Actions -->
                     <div class="project-thumb relative mb-5 hover:cursor-grab">
                         @if ($proyek->path_gambar)
                             <img src="{{ $proyek->getThumbnailUrl() }}"
@@ -91,7 +89,6 @@
                                 No Preview</div>
                         @endif
 
-                        <!-- Hover Overlay Buttons -->
                         <div
                             class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-4 z-10 backdrop-blur-[2px]">
                             <a href="{{ route('projects.edit', $proyek) }}"
@@ -110,7 +107,6 @@
                             </form>
                         </div>
 
-                        <!-- Status Indicator (Bottom-Left) -->
                         <div class="absolute bottom-3 left-3 z-10">
                             <div class="flex items-center gap-2">
                                 <div
@@ -126,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Project Info -->
                     <div class="px-0.5 space-y-1.5">
                         <div class="flex justify-between items-start">
                             <h4
@@ -144,7 +139,6 @@
                             {{ $proyek->deskripsi }}
                         </p>
 
-                        <!-- Tech Stack Icons (Bottom) -->
                         <div class="flex items-center gap-2.5 pt-3 border-t border-white/5 mt-3">
                             @foreach ($proyek->teknologis as $tech)
                                 <div class="group/tech relative">
@@ -172,7 +166,6 @@
 
         </div>
 
-        <!-- Pagination -->
         <div class="mt-16 py-8 border-t border-white/5">
             {{ $proyeks->links('partials.pagination') }}
         </div>

@@ -9,40 +9,21 @@ use Illuminate\Support\Facades\DB;
 
 class SertifikatService
 {
-    /**
-     * ImageService instance for image processing
-     */
     private ImageService $imageService;
 
-    /**
-     * Perpage items for pagination
-     */
     private const PER_PAGE = 6;
 
-    /**
-     * Inject dependencies
-     */
     public function __construct(ImageService $imageService)
     {
         $this->imageService = $imageService;
     }
 
-    /**
-     * Get paginated sertifikat list
-     *
-     * @return LengthAwarePaginator
-     */
     public function index(): LengthAwarePaginator
     {
         return Sertifikat::ordered()
             ->paginate(self::PER_PAGE);
     }
 
-    /**
-     * Get all sertifikat for frontend
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
     public function getAll()
     {
         return Sertifikat::orderBy('tahun', 'desc')
@@ -50,13 +31,6 @@ class SertifikatService
             ->get();
     }
 
-    /**
-     * Create new sertifikat with image processing
-     *
-     * @param array $data
-     * @return Sertifikat
-     * @throws \Exception
-     */
     public function create(array $data): Sertifikat
     {
         return DB::transaction(function () use ($data) {
@@ -66,7 +40,6 @@ class SertifikatService
                     'has_gambar' => isset($data['gambar']),
                 ]);
 
-                // Process image jika ada
                 if (isset($data['gambar']) && $data['gambar']) {
                     $imagePath = $this->imageService->processUpload($data['gambar'], 'sertifikats');
 
@@ -76,7 +49,6 @@ class SertifikatService
                     unset($data['gambar']);
                 }
 
-                // Create sertifikat
                 $sertifikat = Sertifikat::create($data);
 
                 Log::info('Sertifikat created', [
@@ -96,25 +68,11 @@ class SertifikatService
         });
     }
 
-    /**
-     * Get single sertifikat by ID
-     *
-     * @param Sertifikat $sertifikat
-     * @return Sertifikat
-     */
     public function show(Sertifikat $sertifikat): Sertifikat
     {
         return $sertifikat;
     }
 
-    /**
-     * Update existing sertifikat with image processing
-     *
-     * @param Sertifikat $sertifikat
-     * @param array $data
-     * @return Sertifikat
-     * @throws \Exception
-     */
     public function update(Sertifikat $sertifikat, array $data): Sertifikat
     {
         return DB::transaction(function () use ($sertifikat, $data) {
@@ -124,14 +82,11 @@ class SertifikatService
                     'has_gambar' => isset($data['gambar']),
                 ]);
 
-                // Process image jika ada upload baru
                 if (isset($data['gambar']) && $data['gambar']) {
-                    // Delete old image
                     if ($sertifikat->path_gambar) {
                         $this->imageService->deleteFile($sertifikat->path_gambar);
                     }
 
-                    // Process new image
                     $imagePath = $this->imageService->processUpload($data['gambar'], 'sertifikats');
                     if ($imagePath) {
                         $data['path_gambar'] = $imagePath;
@@ -141,7 +96,6 @@ class SertifikatService
                     unset($data['gambar']);
                 }
 
-                // Update sertifikat
                 $sertifikat->update($data);
 
                 Log::info('Sertifikat updated', [
@@ -162,13 +116,6 @@ class SertifikatService
         });
     }
 
-    /**
-     * Delete sertifikat with image cleanup
-     *
-     * @param Sertifikat $sertifikat
-     * @return bool
-     * @throws \Exception
-     */
     public function delete(Sertifikat $sertifikat): bool
     {
         return DB::transaction(function () use ($sertifikat) {
@@ -178,12 +125,10 @@ class SertifikatService
                     'nama_sertifikat' => $sertifikat->nama_sertifikat,
                 ]);
 
-                // Delete image if exists
                 if ($sertifikat->path_gambar) {
                     $this->imageService->deleteFile($sertifikat->path_gambar);
                 }
 
-                // Delete sertifikat
                 $deleted = $sertifikat->delete();
 
                 Log::info('Sertifikat deleted', [
@@ -203,12 +148,6 @@ class SertifikatService
         });
     }
 
-    /**
-     * Search sertifikat by nama or penerbit
-     *
-     * @param string $query
-     * @return LengthAwarePaginator
-     */
     public function search(string $query): LengthAwarePaginator
     {
         return Sertifikat::where('nama_sertifikat', 'like', "%{$query}%")
@@ -218,12 +157,6 @@ class SertifikatService
             ->paginate(self::PER_PAGE);
     }
 
-    /**
-     * Filter sertifikat by year
-     *
-     * @param int $tahun
-     * @return LengthAwarePaginator
-     */
     public function filterByTahun(int $tahun): LengthAwarePaginator
     {
         return Sertifikat::where('tahun', $tahun)

@@ -23,7 +23,6 @@ iconInput.addEventListener("input", function () {
         const iconPath = this.value.toLowerCase().trim();
         const cdnUrl = `https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${iconPath}.svg`;
 
-        // Try to fetch the icon
         fetch(cdnUrl, {
             method: "HEAD",
         })
@@ -49,7 +48,6 @@ iconInput.addEventListener("input", function () {
     }, 500);
 });
 
-// Trigger on page load if icon was pre-filled
 if (iconInput.value) {
     iconInput.dispatchEvent(new Event("input"));
 }

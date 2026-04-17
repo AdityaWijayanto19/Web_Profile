@@ -9,11 +9,7 @@ use App\Models\Visitor;
 
 class DashboardService
 {
-    /**
-     * Get dashboard statistics
-     *
-     * @return array
-     */
+
     public function getStatistics(): array
     {
         return [
@@ -23,35 +19,21 @@ class DashboardService
         ];
     }
 
-    /**
-     * Get total projects
-     */
     public function getProjectsCount(): int
     {
         return Proyek::count();
     }
 
-    /**
-     * Get total sertifikats
-     */
     public function getSertifikatsCount(): int
     {
         return Sertifikat::count();
     }
 
-    /**
-     * Get total pendidikans
-     */
     public function getPendidikansCount(): int
     {
         return Pendidikan::count();
     }
 
-    /**
-     * Get engagement statistics for last 30 days
-     *
-     * @return array
-     */
     public function getEngagementStats(int $days = 30): array
     {
         return [
@@ -62,11 +44,6 @@ class DashboardService
         ];
     }
 
-    /**
-     * Get all dashboard data at once
-     *
-     * @return array
-     */
     public function getAllDashboardData(): array
     {
         return [
@@ -75,11 +52,6 @@ class DashboardService
         ];
     }
 
-    /**
-     * Calculate growth percentage (placeholder)
-     *
-     * @return float
-     */
     public function calculateVisitorGrowth(int $days = 30): float
     {
         $currentPeriod = Visitor::getTotalVisitors($days);

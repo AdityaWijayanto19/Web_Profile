@@ -150,12 +150,10 @@
                 If you didn't make this request, you can safely ignore this email.
             </p>
 
-            <!-- Alert Box -->
             <div class="alert">
                 <strong>Important:</strong> This reset link will expire in <strong>{{ $expiresIn }} minutes</strong>
             </div>
 
-            <!-- Reset Button -->
             <div class="button-container">
                 <a href="{{ $resetUrl }}" class="reset-button">Reset Your Password</a>
             </div>
@@ -164,7 +162,6 @@
                 or copy and paste this link in your browser:
             </p>
 
-            <!-- Link Section -->
             <div class="link-section">
                 <p><strong>Reset Link:</strong></p>
                 <a href="{{ $resetUrl }}">{{ $resetUrl }}</a>

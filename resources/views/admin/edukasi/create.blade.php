@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Add Education - FoxHR')
+@section('title', 'Add Education')
 @section('page_title', 'Add New Education')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4"> <!-- Dipersempit agar tidak terlalu lebar -->
-        <!-- Breadcrumb -->
+    <div class="max-w-7xl mx-auto px-4">
         <div class="mb-6">
             <a href="{{ route('pendidikans.index') }}"
                 class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
@@ -27,14 +26,12 @@
 
                     <div class="p-6 space-y-6">
                         <div class="grid grid-cols-2 gap-6">
-                            <!-- Period Start -->
                             <div class="space-y-2">
                                 <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start
                                     Year</label>
                                 <input type="text" name="start_year" placeholder="e.g. 2016"
                                     class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm">
                             </div>
-                            <!-- Period End -->
                             <div class="space-y-2">
                                 <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year /
                                     Status</label>
@@ -43,7 +40,6 @@
                             </div>
                         </div>
 
-                        <!-- Degree / Major -->
                         <div class="space-y-2">
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Degree &
                                 Major</label>
@@ -51,7 +47,6 @@
                                 class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm">
                         </div>
 
-                        <!-- Institution Name -->
                         <div class="space-y-2">
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Institution /
                                 University</label>
@@ -59,7 +54,6 @@
                                 class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm">
                         </div>
 
-                        <!-- Description -->
                         <div class="space-y-2">
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Short
                                 Description</label>
@@ -69,7 +63,6 @@
                     </div>
                 </div>
 
-                <!-- FORM ACTIONS -->
                 <div class="grid grid-cols-2 gap-3">
                     <a href="{{ route('pendidikans.index') }}"
                         class="flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 py-3 rounded-sm text-[11px] font-bold transition-all border border-white/5 uppercase tracking-widest">

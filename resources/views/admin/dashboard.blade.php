@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'FoxHR Dashboard')
+@section('title', 'Dashboard')
 @section('page_title', 'Dashboard')
 
 @section('content')
 <div class="grid grid-cols-12 gap-4 px-4">
 
-    <!-- LEFT COLUMN -->
     <div class="col-span-12 lg:col-span-8 space-y-4">
-        <!-- Banner -->
+
         <div class="bg-gradient-to-r from-black via-[#1a0f14] to-[#140f17] rounded-md p-6 relative flex items-center overflow-hidden min-h-[160px] shadow-sm">
             <div class="z-10 w-2/3">
                 <h2 class="text-white text-2xl font-bold mb-1">Hello Yunnappie!</h2>
@@ -20,9 +19,8 @@
             </div>
         </div>
 
-        <!-- STATS OVERVIEW -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {{-- Projects --}}
+
             <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
@@ -38,7 +36,6 @@
                 </div>
             </div>
 
-            {{-- Sertifikats --}}
             <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
@@ -54,7 +51,6 @@
                 </div>
             </div>
 
-            {{-- Pendidikans --}}
             <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
@@ -70,7 +66,6 @@
                 </div>
             </div>
 
-            {{-- Placeholder for future metric --}}
             <div class="bg-[#1a0f14] p-4 rounded-md shadow-sm border border-white/5 hover:border-[#730c1e]/50 transition-all group">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-[#730c1e]/10 rounded text-[#730c1e] group-hover:bg-[#730c1e] group-hover:text-white transition-all">
@@ -87,14 +82,12 @@
             </div>
         </div>
 
-        <!-- ENGAGEMENT STATS -->
         <div class="mt-6">
             <div class="flex items-center justify-between mb-3 px-1">
                 <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-[0.2em]">Engagement Stat <span class="text-[#730c1e]/50 ml-1">(Visitor Insights)</span></h3>
                 <span class="text-[10px] text-gray-600 font-medium">Last 30 Days</span>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {{-- Total Visitors --}}
                 <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
                     <div class="z-10">
                         <div class="flex justify-between items-start">
@@ -108,7 +101,6 @@
                     </div>
                 </div>
 
-                {{-- Unique Visitors --}}
                 <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
                     <div class="z-10">
                         <div class="flex justify-between items-start">
@@ -122,7 +114,6 @@
                     </div>
                 </div>
 
-                {{-- Page Views --}}
                 <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
                     <div class="z-10">
                         <div class="flex justify-between items-start">
@@ -136,7 +127,6 @@
                     </div>
                 </div>
 
-                {{-- Return Visitors --}}
                 <div class="bg-[#1a0f14] p-4 rounded-md border border-white/5 flex flex-col justify-between h-32 relative overflow-hidden group">
                     <div class="z-10">
                         <div class="flex justify-between items-start">
@@ -153,9 +143,7 @@
         </div>
     </div>
 
-    <!-- RIGHT COLUMN -->
     <div class="col-span-12 lg:col-span-4 space-y-2">
-        <!-- CALENDAR -->
         <div class="bg-[#1a0f14] rounded-lg p-4 shadow-xl text-white">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-bold text-sm tracking-tight">Calendar</h3>
@@ -173,7 +161,6 @@
             <div id="calendar-days" class="grid grid-cols-7 gap-1 text-center text-[11px]"></div>
         </div>
 
-        <!-- PROFILE & CLOCK -->
         <div class="bg-[#1a0f14] rounded-lg shadow-xl overflow-hidden text-white">
             <div class="px-4 pt-4 pb-2 border-b">
                 <div class="flex items-center justify-between">

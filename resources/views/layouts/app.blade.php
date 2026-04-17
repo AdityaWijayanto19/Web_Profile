@@ -141,7 +141,6 @@
                     </a>
                 </div>
 
-                <!-- Logout Button (Temporary) -->
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit"
@@ -160,7 +159,6 @@
     @vite(['resources/js/app.js'])
     @stack('scripts')
     <script>
-        // Tooltip positioning for collapsed sidebar
         document.addEventListener('DOMContentLoaded', function() {
            @if (session('success'))
                 window.dispatchEvent(new CustomEvent('notify', {

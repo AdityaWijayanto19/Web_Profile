@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Education Management - FoxHR')
+@section('title', 'Education Management')
 @section('page_title', 'Education Management')
 
 @push('styles')
@@ -29,7 +29,6 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4">
-        <!-- Header Section -->
         <div class="flex justify-between items-end mb-6">
             <div>
                 <h2 class="text-xl font-semibold text-white">Educational Root</h2>
@@ -42,7 +41,6 @@
             </a>
         </div>
 
-        <!-- Table Container -->
         <div class="bg-[#1a151d] border border-white/5 rounded-sm overflow-hidden">
             <table class="w-full text-left border-collapse" data-reorder-url="{{ route('pendidikans.reorder') }}" data-redirect-url="{{ route('pendidikans.index') }}">
                 <thead>

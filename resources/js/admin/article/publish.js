@@ -7,10 +7,8 @@
         const pathGambarInput = document.getElementById('path_gambar');
         const imagesContainer = document.getElementById('images-container');
 
-        // Article content from window variable (passed from Blade)
         const artikelContent = window.artikelContent || { blocks: [] };
 
-        // Extract images from EditorJS content
         function extractImages() {
             const images = [];
             if (artikelContent.blocks && Array.isArray(artikelContent.blocks)) {
@@ -23,7 +21,6 @@
             return images;
         }
 
-        // Display image options
         function displayImages() {
             const images = extractImages();
             imagesContainer.innerHTML = '';
@@ -48,11 +45,9 @@
                 }
 
                 imageDiv.addEventListener('click', () => {
-                    // Remove selected from all
                     document.querySelectorAll('.image-selector').forEach(el => {
                         el.classList.remove('selected');
                     });
-                    // Add selected to clicked
                     imageDiv.classList.add('selected');
                     pathGambarInput.value = imageUrl;
                 });
@@ -61,7 +56,6 @@
             });
         }
 
-        // Calculate reading time from word count
         function calculateReadingTime() {
             let totalText = '';
 
@@ -83,15 +77,13 @@
                 });
             }
 
-            // Count words
             const wordCount = totalText.trim().split(/\s+/).length;
-            const readingTime = Math.ceil(wordCount / 200); // 200 words per minute
+            const readingTime = Math.ceil(wordCount / 200);
 
-            miniBacaInput.value = Math.max(1, readingTime); // Min 1 minute
+            miniBacaInput.value = Math.max(1, readingTime);
             updatePreview();
         }
 
-        // Update character counts
         judulInput.addEventListener('input', () => {
             judulCount.textContent = judulInput.value.length;
             updatePreview();
@@ -102,14 +94,12 @@
             updatePreview();
         });
 
-        // Update preview
         function updatePreview() {
             document.getElementById('preview-title').textContent = judulInput.value || 'Article Title';
             document.getElementById('preview-description').textContent = metaInput.value || 'No description added yet';
             document.getElementById('preview-reading-time').textContent = miniBacaInput.value || '--';
         }
 
-        // Auto-generate slug from title
         judulInput.addEventListener('blur', () => {
             if (!slugInput.value) {
                 const slug = judulInput.value
@@ -122,7 +112,6 @@
             }
         });
 
-        // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             displayImages();
             calculateReadingTime();

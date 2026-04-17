@@ -7,7 +7,7 @@ window.addEventListener("resize", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const html = document.documentElement; // Gunakan HTML agar sinkron dengan script di head
+    const html = document.documentElement; 
     const sidebarToggle = document.getElementById("sidebarToggle");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
 
@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
             tooltip.style.pointerEvents = "auto";
             tooltip.style.transition = "all 0.2s ease";
 
-            // Re-render lucide icons
             if (window.lucide) {
                 window.lucide.createIcons();
             }
@@ -80,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const isMobile = window.innerWidth < 768;
 
         if (isMobile) {
-            // Untuk mobile kita tetap pakai body agar tidak bentrok dengan logic desktop
             document.body.classList.toggle("sidebar-open");
             if (sidebarOverlay) {
                 sidebarOverlay.classList.toggle("hidden");

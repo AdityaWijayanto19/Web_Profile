@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password - Admin Portal</title>
+    <title>Forgot Password</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -29,7 +29,6 @@
 
     <div class="flex h-full w-full relative">
 
-        <!-- ================= PANEL KIRI (VISUAL) ================= -->
         <div class="relative hidden lg:flex lg:w-[55%] bg-pink-main flex-col justify-between p-16 overflow-hidden">
             <div class="absolute inset-0 leaf-pattern pointer-events-none"></div>
             <svg class="absolute top-0 -right-1 h-full w-32 z-10 fill-white" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -37,13 +36,12 @@
             </svg>
 
             <div class="z-20 flex flex-col justify-between h-full">
-                <!-- Top text -->
+
                 <div class="text-white space-y-6">
                     <h1 class="text-5xl font-bold leading-tight">Reset Password</h1>
                     <p class="text-lg text-white/80">Enter your email address to receive a password reset link.</p>
                 </div>
 
-                <!-- Center illustration -->
                 <div class="flex justify-center items-center py-8">
                     <img src="{{ asset('assets/images/Illustration-3.svg') }}"
                          alt="Admin Illustration"
@@ -52,7 +50,6 @@
             </div>
         </div>
 
-        <!-- ================= PANEL KANAN (FORM) ================= -->
         <div class="w-full lg:w-[45%] h-full flex flex-col justify-center items-center px-8 md:px-20 bg-white">
 
             <div class="w-full max-w-md animate-up">
@@ -100,7 +97,6 @@
                         </div>
                     </div>
 
-                    <!-- Next Steps -->
                     <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
                         <p class="text-blue-700 font-bold text-sm mb-2 flex items-center gap-2">
                             <i class="fa-solid fa-info-circle"></i>
@@ -114,7 +110,6 @@
                         </ol>
                     </div>
 
-                    <!-- Didn't Receive Email -->
                     <div class="text-center">
                         <p class="text-gray-600 text-sm mb-2">Didn't receive the email?</p>
                         <button type="button" onclick="document.querySelector('form').reset()" class="text-pink-main hover:underline text-xs font-bold">
@@ -138,7 +133,6 @@
                         </div>
                     </div>
 
-                    <!-- Button -->
                     <button type="submit"
                         class="w-full bg-pink-main text-white font-bold py-4 rounded-2xl shadow-xl shadow-pink-200 hover:bg-[#ca0000] hover:-translate-y-1 transition-all duration-300 uppercase tracking-widest text-sm flex items-center justify-center gap-2">
                         <i class="fa-solid fa-paper-plane"></i>
@@ -146,7 +140,6 @@
                     </button>
                 </form>
 
-                <!-- Back to Login -->
                 <div class="mt-8 text-center">
                     <p class="text-gray-500 text-sm">
                         Remember your password?

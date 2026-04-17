@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Hero Manager - FoxHR')
+@section('title', 'Hero Manager')
 @section('page_title', 'Hero Section Manager')
 
 @push('styles')
     <style>
-        /* Custom Input Style */
         .form-input-custom {
             background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -20,7 +19,6 @@
             box-shadow: 0 0 0 1px #730c1e;
         }
 
-        /* Card Hover Effect */
         .card-custom {
             background: #1a151d;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -41,7 +39,6 @@
 
         <div class="grid grid-cols-12 gap-6">
 
-            <!-- CARD 1: IDENTITY -->
             <div class="col-span-12 lg:col-span-5 card-custom rounded-sm p-6 relative overflow-hidden">
                 <div
                     class="absolute top-0 right-0 p-3 text-[8px] font-black text-[#730c1e] uppercase tracking-[0.2em] opacity-40">
@@ -78,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- CARD 2: COPYWRITING -->
             <div class="col-span-12 lg:col-span-7 card-custom rounded-sm p-6 relative overflow-hidden">
                 <div
                     class="absolute top-0 right-0 p-3 text-[8px] font-black text-[#730c1e] uppercase tracking-[0.2em] opacity-40">
@@ -109,14 +105,13 @@
                 </div>
             </div>
 
-            <!-- CARD 3: VISUAL & ASSETS -->
             <div class="col-span-12 card-custom rounded-sm overflow-hidden relative">
                 <div
                     class="absolute top-0 right-0 p-3 text-[8px] font-black text-[#730c1e] uppercase tracking-[0.2em] opacity-40 z-10">
                     Section 03 / Assets & CTA</div>
 
                 <div class="grid grid-cols-12">
-                    <!-- Left Side: URL & CTA -->
+
                     <div class="col-span-12 md:col-span-8 p-8 border-b md:border-b-0 md:border-r border-white/5">
                         <div class="max-w-md space-y-6">
                             <div class="space-y-2">
@@ -138,7 +133,6 @@
                         </div>
                     </div>
 
-                    <!-- Right Side: Portrait Upload -->
                     <div class="col-span-12 md:col-span-4 bg-black/20 p-8 flex flex-col items-center justify-center">
                         <div class="relative group">
                             <div class="w-40 h-52 border border-white/10 rounded-sm overflow-hidden bg-[#110e13] relative">

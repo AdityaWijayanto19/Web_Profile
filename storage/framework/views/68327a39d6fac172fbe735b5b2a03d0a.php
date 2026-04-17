@@ -48,19 +48,16 @@
                 </template>
             </div>
 
-            <!-- Text Content -->
             <div class="flex-1">
                 <p class="text-[10px] font-bold uppercase tracking-[0.15em] leading-tight" x-text="message"></p>
                 <p class="text-[9px] opacity-60 mt-1 uppercase tracking-tighter">System Notification</p>
             </div>
 
-            <!-- Close Button -->
             <button @click="show = false" class="text-gray-500 hover:text-white transition-colors">
                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
             </button>
         </div>
 
-        <!-- Progress Bar (Optional, keren buat UX) -->
         <div class="absolute bottom-0 left-0 h-[2px] bg-current opacity-20 transition-all ease-linear"
              :style="'width: ' + (show ? '100%' : '0%') + '; transition-duration: ' + duration + 'ms'">
         </div>
@@ -68,7 +65,6 @@
 </div>
 
 <script>
-    // Inisialisasi ulang lucide setiap kali komponen Alpine me-render template
     document.addEventListener('alpine:initialized', () => {
         Alpine.effect(() => {
             if (window.lucide) {

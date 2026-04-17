@@ -9,29 +9,15 @@ use Illuminate\Support\Facades\DB;
 
 class ProjectService
 {
-    /**
-     * ImageService instance for image processing
-     */
     private ImageService $imageService;
 
-    /**
-     * Perpage items for pagination
-     */
     private const PER_PAGE = 6;
 
-    /**
-     * Inject dependencies
-     */
     public function __construct(ImageService $imageService)
     {
         $this->imageService = $imageService;
     }
 
-    /**
-     * Get paginated projects list
-     *
-     * @return LengthAwarePaginator
-     */
     public function index(): LengthAwarePaginator
     {
         return Proyek::with('teknologis')
@@ -39,11 +25,6 @@ class ProjectService
             ->paginate(self::PER_PAGE);
     }
 
-    /**
-     * Get published projects (for frontend)
-     *
-     * @return LengthAwarePaginator
-     */
     public function getPublished(int $perPage = 12): LengthAwarePaginator
     {
         return Proyek::with('teknologis')
@@ -52,13 +33,6 @@ class ProjectService
             ->paginate($perPage);
     }
 
-    /**
-     * Create new project with image processing
-     *
-     * @param array $data
-     * @return Proyek
-     * @throws \Exception
-     */
     public function create(array $data): Proyek
     {
         return DB::transaction(function () use ($data) {
@@ -68,11 +42,9 @@ class ProjectService
                     'gambar_type' => isset($data['gambar']) ? get_class($data['gambar']) : null,
                 ]);
 
-                // Ambil teknologi dari array
                 $technologies = $data['teknologis'] ?? [];
                 unset($data['teknologis']);
 
-                // Process image jika ada
                 if (isset($data['gambar']) && $data['gambar']) {
                     $imagePath = $this->imageService->processUpload($data['gambar'], 'projects');
 
@@ -82,10 +54,8 @@ class ProjectService
                     unset($data['gambar']);
                 }
 
-                // Create project
                 $project = Proyek::create($data);
 
-                // Attach technologies
                 if (!empty($technologies)) {
                     $project->teknologis()->attach($technologies);
                 }
@@ -108,28 +78,16 @@ class ProjectService
         });
     }
 
-    /**
-     * Update existing project with image processing
-     *
-     * @param Proyek $project
-     * @param array $data
-     * @return Proyek
-     * @throws \Exception
-     */
     public function update(Proyek $project, array $data): Proyek
     {
         return DB::transaction(function () use ($project, $data) {
             try {
-                // Ambil teknologi dari array
                 $technologies = $data['teknologis'] ?? [];
                 unset($data['teknologis']);
 
-                // Process image jika ada upload baru
                 if (isset($data['gambar']) && $data['gambar']) {
-                    // Delete old image
                     $this->imageService->deleteProjectImages($project->path_gambar);
 
-                    // Process new image
                     $imagePath = $this->imageService->processUpload($data['gambar'], 'projects');
                     if ($imagePath) {
                         $data['path_gambar'] = $imagePath;
@@ -137,10 +95,8 @@ class ProjectService
                     unset($data['gambar']);
                 }
 
-                // Update project
                 $project->update($data);
 
-                // Sync technologies
                 if (!empty($technologies)) {
                     $project->teknologis()->sync($technologies);
                 } else {
@@ -164,13 +120,6 @@ class ProjectService
         });
     }
 
-    /**
-     * Delete project with cascading relationships
-     *
-     * @param Proyek $project
-     * @return bool
-     * @throws \Exception
-     */
     public function delete(Proyek $project): bool
     {
         return DB::transaction(function () use ($project) {
@@ -180,10 +129,8 @@ class ProjectService
                     'judul' => $project->judul,
                 ];
 
-                // Delete project images
                 $this->imageService->deleteProjectImages($project->path_gambar);
 
-                // Delete project (cascading delete for technologies via pivot)
                 $deleted = $project->delete();
 
                 Log::info('Project deleted', $projectData);
@@ -199,22 +146,11 @@ class ProjectService
         });
     }
 
-    /**
-     * Get project by ID with eager loading
-     *
-     * @param int|string $id
-     * @return Proyek|null
-     */
     public function findById(int|string $id): ?Proyek
     {
         return Proyek::with('teknologis')->find($id);
     }
 
-    /**
-     * Get project statistics
-     *
-     * @return array
-     */
     public function getStatistics(): array
     {
         return [

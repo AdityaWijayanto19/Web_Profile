@@ -5,7 +5,6 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4">
-        <!-- HEADER NAV -->
         <div class="mb-6">
             <a href="{{ route('sertifikats.index') }}"
                 class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
@@ -18,7 +17,6 @@
             @csrf
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                <!-- LEFT: INPUT FIELDS -->
                 <div class="lg:col-span-7 space-y-4">
                     <div class="bg-[#1a151e] border border-white/5 p-6 rounded-sm relative shadow-2xl">
                         <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-[#730c1e] to-transparent">
@@ -49,14 +47,13 @@
                             </div>
 
                             <div class="grid grid-cols-2 gap-6">
-                                <!-- Period Start -->
+
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start
                                         Year</label>
                                     <input type="text" name="start_year" placeholder="e.g. 2016"
                                         class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2 text-white text-xs focus:border-[#730c1e] outline-none transition-all @error('start_year') border-red-500 @enderror">
                                 </div>
-                                <!-- Period End -->
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year /
                                         Status</label>
@@ -105,7 +102,6 @@
                                 @enderror
                             </div>
 
-                             <!-- Order Number -->
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Display
                                         Order</label>
@@ -131,7 +127,6 @@
                     </div>
                 </div>
 
-                <!-- RIGHT: PREVIEW & UPLOAD -->
                 <div class="lg:col-span-5 space-y-4">
                     <div class="bg-[#1a151e] border border-white/5 p-4 rounded-sm shadow-xl">
                         <span class="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-3 block">Live Component
@@ -151,7 +146,6 @@
                                 </div>
                             </div>
 
-                            <!-- Upload Overlay -->
                             <label
                                 class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
                                 <i data-lucide="upload-cloud" class="w-6 h-6 text-white mb-1"></i>

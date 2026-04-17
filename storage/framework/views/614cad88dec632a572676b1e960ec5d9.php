@@ -160,7 +160,6 @@
                     </a>
                 </div>
 
-                <!-- Logout Button (Temporary) -->
                 <form action="<?php echo e(route('logout')); ?>" method="POST" class="inline">
                     <?php echo csrf_field(); ?>
                     <button type="submit"
@@ -179,7 +178,6 @@
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/app.js']); ?>
     <?php echo $__env->yieldPushContent('scripts'); ?>
     <script>
-        // Tooltip positioning for collapsed sidebar
         document.addEventListener('DOMContentLoaded', function() {
            <?php if(session('success')): ?>
                 window.dispatchEvent(new CustomEvent('notify', {
