@@ -44,7 +44,7 @@
 
         <!-- Table Container -->
         <div class="bg-[#1a151d] border border-white/5 rounded-sm overflow-hidden">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse" data-reorder-url="{{ route('pendidikans.reorder') }}" data-redirect-url="{{ route('pendidikans.index') }}">
                 <thead>
                     <tr class="border-b border-white/5 bg-black/20">
                         <th class="px-4 py-3 font-medium text-gray-400 w-12 text-center">#</th>
@@ -115,99 +115,5 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script>
-        // Initialize Lucide icons
-        if (window.lucide) {
-            window.lucide.createIcons();
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const el = document.getElementById('sortable-table');
-            let isSaving = false;
-
-            // Inisialisasi SortableJS
-            const sortable = Sortable.create(el, {
-                animation: 150,
-                handle: '.drag-handle', // Drag handle selector
-                ghostClass: 'sortable-ghost',
-                chosenClass: 'sortable-chosen',
-                onEnd: function(evt) {
-                    // Ambil data ID sesuai urutan baru (filter empty data-id)
-                    const order = Array.from(el.querySelectorAll('tr[data-id]'))
-                        .map(tr => parseInt(tr.dataset.id))
-                        .filter(id => !isNaN(id));
-
-                    if (order.length === 0) {
-                        return;
-                    }
-
-                    // Trigger AJAX untuk simpan order ke backend
-                    saveOrderWithAjax(order);
-                },
-            });
-
-            // Fungsi untuk AJAX simpan order (with pagination fix)
-            function saveOrderWithAjax(ids) {
-                if (isSaving) {
-                    return;
-                }
-                isSaving = true;
-
-                const payload = { ids: ids };
-
-                fetch('{{ route('pendidikans.reorder') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Update urutan values dari response
-                        if (data.data && Array.isArray(data.data)) {
-                            data.data.forEach(item => {
-                                const row = el.querySelector(`tr[data-id="${item.id}"]`);
-                                if (row) {
-                                    const rowNumber = row.querySelector('.row-number');
-                                    if (rowNumber) {
-                                        rowNumber.innerText = item.urutan;
-                                    }
-                                }
-                            });
-                        }
-
-                        window.dispatchEvent(new CustomEvent('notify', {
-                            detail: {
-                                message: 'Urutan edukasi berhasil diperbarui!',
-                                type: 'success'
-                            }
-                        }));
-                    } else {
-                        throw new Error(data.message || 'Unknown error from server');
-                    }
-                })
-                .catch(error => {
-                    const errorMessage = error.message || 'Gagal menyimpan urutan';
-                    window.dispatchEvent(new CustomEvent('notify', {
-                        detail: {
-                            message: 'Gagal menyimpan urutan: ' + errorMessage,
-                            type: 'error'
-                        }
-                    }));
-                })
-                .finally(() => {
-                    isSaving = false;
-                });
-            }
-        });
-    </script>
+    @vite(['resources/js/admin/edukasi/index.js'])
 @endpush

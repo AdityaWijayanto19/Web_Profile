@@ -28,6 +28,31 @@
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        #projectsGrid {
+            transition: opacity 0.2s ease, pointer-events 0.2s ease;
+        }
+
+        /* Sortable ghost element styling */
+        .sortable-ghost {
+            opacity: 0.3;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
     </style>
 @endpush
 
@@ -49,10 +74,12 @@
         </div>
 
         <!-- GRID 3 KOLOM - Drag & Drop Sortable -->
-        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14">
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14"
+            data-redirect-url="{{ route('projects.index') }}">
 
             @forelse ($proyeks as $proyek)
-                <div class="group" data-project-id="{{ $proyek->id }}">
+                <div class="group" data-project-id="{{ $proyek->id }}"
+                    data-reorder-url="{{ route('projects.reorder') }}">
                     <!-- Thumbnail & Hover Actions -->
                     <div class="project-thumb relative mb-5 hover:cursor-grab">
                         @if ($proyek->path_gambar)
@@ -153,129 +180,5 @@
 @endsection
 
 @push('scripts')
-    <script>
-        // Initialize Lucide Icons
-        if (window.lucide) {
-            window.lucide.createIcons();
-        }
-
-        // Initialize Sortable.js for drag-and-drop reordering
-        document.addEventListener('DOMContentLoaded', function() {
-            const projectsGrid = document.getElementById('projectsGrid');
-
-            if (!projectsGrid) return;
-
-            // Create debounce function to avoid multiple requests
-            let reorderTimeout;
-            const debounceReorder = (callback, delay = 300) => {
-                clearTimeout(reorderTimeout);
-                reorderTimeout = setTimeout(callback, delay);
-            };
-
-            // Initialize Sortable
-            const sortable = Sortable.create(projectsGrid, {
-                animation: 150,
-                ghostClass: 'opacity-50',
-                dragClass: 'dragging',
-                touchStartThreshold: 5,
-                fallbackOnBody: true,
-                forceFallback: false,
-
-                onEnd: function(evt) {
-                    // Get all project elements in their new order (IDs only)
-                    const projectElements = projectsGrid.querySelectorAll('[data-project-id]');
-                    const orderedIds = Array.from(projectElements).map(el =>
-                        parseInt(el.dataset.projectId)
-                    );
-
-                    // Add visual feedback
-                    projectsGrid.style.opacity = '0.6';
-                    projectsGrid.style.pointerEvents = 'none';
-
-                    // Debounce the API call
-                    debounceReorder(() => {
-                        // Send the new order to the backend (IDs only, backend assigns urutan)
-                        fetch('{{ route('projects.reorder') }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]')?.getAttribute(
-                                        'content') || '',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    ids: orderedIds
-                                })
-                            })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(
-                                        `HTTP error! status: ${response.status}`);
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                if (data.success) {
-                                    window.dispatchEvent(new CustomEvent('notify', {
-                                        detail: {
-                                            message: 'Projects reordered successfully!',
-                                            type: 'success'
-                                        }
-                                    }));
-                                    // Reload ke halaman pertama untuk refresh urutan
-                                    setTimeout(() => {
-                                        window.location.href = data.redirect || '{{ route('projects.index') }}';
-                                    }, 500);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error reordering projects:', error);
-                                window.dispatchEvent(new CustomEvent('notify', {
-                                    detail: {
-                                        message: 'Failed to reorder projects. Please try again.',
-                                        type: 'error'
-                                    }
-                                }));
-                                // Revert the DOM to previous state by reloading
-                                setTimeout(() => location.reload(), 1000);
-                            })
-                            .finally(() => {
-                                // Remove visual feedback
-                                projectsGrid.style.opacity = '1';
-                                projectsGrid.style.pointerEvents = 'auto';
-                            });
-                    });
-                }
-            });
-        });
-    </script>
-
-    <style>
-        /* Drag and drop animations */
-        .dragging {
-            opacity: 0.5;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        #projectsGrid {
-            transition: opacity 0.2s ease, pointer-events 0.2s ease;
-        }
-
-        /* Sortable ghost element styling */
-        .sortable-ghost {
-            opacity: 0.3;
-        }
-    </style>
+    @vite(['resources/js/admin/project/index.js'])
 @endpush

@@ -252,28 +252,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Remove active class from all buttons
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.add('hidden'));
-
-                    // Add active class to clicked button
-                    button.classList.add('active');
-                    const tabId = button.getAttribute('data-tab') + '-tab';
-                    document.getElementById(tabId).classList.remove('hidden');
-                });
-            });
-
-            if (window.lucide) window.lucide.createIcons();
-        });
-    </script>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/article/index.js']); ?>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/article/index.blade.php ENDPATH**/ ?>
