@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\ArticleImageUploadRequest;
 use App\Models\Artikel;
 use App\Services\ArticleService;
 use Illuminate\Http\RedirectResponse;
@@ -115,6 +116,35 @@ class ArticleController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to save article content', ['artikel_id' => $id, 'error' => $e->getMessage()]);
             return response()->json(['error' => 'Gagal menyimpan konten.'], 500);
+        }
+    }
+
+    /**
+     * Upload article image (AJAX endpoint for editor)
+     */
+    public function uploadImage(ArticleImageUploadRequest $request, int $id): JsonResponse
+    {
+        try {
+            $user = auth()->user();
+            $artikel = $this->articleService->getByIdForUser($id, $user);
+
+            if (!$artikel) {
+                return response()->json(['error' => 'Artikel tidak ditemukan.'], 404);
+            }
+
+            // Process image using service
+            $imagePath = $this->articleService->processArticleImage($artikel, $request->file('image'));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Gambar berhasil diunggah.',
+                'file' => [
+                    'url' => '/storage/' . $imagePath,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to upload article image', ['artikel_id' => $id, 'error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 422);
         }
     }
 

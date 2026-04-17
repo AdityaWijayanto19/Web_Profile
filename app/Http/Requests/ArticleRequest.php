@@ -46,6 +46,10 @@ class ArticleRequest extends FormRequest
                 'string',
                 'max:255',
             ],
+            'path_gambar' => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 

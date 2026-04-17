@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', [ArticleController::class, 'create'])->name('article.create');
             Route::get('/{id}/edit', [ArticleController::class, 'edit'])->name('article.edit');
             Route::post('/{id}/save-content', [ArticleController::class, 'saveContent'])->name('article.save-content');
+            Route::post('/{id}/upload-image', [ArticleController::class, 'uploadImage'])->name('article.upload-image');
             Route::get('/{id}/publish', [ArticleController::class, 'showPublishForm'])->name('article.publish-form');
             Route::post('/{id}/publish-finalize', [ArticleController::class, 'publishFinalize'])->name('article.publish-finalize');
             Route::delete('/{id}', [ArticleController::class, 'destroy'])->name('article.destroy');

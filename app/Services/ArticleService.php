@@ -251,6 +251,9 @@ class ArticleService
     {
         return DB::transaction(function () use ($artikel) {
             try {
+                // Delete associated images
+                $this->deleteArticleImages($artikel);
+
                 $artikel->delete();
 
                 Log::info('Article deleted', [
@@ -267,5 +270,77 @@ class ArticleService
                 throw $e;
             }
         });
+    }
+
+    /**
+     * Process and save article image using ImageService
+     *
+     * Uploads image to storage/app/uploads/articles/{article_id}/
+     * Compresses to WebP format automatically
+     *
+     * @param Artikel $artikel
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return string Path to saved image (relative to storage disk)
+     * @throws \Exception
+     */
+    public function processArticleImage(Artikel $artikel, \Illuminate\Http\UploadedFile $file): string
+    {
+        try {
+            // Process image using ImageService
+            // Format: articles/{article_id}
+            $imagePath = $this->imageService->processUpload($file, "articles/{$artikel->id}");
+
+            if (!$imagePath) {
+                throw new \Exception('Image processing failed');
+            }
+
+            Log::info('Article image processed', [
+                'artikel_id' => $artikel->id,
+                'image_path' => $imagePath,
+            ]);
+
+            return $imagePath;
+        } catch (\Throwable $e) {
+            Log::error('Failed to process article image', [
+                'artikel_id' => $artikel->id,
+                'error' => $e->getMessage(),
+            ]);
+            throw new \Exception('Gagal memproses gambar: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete all images associated with article
+     *
+     * Removes article folder from storage/app/uploads/articles/{article_id}/
+     * Also deletes featured image if exists
+     *
+     * @param Artikel $artikel
+     * @return void
+     */
+    public function deleteArticleImages(Artikel $artikel): void
+    {
+        try {
+            // Delete featured image if exists
+            if (!empty($artikel->path_gambar)) {
+                $this->imageService->deleteFile($artikel->path_gambar);
+            }
+
+            // Delete entire article images directory
+            $articleImagePath = "uploads/articles/{$artikel->id}";
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($articleImagePath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->deleteDirectory($articleImagePath);
+                Log::info('Article images directory deleted', [
+                    'artikel_id' => $artikel->id,
+                    'path' => $articleImagePath,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Failed to cleanup article images', [
+                'artikel_id' => $artikel->id,
+                'error' => $e->getMessage(),
+            ]);
+            // Don't throw - cleanup failure shouldn't block article deletion
+        }
     }
 }

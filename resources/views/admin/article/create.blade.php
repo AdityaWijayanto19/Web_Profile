@@ -288,14 +288,37 @@
             }
 
             const uploader = (file) => new Promise((res) => {
-                const reader = new FileReader();
-                reader.onload = (e) => res({
-                    success: 1,
-                    file: {
-                        url: e.target.result
+                const formData = new FormData();
+                formData.append('image', file);
+
+                fetch('{{ route("article.upload-image", $artikel->id) }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        res({
+                            success: 1,
+                            file: data.file
+                        });
+                    } else {
+                        res({
+                            success: 0,
+                            message: data.error || 'Image upload failed'
+                        });
                     }
+                })
+                .catch(error => {
+                    console.error('Upload error:', error);
+                    res({
+                        success: 0,
+                        message: 'Network error during upload'
+                    });
                 });
-                reader.readAsDataURL(file);
             });
 
             const editor = new EditorJS({
