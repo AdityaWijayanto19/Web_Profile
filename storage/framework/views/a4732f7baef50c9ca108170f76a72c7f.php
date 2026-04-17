@@ -1,22 +1,20 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Edit Technology - Pie'); ?>
+<?php $__env->startSection('page_title', 'Edit Technology'); ?>
 
-@section('title', 'Edit Technology - Pie')
-@section('page_title', 'Edit Technology')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="max-w-7xl px-4 mx-auto">
         <!-- Breadcrumb -->
         <div class="mb-6">
-            <a href="{{ route('technologies.index') }}"
+            <a href="<?php echo e(route('technologies.index')); ?>"
                 class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
                 <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO TECHNOLOGIES
             </a>
         </div>
 
-        <form action="{{ route('technologies.update', $technology) }}" method="POST">
-            @csrf
-            @method('PUT')
+        <form action="<?php echo e(route('technologies.update', $technology)); ?>" method="POST">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
             <div class="space-y-6">
                 <!-- FORM CARD -->
                 <div class="bg-[#1a151d] border border-white/5 rounded-sm overflow-hidden shadow-2xl">
@@ -33,11 +31,25 @@
                             <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Technology
                                 Name</label>
                             <input type="text" name="nama" placeholder="e.g. React, Laravel, PostgreSQL"
-                                value="{{ old('nama', $technology->nama) }}"
-                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm @error('nama') border-red-500 @enderror">
-                            @error('nama')
-                                <p class="text-xs text-red-500">{{ $message }}</p>
-                            @enderror
+                                value="<?php echo e(old('nama', $technology->nama)); ?>"
+                                class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm <?php $__errorArgs = ['nama'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                            <?php $__errorArgs = ['nama'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <p class="text-xs text-red-500"><?php echo e($message); ?></p>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Icon Selection -->
@@ -47,11 +59,25 @@
                             <div class="space-y-2">
                                 <input type="text" name="path_icon" id="icon-input"
                                     placeholder="e.g. react, laravel, ubuntu, python"
-                                    value="{{ old('path_icon', $technology->path_icon) }}"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm @error('path_icon') border-red-500 @enderror">
-                                @error('path_icon')
-                                    <p class="text-xs text-red-500">{{ $message }}</p>
-                                @enderror
+                                    value="<?php echo e(old('path_icon', $technology->path_icon)); ?>"
+                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm <?php $__errorArgs = ['path_icon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                                <?php $__errorArgs = ['path_icon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="text-xs text-red-500"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Live Preview -->
@@ -59,18 +85,18 @@
                                 class="bg-black/40 border border-white/5 rounded-sm p-4 flex items-center justify-center min-h-24">
                                 <div class="text-center">
                                     <div id="icon-preview" class="mb-3">
-                                        @if ($technology->path_icon)
-                                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{{ $technology->path_icon }}.svg"
-                                                alt="{{ $technology->path_icon }}" class="w-12 h-12 mx-auto"
+                                        <?php if($technology->path_icon): ?>
+                                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/<?php echo e($technology->path_icon); ?>.svg"
+                                                alt="<?php echo e($technology->path_icon); ?>" class="w-12 h-12 mx-auto"
                                                 style="filter: invert(1);">
-                                        @else
+                                        <?php else: ?>
                                             <i data-lucide="help-circle" class="w-12 h-12 text-gray-600 mx-auto"></i>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                     <p id="icon-name" class="text-xs text-gray-500">
-                                        {{ $technology->path_icon ?? 'Type icon name to preview' }}</p>
+                                        <?php echo e($technology->path_icon ?? 'Type icon name to preview'); ?></p>
                                     <p id="icon-status" class="text-[9px] text-gray-600 mt-1">
-                                        {{ $technology->path_icon ? '✓ Icon found' : '' }}</p>
+                                        <?php echo e($technology->path_icon ? '✓ Icon found' : ''); ?></p>
                                 </div>
                             </div>
 
@@ -80,14 +106,14 @@
                                     class="text-[#730c1e] hover:underline">simpleicons.org</a></div>
                             </p>
                             <p class="text-xs text-gray-400 space-y-1 list-disc list-inside mt-2">Used in
-                                {{ $technology->proyeks->count() }} projects</p>
+                                <?php echo e($technology->proyeks->count()); ?> projects</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- ACTIONS -->
                 <div class="grid grid-cols-2 gap-3">
-                    <a href="{{ route('technologies.index') }}"
+                    <a href="<?php echo e(route('technologies.index')); ?>"
                         class="flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 py-3 rounded-sm text-[11px] font-bold transition-all border border-white/5 uppercase tracking-widest">
                         CANCEL
                     </a>
@@ -99,8 +125,10 @@
             </div>
         </form>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
-    @vite(['resources/js/admin/technology/edit.js'])
-@endpush
+<?php $__env->startPush('scripts'); ?>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/technology/edit.js']); ?>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/technology/edit.blade.php ENDPATH**/ ?>
