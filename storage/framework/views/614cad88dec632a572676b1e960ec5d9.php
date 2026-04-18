@@ -69,6 +69,10 @@
             pointer-events: none;
         }
 
+        [x-cloak] {
+            display: none !important;
+        }
+
         @media (max-width: 768px) {
             aside {
                 position: fixed;
@@ -110,6 +114,26 @@
 
 <body class="flex h-screen overflow-hidden text-sm">
 
+    <?php if (isset($component)) { $__componentOriginal0b29f2cc4d94f88a812835e3e715f535 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal0b29f2cc4d94f88a812835e3e715f535 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.alert-pop-up','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('alert-pop-up'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal0b29f2cc4d94f88a812835e3e715f535)): ?>
+<?php $attributes = $__attributesOriginal0b29f2cc4d94f88a812835e3e715f535; ?>
+<?php unset($__attributesOriginal0b29f2cc4d94f88a812835e3e715f535); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal0b29f2cc4d94f88a812835e3e715f535)): ?>
+<?php $component = $__componentOriginal0b29f2cc4d94f88a812835e3e715f535; ?>
+<?php unset($__componentOriginal0b29f2cc4d94f88a812835e3e715f535); ?>
+<?php endif; ?>
     <?php if (isset($component)) { $__componentOriginal5194778a3a7b899dcee5619d0610f5cf = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal5194778a3a7b899dcee5619d0610f5cf = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.alert','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -179,7 +203,7 @@
     <?php echo $__env->yieldPushContent('scripts'); ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-           <?php if(session('success')): ?>
+            <?php if(session('success')): ?>
                 window.dispatchEvent(new CustomEvent('notify', {
                     detail: {
                         message: "<?php echo e(addslashes(session('success'))); ?>",

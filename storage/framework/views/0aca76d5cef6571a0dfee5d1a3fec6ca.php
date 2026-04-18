@@ -1,9 +1,7 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Certifications'); ?>
+<?php $__env->startSection('page_title', 'Certifications Manager'); ?>
 
-@section('title', 'Certifications')
-@section('page_title', 'Certifications Manager')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         .btn-primary {
             background-color: #730c1e;
@@ -53,9 +51,9 @@
             }
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="max-w-7xl mx-auto px-4">
 
         <div class="flex justify-between items-end mb-8 border-b border-white/5 pb-6">
@@ -64,7 +62,7 @@
                 <p class="text-gray-500 text-[11px] mt-1 uppercase tracking-tighter">Manage and reorder your professional
                     credentials.</p>
             </div>
-            <a href="{{ route('sertifikats.create') }}"
+            <a href="<?php echo e(route('sertifikats.create')); ?>"
                 class="btn-primary text-white px-4 py-2 rounded-sm flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                 Add New
@@ -72,36 +70,36 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12" id="sertifikatsGrid"
-            data-redirect-url="{{ route('sertifikats.index') }}">
+            data-redirect-url="<?php echo e(route('sertifikats.index')); ?>">
 
-            @forelse($sertifikats as $sertifikat)
-                <div class="group cursor-grab active:cursor-grabbing" data-sertifikat-id="{{ $sertifikat->id }}"
-                    data-reorder-url="{{ route('sertifikats.reorder') }}">
+            <?php $__empty_1 = true; $__currentLoopData = $sertifikats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sertifikat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <div class="group cursor-grab active:cursor-grabbing" data-sertifikat-id="<?php echo e($sertifikat->id); ?>"
+                    data-reorder-url="<?php echo e(route('sertifikats.reorder')); ?>">
                     <div class="cert-thumb relative mb-4">
-                        @if ($sertifikat->path_gambar)
-                            <img src="{{ asset('storage/' . $sertifikat->path_gambar) }}"
-                                alt="{{ $sertifikat->nama_sertifikat }}"
+                        <?php if($sertifikat->path_gambar): ?>
+                            <img src="<?php echo e(asset('storage/' . $sertifikat->path_gambar)); ?>"
+                                alt="<?php echo e($sertifikat->nama_sertifikat); ?>"
                                 class="w-full h-full object-cover group-hover:opacity-100 transition-all duration-500">
-                        @else
+                        <?php else: ?>
                             <div
                                 class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[10px]">
                                 No Preview</div>
-                        @endif
+                        <?php endif; ?>
 
                         <div
                             class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10">
-                            <a href="{{ route('sertifikats.edit', $sertifikat) }}"
+                            <a href="<?php echo e(route('sertifikats.edit', $sertifikat)); ?>"
                                 class="p-2.5 bg-white/10 hover:bg-blue-600 rounded-sm text-white transition-colors">
                                 <i data-lucide="edit-3" class="w-4.5 h-4.5"></i>
                             </a>
-                            <form action="{{ route('sertifikats.destroy', $sertifikat) }}" method="POST"
+                            <form action="<?php echo e(route('sertifikats.destroy', $sertifikat)); ?>" method="POST"
                                 onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
-                                @csrf
+                                <?php echo csrf_field(); ?>
                                 <button type="button"
                                     @click="$dispatch('open-delete-modal', {
         title: 'Hapus Sertifikat?',
-        message: 'Apakah anda yakin ingin menghapus {{ addslashes($sertifikat->nama_sertifikat) }}?',
-        action: '{{ route('sertifikats.destroy', $sertifikat) }}'
+        message: 'Apakah anda yakin ingin menghapus <?php echo e(addslashes($sertifikat->nama_sertifikat)); ?>?',
+        action: '<?php echo e(route('sertifikats.destroy', $sertifikat)); ?>'
     })"
                                     class="p-2.5 bg-white/10 hover:bg-red-600 rounded-sm text-white transition-colors">
                                     <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
@@ -111,7 +109,7 @@
 
                         <div class="absolute top-2 right-2 z-10">
                             <div class="px-2 py-1 bg-[#730c1e] rounded-sm">
-                                <span class="text-[9px] font-bold text-white">{{ $sertifikat->tahun }}</span>
+                                <span class="text-[9px] font-bold text-white"><?php echo e($sertifikat->tahun); ?></span>
                             </div>
                         </div>
 
@@ -119,37 +117,42 @@
                             <div class="flex items-center gap-2">
                                 <div class="w-6 h-6 bg-black/50 backdrop-blur-md flex items-center justify-center rounded-sm border border-white/10 text-white font-mono text-[9px] transition-all duration-300"
                                     data-sequence>
-                                    {{ str_pad($sertifikat->urutan, 2, '0', STR_PAD_LEFT) }}
+                                    <?php echo e(str_pad($sertifikat->urutan, 2, '0', STR_PAD_LEFT)); ?>
+
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="px-0.5 space-y-1">
-                        <a href="{{ route('sertifikats.show', $sertifikat) }}"
+                        <a href="<?php echo e(route('sertifikats.show', $sertifikat)); ?>"
                             class="text-sm font-bold text-white uppercase tracking-wider truncate hover:text-[#730c1e] transition-colors line-clamp-1">
-                            {{ $sertifikat->nama_sertifikat }}
+                            <?php echo e($sertifikat->nama_sertifikat); ?>
+
                         </a>
                         <p class="text-[11px] text-gray-500 font-medium uppercase mt-0.5 line-clamp-1">
-                            {{ $sertifikat->penerbit }}</p>
+                            <?php echo e($sertifikat->penerbit); ?></p>
                     </div>
                 </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <div class="col-span-full py-16 text-center">
                     <i data-lucide="inbox" class="w-16 h-16 text-gray-600 mx-auto mb-4"></i>
                     <p class="text-gray-500 text-[11px] uppercase tracking-widest">No certifications yet.</p>
                 </div>
-            @endforelse
+            <?php endif; ?>
 
         </div>
 
         <div class="mt-16 py-8 border-t border-white/5">
-            {{ $sertifikats->links('partials.pagination') }}
+            <?php echo e($sertifikats->links('partials.pagination')); ?>
+
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    @vite(['resources/js/admin/sertifikat/index.js'])
-@endpush
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/sertifikat/index.js']); ?>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/sertifikat/index.blade.php ENDPATH**/ ?>

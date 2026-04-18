@@ -69,6 +69,10 @@
             pointer-events: none;
         }
 
+        [x-cloak] {
+            display: none !important;
+        }
+
         @media (max-width: 768px) {
             aside {
                 position: fixed;
@@ -110,6 +114,7 @@
 
 <body class="flex h-screen overflow-hidden text-sm">
 
+    <x-alert-pop-up />
     <x-alert />
 
     <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/60 z-[40] hidden md:hidden"></div>
@@ -160,7 +165,7 @@
     @stack('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-           @if (session('success'))
+            @if (session('success'))
                 window.dispatchEvent(new CustomEvent('notify', {
                     detail: {
                         message: "{{ addslashes(session('success')) }}",
