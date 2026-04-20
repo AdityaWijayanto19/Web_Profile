@@ -128,13 +128,12 @@
 </head>
 <body class="relative overflow-x-hidden">
 
-    <?php echo $__env->make('partials.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    @include('partials.navbar')
 
-    <?php echo $__env->yieldContent('content'); ?>
+    @yield('content')
 
-    <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    @include('partials.footer')
 
-    <?php echo $__env->make('partials.scripts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    @include('partials.scripts')
 </body>
 </html>
-<?php /**PATH C:\laragon\www\Web Profile\resources\views/layouts/app.blade.php ENDPATH**/ ?>

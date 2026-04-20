@@ -40,3 +40,4 @@
         </div>
     </div>
 </section>
+<?php /**PATH C:\laragon\www\Web Profile\resources\views/sections/education.blade.php ENDPATH**/ ?>

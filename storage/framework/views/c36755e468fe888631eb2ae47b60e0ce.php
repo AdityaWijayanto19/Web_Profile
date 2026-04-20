@@ -14,7 +14,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Project Cards -->
-            @foreach(['Nexus AI Dashboard', 'Crypto Pulse App', 'E-Glow Commerce'] as $title)
+            <?php $__currentLoopData = ['Nexus AI Dashboard', 'Crypto Pulse App', 'E-Glow Commerce']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $title): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="group">
                 <div class="project-img-container aspect-video mb-6 relative overflow-hidden rounded-xl">
                     <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover">
@@ -22,14 +22,15 @@
                         <a href="#" class="bg-white text-black p-3 rounded-full"><i data-lucide="external-link"></i></a>
                     </div>
                 </div>
-                <h3 class="text-xl font-bold mb-2">{{ $title }}</h3>
+                <h3 class="text-xl font-bold mb-2"><?php echo e($title); ?></h3>
                 <p class="text-textMuted text-sm mb-4">A complete suite for modern digital products.</p>
                 <div class="flex gap-3 text-textMuted text-xl">
                     <iconify-icon icon="simple-icons:nextdotjs"></iconify-icon>
                     <iconify-icon icon="simple-icons:react"></iconify-icon>
                 </div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
 </section>
+<?php /**PATH C:\laragon\www\Web Profile\resources\views/sections/projects.blade.php ENDPATH**/ ?>

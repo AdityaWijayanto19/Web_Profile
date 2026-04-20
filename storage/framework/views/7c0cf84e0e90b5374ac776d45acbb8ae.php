@@ -45,9 +45,10 @@
         </div>
 
         <div class="absolute right-0 top-16 h-full w-full md:w-[45%] pointer-events-none z-20 flex items-end justify-end opacity-30 md:opacity-100">
-            <img src="{{ asset('assets/images/me.png') }}" alt="Profile"
+            <img src="<?php echo e(asset('assets/images/me.png')); ?>" alt="Profile"
                 style="mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 85%); -webkit-mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 85%);"
                 class="relative z-30 w-auto h-full max-h-[85%] md:max-h-[100%] object-contain grayscale brightness-110 contrast-125 md:opacity-85 transition-all duration-700 hover:grayscale-0 hover:opacity-100">
         </div>
     </main>
 </header>
+<?php /**PATH C:\laragon\www\Web Profile\resources\views/sections/hero.blade.php ENDPATH**/ ?>

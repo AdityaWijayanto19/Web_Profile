@@ -43,27 +43,28 @@
             </div>
 
             <div class="lg:col-span-5 flex flex-col gap-3 lg:max-h-[560px] overflow-y-auto custom-scrollbar pr-2">
-                @php
+                <?php
                     $articles = [
                         ['title' => 'Scaling React for Enterprise', 'tag' => 'Architecture', 'img' => 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400'],
                         ['title' => 'The Future of CSS Grid 2025', 'tag' => 'Design', 'img' => 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=400'],
                         ['title' => 'Zero Trust Frontend Security', 'tag' => 'Security', 'img' => 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=400'],
                         ['title' => 'Next.js Server Actions Dive', 'tag' => 'Backend', 'img' => 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=400'],
                     ];
-                @endphp
-                @foreach($articles as $art)
+                ?>
+                <?php $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $art): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="group cursor-pointer flex gap-4 items-center p-2 rounded-xl hover:bg-white/[0.03] transition-all duration-300">
                     <div class="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-xl overflow-hidden border border-borderMuted bg-surface">
-                        <img src="{{ $art['img'] }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500">
+                        <img src="<?php echo e($art['img']); ?>" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <span class="text-[9px] text-primary font-bold uppercase tracking-[0.2em] mb-1 block">{{ $art['tag'] }}</span>
-                        <h4 class="text-white text-base md:text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2 underline-offset-4 group-hover:underline">{{ $art['title'] }}</h4>
+                        <span class="text-[9px] text-primary font-bold uppercase tracking-[0.2em] mb-1 block"><?php echo e($art['tag']); ?></span>
+                        <h4 class="text-white text-base md:text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2 underline-offset-4 group-hover:underline"><?php echo e($art['title']); ?></h4>
                         <p class="text-textMuted text-xs mt-1 line-clamp-1 font-light opacity-90">Advanced guides and best practices.</p>
                     </div>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
 </section>
+<?php /**PATH C:\laragon\www\Web Profile\resources\views/sections/articles.blade.php ENDPATH**/ ?>
