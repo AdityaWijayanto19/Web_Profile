@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -133,7 +134,14 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <div class="flex gap-3 text-gray-400">
+                <div class="flex gap-4 text-gray-400">
+                    <div class="flex gap-3 text-gray-400 hover:text-[#730c1e] transition-colors {{ Request::is('admin/article/create') ? 'text-[#730c1e]' : '' }}">
+                        <a href="{{ route('article.create') }}"
+                            class="w-4 h-4 flex items-center justify-center"
+                            title="Write Articles">Write
+                        </a>
+                        <i data-lucide="square-pen" class="w-4 h-4 cursor-pointer"></i>
+                    </div>
                     <a href="{{ route('visitors') }}"
                         class="hover:text-[#730c1e] transition-colors {{ Request::is('admin/visitors') ? 'text-[#730c1e]' : '' }}"
                         title="View Visitors">

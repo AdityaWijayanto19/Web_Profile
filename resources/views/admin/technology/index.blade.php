@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Technologies Management - Pie')
 @section('page_title', 'Technologies Library')
@@ -65,8 +65,10 @@
                             <form action="{{ route('technologies.destroy', $tech) }}" method="POST" class="inline"
                                 onsubmit="return confirm('Delete {{ $tech->nama }}?')">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit"
+                                <button type="button"
+                                data-delete-btn
+                                    data-technology-name="{{ addslashes($tech->nama) }}"
+                                    data-delete-url="{{ route('technologies.destroy', $tech) }}"
                                     class="text-[10px] font-bold text-gray-500 hover:text-red-500 transition-colors px-3 py-1.5 rounded-sm hover:bg-red-500/10 inline-flex items-center gap-1 uppercase tracking-widest">
                                     <i data-lucide="trash-2" class="w-3 h-3"></i>
                                     Delete

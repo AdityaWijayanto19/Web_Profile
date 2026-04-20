@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Edit Technology - Pie')
 @section('page_title', 'Edit Technology')

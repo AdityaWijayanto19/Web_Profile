@@ -92,15 +92,12 @@
                                 class="p-2.5 bg-white/10 hover:bg-blue-600 rounded-sm text-white transition-colors">
                                 <i data-lucide="edit-3" class="w-4.5 h-4.5"></i>
                             </a>
-                            <form action="<?php echo e(route('sertifikats.destroy', $sertifikat)); ?>" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
+                            <form action="<?php echo e(route('sertifikats.destroy', $sertifikat)); ?>" method="POST" class="inline">
                                 <?php echo csrf_field(); ?>
                                 <button type="button"
-                                    @click="$dispatch('open-delete-modal', {
-        title: 'Hapus Sertifikat?',
-        message: 'Apakah anda yakin ingin menghapus <?php echo e(addslashes($sertifikat->nama_sertifikat)); ?>?',
-        action: '<?php echo e(route('sertifikats.destroy', $sertifikat)); ?>'
-    })"
+                                    data-delete-btn
+                                    data-sertifikat-name="<?php echo e(addslashes($sertifikat->nama_sertifikat)); ?>"
+                                    data-delete-url="<?php echo e(route('sertifikats.destroy', $sertifikat)); ?>"
                                     class="p-2.5 bg-white/10 hover:bg-red-600 rounded-sm text-white transition-colors">
                                     <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
                                 </button>
@@ -155,4 +152,4 @@
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/sertifikat/index.js']); ?>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/sertifikat/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/sertifikat/index.blade.php ENDPATH**/ ?>

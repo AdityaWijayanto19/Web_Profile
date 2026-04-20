@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', $sertifikat->nama_sertifikat . ' - Certificate')
 @section('page_title', 'Certificate Details')

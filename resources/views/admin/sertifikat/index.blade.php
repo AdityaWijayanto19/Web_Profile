@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Certifications')
 @section('page_title', 'Certifications Manager')
@@ -94,15 +94,12 @@
                                 class="p-2.5 bg-white/10 hover:bg-blue-600 rounded-sm text-white transition-colors">
                                 <i data-lucide="edit-3" class="w-4.5 h-4.5"></i>
                             </a>
-                            <form action="{{ route('sertifikats.destroy', $sertifikat) }}" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
+                            <form action="{{ route('sertifikats.destroy', $sertifikat) }}" method="POST" class="inline">
                                 @csrf
                                 <button type="button"
-                                    @click="$dispatch('open-delete-modal', {
-        title: 'Hapus Sertifikat?',
-        message: 'Apakah anda yakin ingin menghapus {{ addslashes($sertifikat->nama_sertifikat) }}?',
-        action: '{{ route('sertifikats.destroy', $sertifikat) }}'
-    })"
+                                    data-delete-btn
+                                    data-sertifikat-name="{{ addslashes($sertifikat->nama_sertifikat) }}"
+                                    data-delete-url="{{ route('sertifikats.destroy', $sertifikat) }}"
                                     class="p-2.5 bg-white/10 hover:bg-red-600 rounded-sm text-white transition-colors">
                                     <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
                                 </button>

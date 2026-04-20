@@ -3,6 +3,44 @@
             window.lucide.createIcons();
         }
 
+        function showDeleteConfirm(projectName, deleteUrl) {
+            Swal.fire({
+                title: 'Hapus Project?',
+                html: `Apakah anda yakin ingin menghapus <strong>${projectName}</strong>?`,
+                icon: 'warning',
+                background: '#1a161d',
+                color: '#fff',
+                confirmButtonColor: '#730c1e',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Hapus Data',
+                cancelButtonText: 'Batal',
+                showCancelButton: true,
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = deleteUrl;
+
+                    let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    let csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+
+                    let methodInput = document.createElement('input');
+                    methodInput.type = 'hidden';
+                    methodInput.name = '_method';
+                    methodInput.value = 'DELETE';
+
+                    form.appendChild(csrfInput);
+                    form.appendChild(methodInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const projectsGrid = document.getElementById('projectsGrid');
             const redirectUrl = projectsGrid?.dataset.redirectUrl;
@@ -11,6 +49,15 @@
             const reorderUrl = firstCard?.dataset.reorderUrl;
 
             if (!projectsGrid) return;
+
+            // Setup delete buttons
+            document.querySelectorAll('[data-delete-btn]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const projectName = this.dataset.projectName;
+                    const deleteUrl = this.dataset.deleteUrl;
+                    showDeleteConfirm(projectName, deleteUrl);
+                });
+            });
 
             let reorderTimeout;
             const debounceReorder = (callback, delay = 300) => {

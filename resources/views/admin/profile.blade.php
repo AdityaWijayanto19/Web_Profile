@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Hero Manager')
 @section('page_title', 'Hero Section Manager')

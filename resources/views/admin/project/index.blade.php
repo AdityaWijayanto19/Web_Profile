@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Manage Projects')
 @section('page_title', 'Projects Manager')
@@ -15,7 +15,6 @@
             transform: translateY(-1px);
         }
 
-        /* Card Project Style */
         .project-thumb {
             aspect-ratio: 16 / 9;
             border-radius: 2px;
@@ -24,7 +23,6 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Custom Scrollbar untuk horizontal tech stack */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -37,7 +35,6 @@
             transition: opacity 0.2s ease, pointer-events 0.2s ease;
         }
 
-        /* Sortable ghost element styling */
         .sortable-ghost {
             opacity: 0.3;
         }
@@ -59,7 +56,6 @@
 @section('content')
     <div class="max-w-7xl mx-auto px-4">
 
-        {{-- HEADER --}}
         <div class="flex justify-between items-end mb-8 border-b border-white/5 pb-6">
             <div>
                 <h2 class="text-xl font-bold text-white tracking-tight">Portfolio Projects</h2>
@@ -96,11 +92,12 @@
                                 <i data-lucide="edit-3" class="w-5 h-5"></i>
                             </a>
 
-                            <form action="{{ route('projects.destroy', $proyek) }}" method="POST" class="inline"
-                                onsubmit="return confirm('Delete this project?');">
+                            <form action="{{ route('projects.destroy', $proyek) }}" method="POST" class="inline">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit"
+                                <button type="button"
+                                    data-delete-btn
+                                    data-project-name="{{ addslashes($proyek->judul) }}"
+                                    data-delete-url="{{ route('projects.destroy', $proyek) }}"
                                     class="p-3 bg-white/10 hover:bg-red-600 rounded-sm text-white transition-colors border border-white/5">
                                     <i data-lucide="trash-2" class="w-5 h-5"></i>
                                 </button>

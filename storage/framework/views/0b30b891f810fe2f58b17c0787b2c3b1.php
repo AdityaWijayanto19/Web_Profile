@@ -141,11 +141,12 @@
                                                 <i data-lucide="send" class="w-4 h-4"></i>
                                             </a>
                                             <form action="<?php echo e(route('article.destroy', $artikel->id)); ?>" method="POST"
-                                                style="display: inline;"
-                                                onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                                style="display: inline;">
                                                 <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="submit"
+                                                <button type="button"
+                                                    data-delete-btn
+                                                    data-article-title="<?php echo e(addslashes($artikel->judul)); ?>"
+                                                    data-delete-url="<?php echo e(route('article.destroy', $artikel->id)); ?>"
                                                     class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors"
                                                     title="Delete">
                                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -221,11 +222,12 @@
                                                 <i data-lucide="eye" class="w-4 h-4"></i>
                                             </a>
                                             <form action="<?php echo e(route('article.destroy', $artikel->id)); ?>" method="POST"
-                                                style="display: inline;"
-                                                onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                                style="display: inline;">
                                                 <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="submit"
+                                                <button type="button"
+                                                    data-delete-btn
+                                                    data-article-title="<?php echo e(addslashes($artikel->judul)); ?>"
+                                                    data-delete-url="<?php echo e(route('article.destroy', $artikel->id)); ?>"
                                                     class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors"
                                                     title="Delete">
                                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -255,4 +257,4 @@
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/article/index.js']); ?>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/article/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/article/index.blade.php ENDPATH**/ ?>

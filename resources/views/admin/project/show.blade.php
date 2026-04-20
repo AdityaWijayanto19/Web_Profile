@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', $proyek->judul)
 @section('page_title', 'Project Details')

@@ -78,10 +78,12 @@
                                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </a>
                                     <form action="<?php echo e(route('pendidikans.destroy', $pendidikan->id)); ?>" method="POST"
-                                        style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                        style="display:inline;">
                                         <?php echo csrf_field(); ?>
-                                        <?php echo method_field('DELETE'); ?>
-                                        <button type="submit"
+                                        <button type="button"
+                                            data-delete-btn
+                                            data-pendidikan-name="<?php echo e(addslashes($pendidikan->gelar . ' - ' . $pendidikan->instansi)); ?>"
+                                            data-delete-url="<?php echo e(route('pendidikans.destroy', $pendidikan->id)); ?>"
                                             class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors border-0 bg-transparent cursor-pointer">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
@@ -115,4 +117,4 @@
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/edukasi/index.js']); ?>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/edukasi/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/edukasi/index.blade.php ENDPATH**/ ?>

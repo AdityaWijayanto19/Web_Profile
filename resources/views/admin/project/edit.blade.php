@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Edit Project - Pie')
 @section('page_title', 'Edit Project')

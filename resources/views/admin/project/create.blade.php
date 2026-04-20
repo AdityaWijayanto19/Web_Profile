@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Create New Project - Pie')
 @section('page_title', 'Create New Project')

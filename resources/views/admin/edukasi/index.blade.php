@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Education Management')
 @section('page_title', 'Education Management')
@@ -80,10 +80,12 @@
                                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </a>
                                     <form action="{{ route('pendidikans.destroy', $pendidikan->id) }}" method="POST"
-                                        style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                        style="display:inline;">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
+                                        <button type="button"
+                                            data-delete-btn
+                                            data-pendidikan-name="{{ addslashes($pendidikan->gelar . ' - ' . $pendidikan->instansi) }}"
+                                            data-delete-url="{{ route('pendidikans.destroy', $pendidikan->id) }}"
                                             class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors border-0 bg-transparent cursor-pointer">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>

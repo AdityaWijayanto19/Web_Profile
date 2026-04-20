@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Articles Management')
 @section('page_title', 'Articles Management')
@@ -140,11 +140,12 @@
                                                 <i data-lucide="send" class="w-4 h-4"></i>
                                             </a>
                                             <form action="{{ route('article.destroy', $artikel->id) }}" method="POST"
-                                                style="display: inline;"
-                                                onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                                style="display: inline;">
                                                 @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
+                                                <button type="button"
+                                                    data-delete-btn
+                                                    data-article-title="{{ addslashes($artikel->judul) }}"
+                                                    data-delete-url="{{ route('article.destroy', $artikel->id) }}"
                                                     class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors"
                                                     title="Delete">
                                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -217,11 +218,12 @@
                                                 <i data-lucide="eye" class="w-4 h-4"></i>
                                             </a>
                                             <form action="{{ route('article.destroy', $artikel->id) }}" method="POST"
-                                                style="display: inline;"
-                                                onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                                style="display: inline;">
                                                 @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
+                                                <button type="button"
+                                                    data-delete-btn
+                                                    data-article-title="{{ addslashes($artikel->judul) }}"
+                                                    data-delete-url="{{ route('article.destroy', $artikel->id) }}"
                                                     class="p-1.5 hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors"
                                                     title="Delete">
                                                     <i data-lucide="trash-2" class="w-4 h-4"></i>

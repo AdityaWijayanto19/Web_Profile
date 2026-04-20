@@ -10,6 +10,45 @@ function closeEditor() {
     document.getElementById("editor-panel").classList.add("translate-x-full");
 }
 
+function showDeleteConfirm(sertifikatName, deleteUrl) {
+    Swal.fire({
+        title: 'Hapus Sertifikat?',
+        html: `Apakah anda yakin ingin menghapus <strong>${sertifikatName}</strong>?`,
+        icon: 'warning',
+        background: '#1a161d',
+        color: '#fff',
+        confirmButtonColor: '#730c1e',
+        cancelButtonColor: '#333',
+        confirmButtonText: 'Hapus Data',
+        cancelButtonText: 'Batal',
+        showCancelButton: true,
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Buat form untuk submit DELETE
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.action = deleteUrl;
+
+            let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            let csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = csrfToken;
+
+            let methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+
+            form.appendChild(csrfInput);
+            form.appendChild(methodInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const sertifikatsGrid = document.getElementById("sertifikatsGrid");
     const redirectUrl = sertifikatsGrid?.dataset.redirectUrl;
@@ -18,6 +57,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const reorderUrl = firstCard?.dataset.reorderUrl;
 
     if (!sertifikatsGrid) return;
+
+    // Setup delete buttons
+    document.querySelectorAll('[data-delete-btn]').forEach(button => {
+        button.addEventListener('click', function() {
+            const sertifikatName = this.dataset.sertifikatName;
+            const deleteUrl = this.dataset.deleteUrl;
+            showDeleteConfirm(sertifikatName, deleteUrl);
+        });
+    });
 
     let reorderTimeout;
     const debounceReorder = (callback, delay = 300) => {
