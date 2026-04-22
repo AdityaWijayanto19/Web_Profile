@@ -60,6 +60,13 @@
                     'pattern' => 'admin/article*',
                     'desc' => 'Written blogs',
                 ],
+                [
+                    'route' => 'admin.footer.index',
+                    'icon' => 'layout-footer',
+                    'name' => 'Footer',
+                    'pattern' => 'admin/footer*',
+                    'desc' => 'Footer settings',
+                ],
             ];
         @endphp
 

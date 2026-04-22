@@ -8,6 +8,7 @@ use App\Services\SertifikatService;
 use App\Services\PengalamanService;
 use App\Services\ProjectService;
 use App\Services\ArticleService;
+use App\Services\FooterService;
 
 class LandingPageController extends Controller
 {
@@ -17,6 +18,7 @@ class LandingPageController extends Controller
     private PengalamanService $pengalamanService;
     private ProjectService $projectService;
     private ArticleService $articleService;
+    private FooterService $footerService;
 
     public function __construct(
         HeroSectionService $heroSectionService,
@@ -24,7 +26,8 @@ class LandingPageController extends Controller
         SertifikatService $sertifikatService,
         PengalamanService $pengalamanService,
         ProjectService $projectService,
-        ArticleService $articleService
+        ArticleService $articleService,
+        FooterService $footerService,
     ) {
         $this->heroSectionService = $heroSectionService;
         $this->pendidikanService = $pendidikanService;
@@ -32,6 +35,7 @@ class LandingPageController extends Controller
         $this->pengalamanService = $pengalamanService;
         $this->projectService = $projectService;
         $this->articleService = $articleService;
+        $this->footerService = $footerService;
     }
 
     public function index()
@@ -42,8 +46,9 @@ class LandingPageController extends Controller
         $pengalaman = $this->pengalamanService->getAll();
         $projects = $this->projectService->getPublishedAll();
         $articles = $this->articleService->getAllPublished();
+        $footer = $this->footerService->getMain();
 
-        return view('welcome', compact('hero', 'educations', 'sertifikats', 'pengalaman', 'projects', 'articles'));
+        return view('welcome', compact('hero', 'educations', 'sertifikats', 'pengalaman', 'projects', 'articles', 'footer'));
     }
 }
 

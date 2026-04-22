@@ -11,6 +11,7 @@ use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\FooterController;
 
 Route::get('/', [App\Http\Controllers\LandingPageController::class, 'index'])->name('landing');
 
@@ -63,6 +64,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('technologies', TechnologyController::class);
 
         Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors');
+
+        // Footer Management Routes
+        Route::get('/footer', [FooterController::class, 'index'])->name('admin.footer.index');
+        Route::get('/footer/create', [FooterController::class, 'create'])->name('admin.footer.create');
+        Route::post('/footer', [FooterController::class, 'store'])->name('admin.footer.store');
+        Route::get('/footer/{footer}/edit', [FooterController::class, 'edit'])->name('admin.footer.edit');
+        Route::put('/footer/{footer}', [FooterController::class, 'update'])->name('admin.footer.update');
+        Route::delete('/footer/{footer}', [FooterController::class, 'destroy'])->name('admin.footer.destroy');
 
         Route::prefix('article')->group(function () {
             Route::get('/index', [ArticleController::class, 'index'])->name('article.index');
