@@ -19,6 +19,11 @@ class PendidikanService
         return Pendidikan::orderBy('urutan', 'asc')->paginate($this::PER_PAGE);
     }
 
+    public function getForLanding(int $limit = 2): Collection
+    {
+        return Pendidikan::orderBy('urutan', 'asc')->limit($limit)->get();
+    }
+
     public function getById(int $id): ?Pendidikan
     {
         return Pendidikan::find($id);

@@ -222,7 +222,7 @@
                 <input
                     type="number"
                     id="menit_baca"
-                    name="minet_baca"
+                    name="menit_baca"
                     class="form-input w-full @error('menit_baca') border-red-500 @enderror"
                     value="{{ old('menit_baca', $artikel->menit_baca) }}"
                     min="1"

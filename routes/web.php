@@ -12,9 +12,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ArticleController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\LandingPageController::class, 'index'])->name('landing');
+
+// Public article detail route
+Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -71,6 +72,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/{id}/upload-image', [ArticleController::class, 'uploadImage'])->name('article.upload-image');
             Route::get('/{id}/publish', [ArticleController::class, 'showPublishForm'])->name('article.publish-form');
             Route::post('/{id}/publish-finalize', [ArticleController::class, 'publishFinalize'])->name('article.publish-finalize');
+            Route::get('/{id}/edit-metadata', [ArticleController::class, 'editMetadata'])->name('article.edit-metadata');
+            Route::put('/{id}/metadata', [ArticleController::class, 'updateMetadataPublished'])->name('article.update-metadata');
             Route::delete('/{id}', [ArticleController::class, 'destroy'])->name('article.destroy');
         });
     });

@@ -25,56 +25,60 @@
         </div>
 
         <div class="relative grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-4 min-h-[450px]">
-            <!-- Step 1 -->
-            <div class="relative flex flex-col items-center md:items-start md:mt-16 group">
-                <div class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-start text-center md:text-left">
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-2 relative mb-10">
-                        <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">1</span>
-                        <div class="text-center md:text-left">
-                            <h4 class="text-xl font-bold text-primary mb-2">Frontend Intern</h4>
-                            <p class="text-sm text-gray-500 leading-relaxed max-w-[200px]">Tech Studio Inc • 2021. Focus on mastering modern UI architecture.</p>
+            @foreach ($pengalaman->take(3) as $index => $item)
+                @if ($index === 0)
+                    <!-- Item 1 - Left -->
+                    <div class="relative flex flex-col items-center md:items-start md:mt-16 group">
+                        <div class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-start text-center md:text-left">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-2 relative mb-10">
+                                <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">1</span>
+                                <div class="text-center md:text-left">
+                                    <h4 class="text-xl font-bold text-primary mb-2">{{ $item->jabatan }}</h4>
+                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[200px]">{{ $item->keterangan }}</p>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
+                                <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
+                                <iconify-icon icon="ri:flag-fill" class="text-primary text-xl relative z-10"></iconify-icon>
+                            </div>
                         </div>
                     </div>
-                    <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
-                        <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
-                        <iconify-icon icon="ri:flag-fill" class="text-primary text-xl relative z-10"></iconify-icon>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="relative flex flex-col items-center md:mt-0 group">
-                <div class="relative z-10 top-0 md:top-40 flex flex-col items-center text-center">
-                    <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl mb-10">
-                        <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
-                        <iconify-icon icon="ri:bar-chart-fill" class="text-primary text-xl relative z-10"></iconify-icon>
-                    </div>
-                    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-2 relative mb-10">
-                        <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">2</span>
-                        <div class="text-center md:text-left">
-                            <h4 class="text-xl font-bold text-primary mb-2">Junior Developer</h4>
-                            <p class="text-sm text-gray-500 leading-relaxed max-w-[240px]">Cyber Nexus • 2022. Developing scalable React applications.</p>
+                @elseif ($index === 1)
+                    <!-- Item 2 - Middle -->
+                    <div class="relative flex flex-col items-center md:mt-0 group">
+                        <div class="relative z-10 top-0 md:top-40 flex flex-col items-center text-center">
+                            <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl mb-10">
+                                <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
+                                <iconify-icon icon="ri:bar-chart-fill" class="text-primary text-xl relative z-10"></iconify-icon>
+                            </div>
+                            <div class="flex flex-col md:flex-row items-center gap-4 md:gap-2 relative mb-10">
+                                <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">2</span>
+                                <div class="text-center md:text-left">
+                                    <h4 class="text-xl font-bold text-primary mb-2">{{ $item->jabatan }}</h4>
+                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[240px]">{{ $item->keterangan }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="relative flex flex-col items-center md:items-start md:mt-16 group">
-                <div class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-end text-center md:text-right">
-                    <div class="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-2 relative mb-10">
-                        <div class="text-center md:text-left">
-                            <h4 class="text-xl font-bold text-primary mb-2">UI Engineer</h4>
-                            <p class="text-sm text-gray-500 leading-relaxed max-w-[240px]">Freelance • 2023 - Now. Crafting immersive 3D experiences with Three.js.</p>
+                @else
+                    <!-- Item 3 - Right -->
+                    <div class="relative flex flex-col items-center md:items-start md:mt-16 group">
+                        <div class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-end text-center md:text-right">
+                            <div class="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-2 relative mb-10">
+                                <div class="text-center md:text-left">
+                                    <h4 class="text-xl font-bold text-primary mb-2">{{ $item->jabatan }}</h4>
+                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[240px]">{{ $item->keterangan }}</p>
+                                </div>
+                                <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">3</span>
+                            </div>
+                            <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
+                                <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
+                                <iconify-icon icon="ri:flag-fill" class="text-primary text-xl relative z-10"></iconify-icon>
+                            </div>
                         </div>
-                        <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">3</span>
                     </div>
-                    <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
-                        <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
-                        <iconify-icon icon="ri:flag-fill" class="text-primary text-xl relative z-10"></iconify-icon>
-                    </div>
-                </div>
-            </div>
+                @endif
+            @endforeach
         </div>
     </div>
 </section>

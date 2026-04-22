@@ -161,16 +161,32 @@
 
                 <div class="flex items-center gap-2 px-1 relative">
                     <span id="saveStatusText" class="text-sm font-medium text-gray-400">
-                        Draft
+                        @if($artikel->status === 'publish')
+                            Published
+                        @else
+                            Draft
+                        @endif
                     </span>
                 </div>
             </div>
 
             <div class="flex items-center gap-4">
-                <button id="publishBtn"
-                    class="text-sm font-semibold bg-white text-black px-5 py-1.5 rounded-md hover:bg-gray-200 transition-all">
-                    Publish
-                </button>
+                @if($artikel->status === 'draft')
+                    <button id="publishBtn"
+                        class="text-sm font-semibold bg-white text-black px-5 py-1.5 rounded-md hover:bg-gray-200 transition-all">
+                        Publish
+                    </button>
+                @else
+                    <a href="{{ route('article.edit-metadata', $artikel->id) }}"
+                        class="text-sm font-semibold bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition-all inline-flex items-center gap-2">
+                        <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        Metadata
+                    </a>
+                    <button id="updateBtn"
+                        class="text-sm font-semibold bg-green-600 text-white px-5 py-1.5 rounded-md hover:bg-green-700 transition-all">
+                        Update Content
+                    </button>
+                @endif
             </div>
         </header>
 

@@ -16,6 +16,19 @@ class SertifikatRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        // Merge start_year dan end_year jadi tahun
+        if ($this->has('start_year') && $this->has('end_year')) {
+            $this->merge([
+                'tahun' => $this->input('start_year') . ' - ' . $this->input('end_year'),
+            ]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
@@ -77,6 +90,14 @@ class SertifikatRequest extends FormRequest
             'link_kredensial.url' => 'Link kredensial harus berupa URL yang valid.',
             'link_kredensial.max' => 'Link kredensial maksimal 255 karakter.',
 
+            'start_year.required' => 'Tahun mulai wajib diisi.',
+            'start_year.string' => 'Tahun mulai harus berupa teks.',
+            'start_year.max' => 'Tahun mulai maksimal 10 karakter.',
+
+            'end_year.required' => 'Tahun selesai wajib diisi.',
+            'end_year.string' => 'Tahun selesai harus berupa teks.',
+            'end_year.max' => 'Tahun selesai maksimal 10 karakter.',
+
             'urutan.integer' => 'Urutan harus berupa angka.',
             'urutan.min' => 'Urutan minimal 1, tidak boleh 0.',
             'urutan.max' => 'Urutan maksimal 9999.',
@@ -99,6 +120,8 @@ class SertifikatRequest extends FormRequest
             'deskripsi' => 'Deskripsi',
             'link_kredensial' => 'Link Kredensial',
             'tahun' => 'Tahun',
+            'start_year' => 'Tahun Mulai',
+            'end_year' => 'Tahun Selesai',
         ];
     }
 }

@@ -37,6 +37,13 @@ class ArticleService
             ->paginate(self::PER_PAGE);
     }
 
+    public function getAllPublished()
+    {
+        return Artikel::published()
+            ->ordered()
+            ->get();
+    }
+
     public function createDraft(User $user): Artikel
     {
         return DB::transaction(function () use ($user) {
@@ -44,7 +51,7 @@ class ArticleService
                 $artikel = Artikel::create([
                     'user_id' => $user->id,
                     'judul' => 'Untitled Article',
-                    'slug' => 'untitled-article-' . Str::random(8),
+                    'slug' => 'article-' . Str::random(8),
                     'isi_konten' => json_encode(['blocks' => []]),
                     'status' => 'draft',
                 ]);
@@ -129,6 +136,10 @@ class ArticleService
 
                 if (isset($data['isi_konten'])) {
                     $updateData['isi_konten'] = $data['isi_konten'];
+                }
+
+                if (isset($data['path_gambar'])) {
+                    $updateData['path_gambar'] = $data['path_gambar'];
                 }
 
                 $artikel->update($updateData);

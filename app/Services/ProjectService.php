@@ -33,6 +33,14 @@ class ProjectService
             ->paginate($perPage);
     }
 
+    public function getPublishedAll(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Proyek::with('teknologis')
+            ->published()
+            ->ordered()
+            ->get();
+    }
+
     public function create(array $data): Proyek
     {
         return DB::transaction(function () use ($data) {

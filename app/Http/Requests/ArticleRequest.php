@@ -27,7 +27,7 @@ class ArticleRequest extends FormRequest
                 'max:255',
             ],
             'isi_konten' => [
-                'required',
+                'nullable',
                 'string',
             ],
             'meta_description' => [
@@ -47,7 +47,7 @@ class ArticleRequest extends FormRequest
                 'max:255',
             ],
             'path_gambar' => [
-                'nullable',
+                'required',
                 'string',
             ],
         ];
@@ -66,6 +66,7 @@ class ArticleRequest extends FormRequest
             'meta_description.max' => 'Meta description maksimal 160 karakter.',
             'menit_baca.integer' => 'Estimasi menit baca harus berupa angka.',
             'menit_baca.min' => 'Estimasi menit baca minimal 1 menit.',
+            'path_gambar.required' => 'Silakan pilih gambar featured dari artikel Anda.',
         ];
     }
 }

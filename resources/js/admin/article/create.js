@@ -564,5 +564,41 @@
                 }
             };
 
+            // Handle update button for published articles
+            const updateBtn = document.getElementById('updateBtn');
+            if (updateBtn) {
+                updateBtn.onclick = async () => {
+                    try {
+                        const output = await editor.save();
+
+                        const response = await fetch(`/admin/article/${artikelId}/save-content`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content,
+                            },
+                            body: JSON.stringify({
+                                judul: titleInput ? titleInput.value : '',
+                                isi_konten: JSON.stringify(output),
+                            })
+                        });
+
+                        if (!response.ok) {
+                            const error = await response.json();
+                            alert('Gagal memperbarui konten: ' + (error.error || 'Unknown error'));
+                            return;
+                        }
+
+                        updateSaveStatus(true);
+                        alert('Konten artikel berhasil diperbarui!');
+                        window.location.href = '/admin/article/index';
+                    } catch (err) {
+                        console.error('Update error:', err);
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                    }
+                };
+            }
+
             if (window.lucide) window.lucide.createIcons();
         });

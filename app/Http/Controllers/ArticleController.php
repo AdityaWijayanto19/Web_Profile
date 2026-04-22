@@ -56,7 +56,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show article editor (for draft articles)
+     * Show article editor (for draft and published articles)
      */
     public function edit(int $id): View|RedirectResponse
     {
@@ -70,13 +70,7 @@ class ArticleController extends Controller
                     ->with('error', 'Artikel tidak ditemukan.');
             }
 
-            // Only allow editing if status is draft
-            if ($artikel->status !== 'draft') {
-                return redirect()
-                    ->route('article.index')
-                    ->with('error', 'Hanya draft artikel yang bisa diedit.');
-            }
-
+            // Allow editing both draft and published articles
             // Parse isi_konten JSON untuk ditampilkan di editor
             $artikelContent = json_decode($artikel->isi_konten, true) ?? ['blocks' => []];
 
@@ -232,6 +226,94 @@ class ArticleController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to delete article', ['artikel_id' => $id, 'error' => $e->getMessage()]);
             return back()->with('error', 'Gagal menghapus artikel. Silakan coba lagi.');
+        }
+    }
+
+    /**
+     * Edit metadata for published article
+     */
+    public function editMetadata(int $id): View|RedirectResponse
+    {
+        try {
+            $user = auth()->user();
+            $artikel = $this->articleService->getByIdForUser($id, $user);
+
+            if (!$artikel) {
+                return redirect()
+                    ->route('article.index')
+                    ->with('error', 'Artikel tidak ditemukan.');
+            }
+
+            // Only allow editing metadata if article is published
+            if ($artikel->status !== 'publish') {
+                return redirect()
+                    ->route('article.index')
+                    ->with('error', 'Hanya artikel yang sudah dipublikasikan yang bisa diedit metadata-nya.');
+            }
+
+            // Parse isi_konten untuk extract images
+            $artikelContent = json_decode($artikel->isi_konten, true) ?? ['blocks' => []];
+
+            return view('admin.article.edit-metadata', compact('artikel', 'artikelContent'));
+        } catch (\Exception $e) {
+            Log::error('Failed to load metadata editor', ['artikel_id' => $id, 'error' => $e->getMessage()]);
+            return back()->with('error', 'Gagal memuat editor metadata. Silakan coba lagi.');
+        }
+    }
+
+    /**
+     * Update metadata for published article
+     */
+    public function updateMetadataPublished(ArticleRequest $request, int $id): RedirectResponse
+    {
+        try {
+            $user = auth()->user();
+            $artikel = $this->articleService->getByIdForUser($id, $user);
+
+            if (!$artikel) {
+                return redirect()
+                    ->route('article.index')
+                    ->with('error', 'Artikel tidak ditemukan.');
+            }
+
+            // Update metadata only (not content)
+            $this->articleService->updateMetadata($artikel, $request->validated());
+
+            return redirect()
+                ->route('article.index')
+                ->with('success', 'Metadata artikel berhasil diperbarui!');
+        } catch (\Exception $e) {
+            Log::error('Failed to update article metadata', ['artikel_id' => $id, 'error' => $e->getMessage()]);
+            return back()
+                ->withInput()
+                ->with('error', 'Gagal memperbarui metadata artikel. Silakan coba lagi.');
+        }
+    }
+
+    /**
+     * Show public article detail page
+     */
+    public function show(string $slug): View|RedirectResponse
+    {
+        try {
+            $artikel = Artikel::where('slug', $slug)->firstOrFail();
+
+            // Only show published articles
+            if ($artikel->status !== 'publish') {
+                return redirect()
+                    ->route('landing')
+                    ->with('error', 'Artikel tidak ditemukan.');
+            }
+
+            // Parse isi_konten untuk ditampilkan
+            $artikelContent = json_decode($artikel->isi_konten, true) ?? ['blocks' => []];
+
+            return view('article.show', compact('artikel', 'artikelContent'));
+        } catch (\Exception $e) {
+            Log::error('Failed to load article detail', ['slug' => $slug, 'error' => $e->getMessage()]);
+            return redirect()
+                ->route('landing')
+                ->with('error', 'Artikel tidak ditemukan.');
         }
     }
 }

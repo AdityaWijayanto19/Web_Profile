@@ -26,8 +26,7 @@ class SertifikatService
 
     public function getAll()
     {
-        return Sertifikat::orderBy('tahun', 'desc')
-            ->orderBy('nama_sertifikat', 'asc')
+        return Sertifikat::ordered()
             ->get();
     }
 

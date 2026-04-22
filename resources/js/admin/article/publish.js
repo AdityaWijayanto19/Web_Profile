@@ -40,7 +40,25 @@
                     </div>
                 `;
 
-                if (pathGambarInput.value === imageUrl) {
+                // Normalize path: handle both /storage/ prefixed and unprefixed URLs
+                let normalizedPath = imageUrl;
+                if (imageUrl.startsWith('/storage/')) {
+                    normalizedPath = imageUrl.substring(9); // Remove /storage/
+                } else if (imageUrl.startsWith('storage/')) {
+                    normalizedPath = imageUrl.substring(8); // Remove storage/
+                }
+
+                // Also handle full URL format from storage disk
+                if (imageUrl.includes('storage/')) {
+                    const match = imageUrl.match(/storage\/(.*)/);
+                    if (match) {
+                        normalizedPath = match[1];
+                    }
+                }
+
+                console.log('Image URL:', imageUrl, 'Normalized:', normalizedPath);
+
+                if (pathGambarInput.value === normalizedPath) {
                     imageDiv.classList.add('selected');
                 }
 
@@ -49,7 +67,8 @@
                         el.classList.remove('selected');
                     });
                     imageDiv.classList.add('selected');
-                    pathGambarInput.value = imageUrl;
+                    pathGambarInput.value = normalizedPath;
+                    console.log('Path set to:', normalizedPath);
                 });
 
                 imagesContainer.appendChild(imageDiv);

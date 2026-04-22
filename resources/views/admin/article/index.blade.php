@@ -217,6 +217,16 @@
                                                 title="View">
                                                 <i data-lucide="eye" class="w-4 h-4"></i>
                                             </a>
+                                            <a href="{{ route('article.edit', $artikel->id) }}"
+                                                class="p-1.5 hover:bg-purple-900/20 rounded text-gray-400 hover:text-purple-500 transition-colors"
+                                                title="Edit Content">
+                                                <i data-lucide="file-text" class="w-4 h-4"></i>
+                                            </a>
+                                            <a href="{{ route('article.edit-metadata', $artikel->id) }}"
+                                                class="p-1.5 hover:bg-blue-900/20 rounded text-gray-400 hover:text-blue-500 transition-colors"
+                                                title="Edit Metadata">
+                                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                            </a>
                                             <form action="{{ route('article.destroy', $artikel->id) }}" method="POST"
                                                 style="display: inline;">
                                                 @csrf

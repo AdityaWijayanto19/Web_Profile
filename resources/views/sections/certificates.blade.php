@@ -1,70 +1,178 @@
-<section id="certificates" class="pt-20 pb-10 px-6 md:px-8 relative overflow-hidden bg-base">
+<section id="certificates" class="pt-12 pb-8 px-6 md:px-8 relative overflow-hidden bg-base">
     <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
             <div class="relative">
-                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block italic">Verified Credentials</span>
-                <h2 class="text-5xl md:text-7xl font-bold tracking-tighter italic leading-none">
+                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Verified
+                    Credentials</span>
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tighter italic leading-none">
                     Official <span class="text-white not-italic border-b-4 border-primary/40">Certifications</span>
                 </h2>
             </div>
-            <p class="text-textMuted max-w-sm text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-6">
-                Professional recognition and specialized training verified by global tech institutions and industry leaders.
+            <p class="text-textMuted max-w-md text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-4">
+                Professional recognition and specialized training verified by global tech institutions and industry
+                leaders.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            @php
-                $certs = [
-                    ['title' => 'Professional UX Design Specialization', 'id' => 'GO-229X', 'org' => 'Google Certified', 'role' => 'UX Architecture', 'date' => 'Dec 2023', 'img' => 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800', 'icon' => 'ri:verified-badge-fill'],
-                    ['title' => 'Advanced React Patterns & Performance', 'id' => 'META-882', 'org' => 'Meta Engineer', 'role' => 'React Professional', 'date' => 'Oct 2022', 'img' => 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800', 'icon' => 'ri:code-box-fill'],
-                    ['title' => 'Three.js Creative Masterclass', 'id' => '3JS-991A', 'org' => 'WebGL Master', 'role' => 'Immersive 3D', 'date' => 'JAN 2024', 'img' => 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800', 'icon' => 'ri:shining-2-fill'],
-                ];
-            @endphp
+        @if ($sertifikats->count() > 0)
+            {{-- Display first 8 certificates --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                @foreach ($sertifikats->slice(0, 8) as $cert)
+                    <div class="group h-[180px] [perspective:1000px]">
+                        <div
+                            class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg">
+                            <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
+                                <div
+                                    class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-lg">
+                                    @if ($cert->path_gambar)
+                                        <img src="{{ asset('storage/' . $cert->path_gambar) }}"
+                                            alt="{{ $cert->nama_sertifikat }}" class="h-full w-full object-cover">
+                                    @else
+                                        <div
+                                            class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[9px]">
+                                            No Preview</div>
+                                    @endif
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-base/90 via-transparent to-transparent opacity-80">
+                                    </div>
+                                    <div class="absolute bottom-3 left-3 flex items-center gap-2 p-1">
+                                        <div class="flex flex-col">
+                                            <span
+                                                class="text-white font-black text-sm line-clamp-1">{{ $cert->nama_sertifikat }}</span>
+                                            <span class="text-white/60 text-xs line-clamp-1">{{ $cert->tahun }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
+                                <div class="flex flex-col h-full">
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <iconify-icon icon="ri:shield-star-line"
+                                                class="text-primary/40 text-base"></iconify-icon>
+                                        </div>
+                                        <h4
+                                            class="text-sm font-bold text-white leading-tight tracking-tight mb-2 line-clamp-2">
+                                            {{ $cert->nama_sertifikat }}</h4>
+                                        <div class="h-[1px] w-8 bg-primary mb-3"></div>
+                                        <p class="text-[10px] text-textMuted leading-relaxed font-light line-clamp-2">
+                                            {{ $cert->deskripsi ?? 'Professional certification from industry leaders.' }}
+                                        </p>
+                                    </div>
+                                    <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
+                                        <div class="flex flex-col gap-0.5">
+                                            <span
+                                                class="text-[7px] text-textMuted uppercase font-bold tracking-widest">Year</span>
+                                            <span
+                                                class="text-[9px] text-white font-mono uppercase">{{ $cert->tahun }}</span>
+                                        </div>
+                                        <a href="#"
+                                            class="group/btn flex items-center gap-1.5 bg-primary/10 hover:bg-primary px-2 py-1 rounded-lg transition-all duration-300">
+                                            <span
+                                                class="text-[8px] font-black uppercase tracking-widest text-white">View</span>
+                                            <i data-lucide="external-link" class="w-3 h-3 text-white"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
 
-            @foreach($certs as $cert)
-            <div class="group h-[250px] [perspective:1000px]">
-                <div class="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl">
-                    <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
-                        <div class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-2xl">
-                            <img src="{{ $cert['img'] }}" class="h-full w-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-base/90 via-transparent to-transparent opacity-80"></div>
-                            <div class="absolute bottom-5 left-5 flex items-center gap-3">
-                                <div class="bg-primary p-2 rounded-lg shadow-[0_0_20px_rgba(244,63,94,0.6)]">
-                                    <iconify-icon icon="{{ $cert['icon'] }}" class="text-white text-xl block"></iconify-icon>
-                                </div>
-                                <div class="flex flex-col">
-                                    <span class="text-white font-black text-[10px] uppercase tracking-widest">{{ $cert['org'] }}</span>
-                                    <span class="text-white/60 text-[8px] uppercase tracking-tighter">{{ $cert['role'] }}</span>
+            {{-- Expand button only if there are items beyond the first 8 --}}
+            @if ($sertifikats->slice(8)->count() > 0)
+                {{-- Expanded certificates --}}
+                <div id="cert-expanded-items" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    @foreach ($sertifikats->slice(8) as $cert)
+                        <div class="cert-item hidden group h-[180px] [perspective:1000px]">
+                            <div class="cert-item hiddengroup h-[180px] [perspective:1000px]">
+                                <div
+                                    class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg">
+                                    <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
+                                        <div
+                                            class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-lg">
+                                            @if ($cert->path_gambar)
+                                                <img src="{{ asset('storage/' . $cert->path_gambar) }}"
+                                                    alt="{{ $cert->nama_sertifikat }}"
+                                                    class="h-full w-full object-cover">
+                                            @else
+                                                <div
+                                                    class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[9px]">
+                                                    No Preview</div>
+                                            @endif
+                                            <div
+                                                class="absolute inset-0 bg-gradient-to-t from-base/90 via-transparent to-transparent opacity-80">
+                                            </div>
+                                            <div class="absolute bottom-3 left-3 flex items-center gap-2 p-1">
+                                                <div class="flex flex-col">
+                                                    <span
+                                                        class="text-white font-black text-sm line-clamp-1">{{ $cert->nama_sertifikat }}</span>
+                                                    <span
+                                                        class="text-white/60 text-xs line-clamp-1">{{ $cert->tahun }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
+                                        <div class="flex flex-col h-full">
+                                            <div class="flex-1">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <iconify-icon icon="ri:shield-star-line"
+                                                        class="text-primary/40 text-base"></iconify-icon>
+                                                </div>
+                                                <h4
+                                                    class="text-sm font-bold text-white leading-tight tracking-tight mb-2 line-clamp-2">
+                                                    {{ $cert->nama_sertifikat }}</h4>
+                                                <div class="h-[1px] w-8 bg-primary mb-3"></div>
+                                                <p
+                                                    class="text-[10px] text-textMuted leading-relaxed font-light line-clamp-2">
+                                                    {{ $cert->deskripsi ?? 'Professional certification from industry leaders.' }}
+                                                </p>
+                                            </div>
+                                            <div
+                                                class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
+                                                <div class="flex flex-col gap-0.5">
+                                                    <span
+                                                        class="text-[7px] text-textMuted uppercase font-bold tracking-widest">Year</span>
+                                                    <span
+                                                        class="text-[9px] text-white font-mono uppercase">{{ $cert->tahun }}</span>
+                                                </div>
+                                                <a href="#"
+                                                    class="group/btn flex items-center gap-1.5 bg-primary/10 hover:bg-primary px-2 py-1 rounded-lg transition-all duration-300">
+                                                    <span
+                                                        class="text-[8px] font-black uppercase tracking-widest text-white">View</span>
+                                                    <i data-lucide="external-link" class="w-3 h-3 text-white"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="absolute inset-0 h-full w-full rounded-2xl bg-[#0d0a0f] border-2 border-primary/40 p-6 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
-                        <div class="flex flex-col h-full">
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between mb-3">
-                                    <span class="text-[9px] text-primary font-black uppercase tracking-[0.2em]">Credential ID: {{ $cert['id'] }}</span>
-                                    <iconify-icon icon="ri:shield-star-line" class="text-primary/40 text-lg"></iconify-icon>
-                                </div>
-                                <h4 class="text-xl font-bold text-white leading-tight tracking-tight mb-3">{{ $cert['title'] }}</h4>
-                                <div class="h-[2px] w-12 bg-primary mb-4"></div>
-                                <p class="text-[11px] text-textMuted leading-relaxed font-light line-clamp-4">Professional recognition verified by global tech institutions and industry leaders.</p>
-                            </div>
-                            <div class="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
-                                <div class="flex flex-col gap-0.5">
-                                    <span class="text-[8px] text-textMuted uppercase font-bold tracking-widest">Issue Date</span>
-                                    <span class="text-[10px] text-white font-mono uppercase">{{ $cert['date'] }}</span>
-                                </div>
-                                <a href="#" class="group/btn flex items-center gap-2 bg-primary/10 hover:bg-primary px-4 py-2 rounded-xl transition-all duration-300">
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-white">Verify ID</span>
-                                    <i data-lucide="external-link" class="w-3 h-3 text-white"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+                </div>
+
+                {{-- Expand/Collapse button --}}
+                <div class="flex justify-center mt-6">
+                    <button type="button" id="cert-expand-btn"
+                        class="px-6 py-2.5 bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-sm text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                        <span id="cert-expand-text">View All Certificates</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"
+                            id="cert-expand-icon"></i>
+                    </button>
+                </div>
+            @endif
+        @else
+            <div class="max-w-5xl mx-auto">
+                <div class="p-8 bg-[#1a151d]/50 border border-white/10 rounded-sm text-center">
+                    <i data-lucide="award" class="w-10 h-10 text-gray-600 mx-auto mb-3"></i>
+                    <p class="text-sm text-gray-400 mb-2">Belum ada data sertifikat</p>
+                    <p class="text-xs text-gray-500">Data sertifikat akan ditampilkan di sini</p>
                 </div>
             </div>
-            @endforeach
-        </div>
+        @endif
     </div>
 </section>

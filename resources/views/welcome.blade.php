@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('sections.hero')
-    @include('sections.education')
-    @include('sections.certificates')
-    @include('sections.experience')
-    @include('sections.projects')
-    @include('sections.articles')
+    @include('sections.hero', ['hero' => $hero])
+    @include('sections.education', ['educations' => $educations])
+    @include('sections.certificates', ['sertifikats' => $sertifikats])
+    @include('sections.experience', ['pengalaman' => $pengalaman])
+    @include('sections.projects', ['projects' => $projects])
+    @include('sections.articles', ['articles' => $articles])
 @endsection
+
+@push('scripts')
+    @vite(['resources/js/sections/education.js'])
+    @vite(['resources/js/sections/certificates.js'])
+@endpush
