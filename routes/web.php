@@ -17,6 +17,9 @@ Route::get('/', [App\Http\Controllers\LandingPageController::class, 'index'])->n
 
 // Public article detail route
 Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
+Route::get('/project/detail', function () {
+    return view('project.show');
+})->name('project.show');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -87,5 +90,3 @@ Route::middleware('auth')->group(function () {
         });
     });
 });
-
-
