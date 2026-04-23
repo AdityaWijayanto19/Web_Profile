@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <title>@yield('title')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -25,7 +26,6 @@
 <body class="h-screen w-full overflow-hidden bg-white">
 
     <div class="flex h-full w-full relative">
-        <!-- Side Illustration (Left) -->
         <div class="relative hidden lg:flex lg:w-[55%] bg-pink-main flex-col justify-between p-16 overflow-hidden">
             <div class="absolute inset-0 leaf-pattern pointer-events-none"></div>
             <svg class="absolute top-0 -right-1 h-full w-32 z-10 fill-white" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -45,8 +45,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Form Content (Right) -->
+        
         <div class="w-full lg:w-[45%] h-full flex flex-col justify-center items-center px-8 md:px-20 bg-white">
             <div class="w-full max-w-md animate-up">
                 @yield('content')

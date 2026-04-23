@@ -3,7 +3,7 @@
 
     <div class="p-4 flex items-center gap-2 mb-2 shrink-0 overflow-hidden">
         <div class="p-1.5 rounded-sm shrink-0">
-            <img class="w-7 h-7" src="<?php echo e(asset('assets/images/cookie.svg')); ?>" alt="Cookie">
+            <img class="w-7 h-7" src="<?php echo e(asset('assets/images/pie.svg')); ?>" alt="pie">
         </div>
         <span class="text-white text-xl font-bold tracking-tight logo-name transition-opacity duration-300">Pie.</span>
     </div>
