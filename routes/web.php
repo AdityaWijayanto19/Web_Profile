@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Proyek;
+use App\Models\Pendidikan;
+use App\Models\Sertifikat;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SertifikatController;
@@ -12,13 +15,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FooterController;
+use App\Http\Controllers\LandingPageController;
 
-Route::get('/', [App\Http\Controllers\LandingPageController::class, 'index'])->name('landing');
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 
-// Public article detail route
 Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 
-// Public project detail route
 Route::get('/project/{id}', [ProjectController::class, 'showPublic'])->where('id', '[0-9]+')->name('project.show');
 
 Route::middleware('guest')->group(function () {
@@ -43,7 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/hero-section', [HeroSectionController::class, 'update'])->name('hero-section.update');
 
         Route::bind('pendidikan', function ($value) {
-            return \App\Models\Pendidikan::findOrFail($value);
+            return Pendidikan::findOrFail($value);
         });
         Route::post('/pendidikans/reorder', [PendidikanController::class, 'reorder'])->name('pendidikans.reorder');
         Route::resource('pendidikans', PendidikanController::class);
@@ -53,13 +55,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/pengalaman/reorder', [PengalamanController::class, 'reorder'])->name('pengalaman.reorder');
 
         Route::bind('project', function ($value) {
-            return \App\Models\Proyek::findOrFail($value);
+            return Proyek::findOrFail($value);
         });
         Route::post('/projects/reorder', [ProjectController::class, 'reorder'])->name('projects.reorder');
         Route::resource('projects', ProjectController::class);
 
         Route::bind('sertifikat', function ($value) {
-            return \App\Models\Sertifikat::findOrFail($value);
+            return Sertifikat::findOrFail($value);
         });
         Route::post('/sertifikats/reorder', [SertifikatController::class, 'reorder'])->name('sertifikats.reorder');
         Route::resource('sertifikats', SertifikatController::class);
@@ -68,7 +70,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors');
 
-        // Footer Management Routes
         Route::get('/footer', [FooterController::class, 'index'])->name('admin.footer.index');
         Route::get('/footer/create', [FooterController::class, 'create'])->name('admin.footer.create');
         Route::post('/footer', [FooterController::class, 'store'])->name('admin.footer.store');

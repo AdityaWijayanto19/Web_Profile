@@ -14,8 +14,19 @@ window.previewImage = function (event) {
     if (file) {
         reader.onload = function () {
             const output = document.getElementById("preview-portrait");
+            const placeholder = document.getElementById("no-preview");
+
+            if (!output) {
+                return;
+            }
+
             output.src = reader.result;
+            output.classList.remove("hidden");
             output.classList.remove("grayscale", "opacity-40");
+
+            if (placeholder) {
+                placeholder.classList.add("hidden");
+            }
         };
         reader.readAsDataURL(file);
     }

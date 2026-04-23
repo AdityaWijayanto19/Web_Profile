@@ -13,7 +13,7 @@
             <div class="w-full md:w-3/5 space-y-12 z-10 text-left pt-20 md:pt-0">
                 <div class="space-y-6 pt-14">
                     <h1 class="text-6xl md:text-[100px] font-bold tracking-tighter leading-[0.85] flex flex-col italic">
-                        <span class="text-white not-italic"><?php echo e(strtoupper($hero->nama_depan)); ?> P.</span>
+                        <span class="text-white not-italic"><?php echo e(strtoupper($hero->nama_depan)); ?></span>
                         <span
                             class="text-primary drop-shadow-[0_0_40px_rgba(244,63,94,0.25)]"><?php echo e(strtoupper($hero->nama_belakang)); ?></span>
                     </h1>
@@ -32,16 +32,6 @@
                         <?php echo $hero->deskripsi; ?>
 
                     </p>
-                    <div class="flex gap-12 pt-4">
-                        <div>
-                            <p class="text-2xl font-bold text-white">0</p>
-                            <p class="text-[10px] uppercase tracking-widest text-textMuted">Years Exp.</p>
-                        </div>
-                        <div>
-                            <p class="text-2xl font-bold text-white">5+</p>
-                            <p class="text-[10px] uppercase tracking-widest text-textMuted">Projects</p>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="pl-2">

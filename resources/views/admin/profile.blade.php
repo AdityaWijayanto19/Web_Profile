@@ -86,7 +86,7 @@
                         {{ $hero->text_singkat ?? 'Undergraduate University of Brawijaya' }}</p>
                     <p id="preview-bio"
                         class="text-[11px] text-gray-400 leading-relaxed italic border-t border-white/5 pt-2 max-w-md">
-                        {{ $hero->deskripsi ?? 'Crafting digital products...' }}</p>
+                        {{ $hero->deskripsi ?? 'Information Technology student exploring the world of Full-stack development and IoT. Passionate about learning how to build and connect digital solutions.' }}</p>
                 </div>
 
                 <div class="space-y-4">
@@ -100,7 +100,7 @@
                     <div class="space-y-2">
                         <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Short Biography</label>
                         <textarea id="input-bio" name="deskripsi" rows="3" oninput="updatePreview('preview-bio', this.value)"
-                            class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs leading-relaxed resize-none">{{ $hero->deskripsi ?? 'Crafting digital products with immersive aesthetics since 2016.' }}</textarea>
+                            class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs leading-relaxed resize-none">{{ $hero->deskripsi ?? 'Information Technology student exploring the world of Full-stack development and IoT. Passionate about learning how to build and connect digital solutions.' }}</textarea>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                                     class="text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-2">
                                     <i data-lucide="link" class="w-3 h-3"></i> Destination Link (CV/Contact)
                                 </label>
-                                <input type="text" name="link_cv" value="{{ $hero->link_cv ?? '#contact' }}"
+                                <input type="text" name="link_cv" value="{{ $hero->link_cv ?? 'https://www.linkedin.com/in/aditya-wijayanto-979767322' }}"
                                     class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs font-mono">
                             </div>
 
