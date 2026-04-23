@@ -6,6 +6,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\ArticleImageUploadRequest;
 use App\Models\Artikel;
 use App\Services\ArticleService;
+use App\Services\FooterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,13 +19,15 @@ class ArticleController extends Controller
      * Article service instance
      */
     private ArticleService $articleService;
+    private FooterService $footerService;
 
     /**
      * Inject dependencies
      */
-    public function __construct(ArticleService $articleService)
+    public function __construct(ArticleService $articleService, FooterService $footerService)
     {
         $this->articleService = $articleService;
+        $this->footerService = $footerService;
     }
 
     /**
@@ -308,7 +311,10 @@ class ArticleController extends Controller
             // Parse isi_konten untuk ditampilkan
             $artikelContent = json_decode($artikel->isi_konten, true) ?? ['blocks' => []];
 
-            return view('article.show', compact('artikel', 'artikelContent'));
+            // Get footer data
+            $footer = $this->footerService->getMain();
+
+            return view('article.show', compact('artikel', 'artikelContent', 'footer'));
         } catch (\Exception $e) {
             Log::error('Failed to load article detail', ['slug' => $slug, 'error' => $e->getMessage()]);
             return redirect()

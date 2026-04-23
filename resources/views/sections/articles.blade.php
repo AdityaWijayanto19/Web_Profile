@@ -6,16 +6,17 @@
     </div>
 
     <div class="max-w-6xl mx-auto relative z-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
             <div class="relative">
-                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block italic">Verified
-                    Credentials</span>
-                <h2 class="text-5xl md:text-7xl font-bold tracking-tighter italic leading-none">
-                    Official <span class="text-white not-italic border-b-4 border-primary/40">Certifications</span>
+                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Verified
+                    Article</span>
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tighter italic leading-none">
+                    Articles <span class="text-white not-italic border-b-4 border-primary/40">Showcase</span>
                 </h2>
             </div>
-            <p class="text-textMuted max-w-sm text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-6">
-                Professional recognition verified by industry leaders.</p>
+            <p class="text-textMuted max-w-md text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-4">
+                Happy writing and sharing knowledge through articles, providing insights into the latest trends and
+            </p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:items-start">

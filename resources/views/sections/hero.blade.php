@@ -1,4 +1,4 @@
-<header class="relative w-full min-h-screen flex flex-col overflow-hidden">
+<header id="about" class="relative w-full min-h-screen flex flex-col overflow-hidden">
     <div class="hero-pattern-bg"></div>
     <div class="hero-spotlight"></div>
 

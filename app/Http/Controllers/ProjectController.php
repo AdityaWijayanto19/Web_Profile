@@ -6,6 +6,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Models\Proyek;
 use App\Models\Teknologi;
 use App\Services\ProjectService;
+use App\Services\FooterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -17,13 +18,15 @@ class ProjectController extends Controller
      * Project service instance
      */
     private ProjectService $projectService;
+    private FooterService $footerService;
 
     /**
      * Inject dependencies
      */
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectService $projectService, FooterService $footerService)
     {
         $this->projectService = $projectService;
+        $this->footerService = $footerService;
     }
 
     /**
@@ -64,6 +67,32 @@ class ProjectController extends Controller
             return back()
                 ->withInput()
                 ->with('error', 'Gagal membuat proyek. Silakan coba lagi.');
+        }
+    }
+
+    /**
+     * Show public project detail
+     */
+    public function showPublic(int $id): View|\Illuminate\Http\RedirectResponse
+    {
+        try {
+            $project = $this->projectService->getPublishedById($id);
+
+            if (!$project) {
+                return redirect()
+                    ->route('landing')
+                    ->with('error', 'Proyek tidak ditemukan.');
+            }
+
+            // Get footer data for detail page
+            $footer = $this->footerService->getMain();
+
+            return view('project.show', compact('project', 'footer'));
+        } catch (\Exception $e) {
+            Log::error('Failed to load project detail', ['id' => $id, 'error' => $e->getMessage()]);
+            return redirect()
+                ->route('landing')
+                ->with('error', 'Proyek tidak ditemukan.');
         }
     }
 

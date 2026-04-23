@@ -62,8 +62,10 @@
                                                 <a href="{{ $media->url }}" target="_blank" rel="noopener noreferrer"
                                                     class="inline-flex items-center justify-center w-5 h-5 bg-white/5 hover:bg-white/10 rounded-xs text-gray-400 hover:text-white transition-all text-xs"
                                                     title="{{ $media->technology->nama ?? 'Social Media' }}">
-                                                    @if ($media->technology?->icon)
-                                                        <i data-lucide="{{ $media->technology->icon }}" class="w-3 h-3"></i>
+                                                    @if ($media->technology?->path_icon)
+                                                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{{ $media->technology->path_icon }}.svg"
+                                                            alt="{{ $media->technology->nama }}"
+                                                            class="w-3 h-3" style="filter: invert(1);">
                                                     @else
                                                         <i data-lucide="link" class="w-3 h-3"></i>
                                                     @endif

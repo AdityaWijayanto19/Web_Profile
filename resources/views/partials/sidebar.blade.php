@@ -62,7 +62,7 @@
                 ],
                 [
                     'route' => 'admin.footer.index',
-                    'icon' => 'layout-footer',
+                    'icon' => 'footprints',
                     'name' => 'Footer',
                     'pattern' => 'admin/footer*',
                     'desc' => 'Footer settings',

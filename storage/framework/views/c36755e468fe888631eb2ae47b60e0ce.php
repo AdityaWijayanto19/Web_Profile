@@ -30,8 +30,8 @@
                             <?php endif; ?>
                             <div
                                 class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <a href="<?php echo e($project->link_demo ?? '#'); ?>" target="_blank" rel="noopener noreferrer"
-                                    class="bg-white text-black p-2 rounded-full"><i data-lucide="external-link"
+                                <a href="<?php echo e(route('project.show', $project->id)); ?>"
+                                    class="bg-white text-black p-2 rounded-full"><i data-lucide="arrow-right"
                                         class="w-4 h-4"></i></a>
                             </div>
                         </div>
@@ -71,9 +71,9 @@
                                 <?php endif; ?>
                                 <div
                                     class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <a href="<?php echo e($project->link_demo ?? '#'); ?>" target="_blank"
-                                        rel="noopener noreferrer" class="bg-white text-black p-2 rounded-full"><i
-                                            data-lucide="external-link" class="w-4 h-4"></i></a>
+                                    <a href="<?php echo e(route('project.show', $project->id)); ?>"
+                                        class="bg-white text-black p-2 rounded-full"><i
+                                            data-lucide="arrow-right" class="w-4 h-4"></i></a>
                                 </div>
                             </div>
                             <h3 class="text-md font-bold mb-1 line-clamp-1"><?php echo e($project->judul); ?></h3>

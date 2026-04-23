@@ -154,21 +154,6 @@
                 <p class="text-white/60 text-center py-12">Konten artikel tidak tersedia.</p>
             <?php endif; ?>
         </div>
-
-        <!-- Article Footer -->
-        <div class="mt-16 pt-8 border-t border-white/10">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div class="space-y-2">
-                    <p class="text-sm text-textMuted/60">Article published on</p>
-                    <p class="text-white font-medium"><?php echo e($artikel->tanggal_rilis ? $artikel->tanggal_rilis->format('F d, Y') : 'N/A'); ?></p>
-                </div>
-                <a href="<?php echo e(route('landing')); ?>"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-lg font-semibold">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    Back to All Articles
-                </a>
-            </div>
-        </div>
     </div>
 </div>
 

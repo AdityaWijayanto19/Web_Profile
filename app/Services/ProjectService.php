@@ -41,6 +41,19 @@ class ProjectService
             ->get();
     }
 
+    /**
+     * Get published project by ID
+     *
+     * @param int $id
+     * @return Proyek|null
+     */
+    public function getPublishedById(int $id): ?Proyek
+    {
+        return Proyek::with('teknologis')
+            ->published()
+            ->find($id);
+    }
+
     public function create(array $data): Proyek
     {
         return DB::transaction(function () use ($data) {
