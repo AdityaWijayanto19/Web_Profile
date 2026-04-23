@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\HeroSectionRequest;
-use App\Models\HeroSection;
 use App\Services\HeroSectionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;

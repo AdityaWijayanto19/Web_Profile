@@ -5,7 +5,7 @@
                 <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Verified
                     Showcase</span>
                 <h2 class="text-4xl md:text-5xl font-bold tracking-tighter italic leading-none">
-                    Portfolio <span class="text-white not-italic border-b-4 border-primary/40">Certifications</span>
+                    Portfolio <span class="text-white not-italic border-b-4 border-primary/40">Projects</span>
                 </h2>
             </div>
             <p class="text-textMuted max-w-md text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-4">
@@ -70,8 +70,8 @@
                                 <div
                                     class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <a href="{{ route('project.show', $project->id) }}"
-                                        class="bg-white text-black p-2 rounded-full"><i
-                                            data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                                        class="bg-white text-black p-2 rounded-full"><i data-lucide="arrow-right"
+                                            class="w-4 h-4"></i></a>
                                 </div>
                             </div>
                             <h3 class="text-md font-bold mb-1 line-clamp-1">{{ $project->judul }}</h3>
@@ -102,9 +102,9 @@
                 </div>
             @endif
         @else
-            <div class="text-center py-12">
-                <p class="text-textMuted text-sm">No projects available at the moment.</p>
-            </div>
+            <div class="lg:col-span-12 text-center py-12">
+                    <p class="text-textMuted text-sm">No projects available at the moment.</p>
+                </div>
         @endif
     </div>
 </section>
@@ -138,7 +138,10 @@
 
                 if (isExpanded) {
                     requestAnimationFrame(() => {
-                        expandedContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        expandedContainer.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
                     });
                 }
             });

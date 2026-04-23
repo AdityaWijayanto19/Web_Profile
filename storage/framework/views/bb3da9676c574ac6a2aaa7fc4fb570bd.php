@@ -1,9 +1,7 @@
-@extends('layouts.admin')
+<?php $__env->startSection('title', 'Hero Manager'); ?>
+<?php $__env->startSection('page_title', 'Hero Section Manager'); ?>
 
-@section('title', 'Hero Manager')
-@section('page_title', 'Hero Section Manager')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         .form-input-custom {
             background-color: rgba(0, 0, 0, 0.3);
@@ -29,13 +27,13 @@
             border-color: rgba(115, 12, 30, 0.4);
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
-    <form action="{{ route('hero-section.update') }}" method="POST" enctype="multipart/form-data"
+<?php $__env->startSection('content'); ?>
+    <form action="<?php echo e(route('hero-section.update')); ?>" method="POST" enctype="multipart/form-data"
         class="max-w-7xl mx-auto px-4 pb-10">
-        @csrf
-        @method('PUT')
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
 
         <div class="grid grid-cols-12 gap-6">
 
@@ -48,10 +46,10 @@
                     <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Live Preview</p>
                     <h1 id="preview-first-name"
                         class="text-3xl font-bold text-white tracking-tighter leading-none uppercase">
-                        {{ $hero->nama_depan ?? 'ADITYA P.' }}</h1>
+                        <?php echo e($hero->nama_depan ?? 'ADITYA P.'); ?></h1>
                     <h1 id="preview-last-name"
                         class="text-3xl font-bold text-[#730c1e] italic tracking-tighter leading-none uppercase">
-                        {{ $hero->nama_belakang ?? 'WIJAYANTO' }}</h1>
+                        <?php echo e($hero->nama_belakang ?? 'WIJAYANTO'); ?></h1>
                 </div>
 
                 <div class="space-y-4">
@@ -60,14 +58,14 @@
                             <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">First Name &
                                 Initial</label>
                             <input type="text" id="input-first-name" name="nama_depan"
-                                value="{{ $hero->nama_depan ?? 'ADITYA P.' }}"
+                                value="<?php echo e($hero->nama_depan ?? 'ADITYA P.'); ?>"
                                 oninput="updatePreview('preview-first-name', this.value)"
                                 class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs">
                         </div>
                         <div class="space-y-2">
                             <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Last Name</label>
                             <input type="text" id="input-last-name" name="nama_belakang"
-                                value="{{ $hero->nama_belakang ?? 'WIJAYANTO' }}"
+                                value="<?php echo e($hero->nama_belakang ?? 'WIJAYANTO'); ?>"
                                 oninput="updatePreview('preview-last-name', this.value)"
                                 class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs">
                         </div>
@@ -83,24 +81,24 @@
                 <div class="mb-8 min-h-[70px]">
                     <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Preview Headline & Bio</p>
                     <p id="preview-headline" class="text-xs uppercase tracking-[0.2em] text-white font-bold mb-2">
-                        {{ $hero->text_singkat ?? 'Undergraduate University of Brawijaya' }}</p>
+                        <?php echo e($hero->text_singkat ?? 'Undergraduate University of Brawijaya'); ?></p>
                     <p id="preview-bio"
                         class="text-[11px] text-gray-400 leading-relaxed italic border-t border-white/5 pt-2 max-w-md">
-                        {{ $hero->deskripsi ?? 'Crafting digital products...' }}</p>
+                        <?php echo e($hero->deskripsi ?? 'Crafting digital products...'); ?></p>
                 </div>
 
                 <div class="space-y-4">
                     <div class="space-y-2">
                         <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Headline / Title</label>
                         <input type="text" id="input-headline" name="text_singkat"
-                            value="{{ $hero->text_singkat ?? 'Undergraduate University of Brawijaya' }}"
+                            value="<?php echo e($hero->text_singkat ?? 'Undergraduate University of Brawijaya'); ?>"
                             oninput="updatePreview('preview-headline', this.value)"
                             class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs">
                     </div>
                     <div class="space-y-2">
                         <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Short Biography</label>
                         <textarea id="input-bio" name="deskripsi" rows="3" oninput="updatePreview('preview-bio', this.value)"
-                            class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs leading-relaxed resize-none">{{ $hero->deskripsi ?? 'Crafting digital products with immersive aesthetics since 2016.' }}</textarea>
+                            class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs leading-relaxed resize-none"><?php echo e($hero->deskripsi ?? 'Crafting digital products with immersive aesthetics since 2016.'); ?></textarea>
                     </div>
                 </div>
             </div>
@@ -119,7 +117,7 @@
                                     class="text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-2">
                                     <i data-lucide="link" class="w-3 h-3"></i> Destination Link (CV/Contact)
                                 </label>
-                                <input type="text" name="link_cv" value="{{ $hero->link_cv ?? '#contact' }}"
+                                <input type="text" name="link_cv" value="<?php echo e($hero->link_cv ?? '#contact'); ?>"
                                     class="w-full form-input-custom rounded-sm px-4 py-2.5 text-xs font-mono">
                             </div>
 
@@ -136,16 +134,16 @@
                     <div class="col-span-12 md:col-span-4 bg-black/20 p-8 flex flex-col items-center justify-center">
                         <div class="relative group">
                             <div class="w-40 h-52 border border-white/10 rounded-sm overflow-hidden bg-[#110e13] relative">
-                                @if ($hero?->path_foto)
-                                    <img id="preview-portrait" src="{{ asset('storage/' . $hero->path_foto) }}"
+                                <?php if($hero?->path_foto): ?>
+                                    <img id="preview-portrait" src="<?php echo e(asset('storage/' . $hero->path_foto)); ?>"
                                         class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105">
-                                @else
+                                <?php else: ?>
                                     <div id="no-preview"
                                         class="w-full h-full flex items-center justify-center text-[10px] text-gray-600 italic uppercase tracking-tighter">
                                         No Preview</div>
                                     <img id="preview-portrait" src=""
                                         class="hidden w-full h-full object-cover grayscale">
-                                @endif
+                                <?php endif; ?>
 
                                 <label for="portrait"
                                     class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 cursor-pointer transition-all">
@@ -170,8 +168,10 @@
             Submit Changes
         </button>
     </form>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
-    @vite(['resources/js/profile.js'])
-@endpush
+<?php $__env->startPush('scripts'); ?>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/js/profile.js']); ?>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/profile.blade.php ENDPATH**/ ?>

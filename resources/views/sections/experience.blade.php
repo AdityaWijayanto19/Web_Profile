@@ -13,7 +13,8 @@
     <div class="max-w-6xl mx-auto relative">
         <div class="absolute inset-0 hidden md:block pointer-events-none translate-y-12">
             <svg width="100%" height="100%" viewBox="0 0 1000 400" fill="none" preserveAspectRatio="none">
-                <path d="M 50 250 C 150 250, 250 300, 350 200 C 450 100, 550 100, 650 200 C 750 300, 850 250, 950 250" stroke="url(#gradient-line)" stroke-width="3" stroke-linecap="round" />
+                <path d="M 50 250 C 150 250, 250 300, 350 200 C 450 100, 550 100, 650 200 C 750 300, 850 250, 950 250"
+                    stroke="url(#gradient-line)" stroke-width="3" stroke-linecap="round" />
                 <defs>
                     <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stop-color="#ef4444" stop-opacity="0.2" />
@@ -27,53 +28,68 @@
         <div class="relative grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-4 min-h-[450px]">
             @foreach ($pengalaman->take(3) as $index => $item)
                 @if ($index === 0)
-                    <!-- Item 1 - Left -->
                     <div class="relative flex flex-col items-center md:items-start md:mt-16 group">
-                        <div class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-start text-center md:text-left">
-                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-2 relative mb-10">
+                        <div
+                            class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-start text-center md:text-left">
+                            <div
+                                class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-2 relative mb-10">
                                 <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">1</span>
                                 <div class="text-center md:text-left">
                                     <h4 class="text-xl font-bold text-primary mb-2">{{ $item->jabatan }}</h4>
-                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[200px]">{{ $item->keterangan }}</p>
+                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[200px] line-clamp-3">
+                                        {{ $item->keterangan }}</p>
                                 </div>
                             </div>
-                            <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
-                                <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
-                                <iconify-icon icon="ri:flag-fill" class="text-primary text-xl relative z-10"></iconify-icon>
+                            <div
+                                class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
+                                <div
+                                    class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100">
+                                </div>
+                                <iconify-icon icon="ri:flag-fill"
+                                    class="text-primary text-xl relative z-10"></iconify-icon>
                             </div>
                         </div>
                     </div>
                 @elseif ($index === 1)
-                    <!-- Item 2 - Middle -->
                     <div class="relative flex flex-col items-center md:mt-0 group">
                         <div class="relative z-10 top-0 md:top-40 flex flex-col items-center text-center">
-                            <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl mb-10">
-                                <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
-                                <iconify-icon icon="ri:bar-chart-fill" class="text-primary text-xl relative z-10"></iconify-icon>
+                            <div
+                                class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl mb-10">
+                                <div
+                                    class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100">
+                                </div>
+                                <iconify-icon icon="ri:bar-chart-fill"
+                                    class="text-primary text-xl relative z-10"></iconify-icon>
                             </div>
                             <div class="flex flex-col md:flex-row items-center gap-4 md:gap-2 relative mb-10">
                                 <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">2</span>
                                 <div class="text-center md:text-left">
                                     <h4 class="text-xl font-bold text-primary mb-2">{{ $item->jabatan }}</h4>
-                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[240px]">{{ $item->keterangan }}</p>
+                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[240px] line-clamp-4">
+                                        {{ $item->keterangan }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @else
-                    <!-- Item 3 - Right -->
                     <div class="relative flex flex-col items-center md:items-start md:mt-16 group">
-                        <div class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-end text-center md:text-right">
+                        <div
+                            class="relative z-10 top-0 md:top-24 flex flex-col items-center md:items-end text-center md:text-right">
                             <div class="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-2 relative mb-10">
                                 <div class="text-center md:text-left">
                                     <h4 class="text-xl font-bold text-primary mb-2">{{ $item->jabatan }}</h4>
-                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[240px]">{{ $item->keterangan }}</p>
+                                    <p class="text-sm text-gray-500 leading-relaxed max-w-[240px] line-clamp-3">
+                                        {{ $item->keterangan }}</p>
                                 </div>
                                 <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">3</span>
                             </div>
-                            <div class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
-                                <div class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100"></div>
-                                <iconify-icon icon="ri:flag-fill" class="text-primary text-xl relative z-10"></iconify-icon>
+                            <div
+                                class="hidden md:flex w-12 h-12 relative items-center justify-center drop-shadow-xl md:ml-10">
+                                <div
+                                    class="absolute inset-0 bg-white shadow-lg rotate-[30deg] rounded-lg border border-slate-100">
+                                </div>
+                                <iconify-icon icon="ri:flag-fill"
+                                    class="text-primary text-xl relative z-10"></iconify-icon>
                             </div>
                         </div>
                     </div>

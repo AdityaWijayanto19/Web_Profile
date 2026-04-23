@@ -73,4 +73,14 @@ class StorePendidikanRequest extends FormRequest
             'description' => 'Deskripsi',
         ];
     }
+
+    public function toModelData(): array
+    {
+        return [
+            'gelar' => $this->input('degree'),
+            'instansi' => $this->input('institution'),
+            'periode' => "{$this->input('start_year')} - {$this->input('end_year')}",
+            'keterangan' => $this->input('description'),
+        ];
+    }
 }

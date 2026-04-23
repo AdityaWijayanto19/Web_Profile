@@ -56,17 +56,8 @@ class PendidikanController extends Controller
     public function store(StorePendidikanRequest $request): RedirectResponse
     {
         try {
-            $validated = $request->validated();
 
-            // Transform form fields to model fields
-            $data = [
-                'gelar' => $validated['degree'],
-                'instansi' => $validated['institution'],
-                'periode' => "{$validated['start_year']} - {$validated['end_year']}",
-                'keterangan' => $validated['description'] ?? null,
-            ];
-
-            $this->pendidikanService->create($data);
+            $this->pendidikanService->create($request->toModelData());
 
             return redirect()->route('pendidikans.index')
                 ->with('success', 'Pendidikan berhasil ditambahkan.');
@@ -100,17 +91,7 @@ class PendidikanController extends Controller
     public function update(StorePendidikanRequest $request, Pendidikan $pendidikan): RedirectResponse
     {
         try {
-            $validated = $request->validated();
-
-            // Transform form fields to model fields
-            $data = [
-                'gelar' => $validated['degree'],
-                'instansi' => $validated['institution'],
-                'periode' => "{$validated['start_year']} - {$validated['end_year']}",
-                'keterangan' => $validated['description'] ?? null,
-            ];
-
-            $this->pendidikanService->update($pendidikan, $data);
+            $this->pendidikanService->update($pendidikan, $request->toModelData());
 
             return redirect()->route('pendidikans.index')
                 ->with('success', 'Pendidikan berhasil diperbarui.');

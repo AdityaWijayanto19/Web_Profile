@@ -14,18 +14,18 @@ class PengalamanSeeder extends Seeder
     {
         $pengalamans = [
             [
-                'jabatan' => 'Frontend Intern',
-                'keterangan' => 'Tech Studio Inc - 2021. Focus on mastering modern UI architecture.',
+                'jabatan' => 'Public Relation',
+                'keterangan' => 'Provoks 2025-2026. Managing external outreach, recruitment narratives, and strategic partnerships.',
                 'urutan' => 0,
             ],
             [
-                'jabatan' => 'Junior Developer',
-                'keterangan' => 'Cyber Nexus - 2022. Developing scalable React applications.',
+                'jabatan' => 'Assistant Laboratorium IoT',
+                'keterangan' => 'Laboratorium IoT 2025 - 2026. Managing end-to-end preparation and distribution of IoT hardware and measurement tools for academic practicums.',
                 'urutan' => 1,
             ],
             [
-                'jabatan' => 'UI Engineer',
-                'keterangan' => 'Freelance - 2023 - Now. Crafting immersive 3D experiences with Three.js.',
+                'jabatan' => 'Cohort Fullstack Developer',
+                'keterangan' => 'DiCoding Camp DBS 2026. Selected for an intensive, job-readiness program mastering industry-standard web development curricula.',
                 'urutan' => 2,
             ],
         ];
