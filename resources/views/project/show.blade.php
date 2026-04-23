@@ -51,7 +51,6 @@
 
     <main class="relative z-10 pt-20">
         <section class="px-6 pb-20 max-w-6xl mx-auto">
-            <!-- Back to Home Button -->
             <div class="reveal mb-8">
                 <a href="{{ route('landing') }}"
                     class="inline-flex items-center gap-2 text-sm text-primary hover:text-white transition-colors">
@@ -76,7 +75,6 @@
                         </p>
                     </div>
 
-                    <!-- About & Goals (Integrated) -->
                     <div class="reveal space-y-10" style="transition-delay: 150ms;">
                         <div class="grid grid-cols-2 gap-8 pt-6 border-t border-white/5">
                             <div class="space-y-4">
@@ -97,7 +95,6 @@
                         </div>
                     </div>
 
-                    <!-- CTA Actions -->
                     <div class="reveal pt-4" style="transition-delay: 300ms;">
                         <div class="flex flex-col sm:flex-row gap-4">
                             @if ($project->link_demo)
@@ -116,7 +113,6 @@
                     </div>
                 </div>
 
-                <!-- Visual Side (Laptop) -->
                 <div class="lg:col-span-7 reveal order-1 lg:order-2 lg:sticky lg:top-24">
                     <div class="macbook-wrapper lg:scale-110 origin-top lg:origin-center">
                         <div class="screen-container-bg"></div>
@@ -142,7 +138,6 @@
 
 @push('scripts')
     <script>
-        // Logic khusus untuk reveal animation pada halaman ini
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

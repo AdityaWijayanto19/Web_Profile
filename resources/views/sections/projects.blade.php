@@ -14,7 +14,6 @@
         </div>
 
         @if ($projects->count() > 0)
-            {{-- Display first 8 projects --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 @foreach ($projects->slice(0, 8) as $project)
                     <div class="group">
@@ -53,7 +52,6 @@
                 @endforeach
             </div>
 
-            {{-- Expanded projects --}}
             @if ($projects->slice(8)->count() > 0)
                 <div id="projects-expanded-items"
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 hidden">
@@ -94,7 +92,6 @@
                     @endforeach
                 </div>
 
-                {{-- Expand/Collapse button --}}
                 <div class="flex justify-center mt-6">
                     <button type="button" id="expand-projects-btn"
                         class="px-6 py-2.5 bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-sm text-xs font-bold uppercase tracking-widest flex items-center gap-2">
@@ -113,5 +110,38 @@
 </section>
 
 @push('scripts')
-    @vite(['resources/js/sections/projects.js'])
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const expandBtn = document.getElementById('expand-projects-btn');
+            const expandedContainer = document.getElementById('projects-expanded-items');
+            const expandText = document.getElementById('projects-expand-text');
+            const expandIcon = document.getElementById('projects-expand-icon');
+
+            if (!expandBtn || !expandedContainer) {
+                return;
+            }
+
+            let isExpanded = false;
+
+            expandBtn.addEventListener('click', () => {
+                isExpanded = !isExpanded;
+
+                expandedContainer.classList.toggle('hidden', !isExpanded);
+
+                if (expandText) {
+                    expandText.textContent = isExpanded ? 'Show Less Projects' : 'Show More Projects';
+                }
+
+                if (expandIcon) {
+                    expandIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+                }
+
+                if (isExpanded) {
+                    requestAnimationFrame(() => {
+                        expandedContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                }
+            });
+        });
+    </script>
 @endpush

@@ -11,5 +11,4 @@
 
 @push('scripts')
     @vite(['resources/js/sections/education.js'])
-    @vite(['resources/js/sections/certificates.js'])
 @endpush

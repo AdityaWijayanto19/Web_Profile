@@ -1,7 +1,6 @@
 <?php $__env->startSection('content'); ?>
 <div class="min-h-screen bg-base pt-20 pb-20">
     <div class="max-w-4xl mx-auto px-6 md:px-8">
-        <!-- Back Button -->
         <div class="mb-8">
             <a href="<?php echo e(route('landing')); ?>"
                 class="inline-flex items-center gap-2 text-sm text-primary hover:text-white transition-colors">
@@ -10,16 +9,13 @@
             </a>
         </div>
 
-        <!-- Article Header -->
         <div class="space-y-6 mb-12">
-            <!-- Article Title -->
             <div class="space-y-4">
                 <h1 class="text-5xl md:text-6xl font-bold leading-tight tracking-tighter bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
                     <?php echo e($artikel->judul); ?>
 
                 </h1>
 
-                <!-- Article Meta -->
                 <div class="flex flex-wrap items-center gap-4 text-sm text-textMuted/80 font-medium">
                     <div class="flex items-center gap-2">
                         <i data-lucide="calendar" class="w-4 h-4"></i>
@@ -31,18 +27,9 @@
                         <span><?php echo e($artikel->menit_baca ?? '5'); ?> min read</span>
                     </div>
                 </div>
-
-                <!-- Meta Description -->
-                <?php if($artikel->meta_description): ?>
-                    <p class="text-lg text-white/80 leading-relaxed max-w-3xl">
-                        <?php echo e($artikel->meta_description); ?>
-
-                    </p>
-                <?php endif; ?>
             </div>
         </div>
 
-        <!-- Article Content (Editor.js blocks) -->
         <div class="prose prose-invert max-w-none space-y-6">
             <?php if($artikelContent && isset($artikelContent['blocks']) && count($artikelContent['blocks']) > 0): ?>
                 <?php $__currentLoopData = $artikelContent['blocks']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $block): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>

@@ -3,7 +3,6 @@
 @section('content')
 <div class="min-h-screen bg-base pt-20 pb-20">
     <div class="max-w-4xl mx-auto px-6 md:px-8">
-        <!-- Back Button -->
         <div class="mb-8">
             <a href="{{ route('landing') }}"
                 class="inline-flex items-center gap-2 text-sm text-primary hover:text-white transition-colors">
@@ -12,15 +11,12 @@
             </a>
         </div>
 
-        <!-- Article Header -->
         <div class="space-y-6 mb-12">
-            <!-- Article Title -->
             <div class="space-y-4">
                 <h1 class="text-5xl md:text-6xl font-bold leading-tight tracking-tighter bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
                     {{ $artikel->judul }}
                 </h1>
 
-                <!-- Article Meta -->
                 <div class="flex flex-wrap items-center gap-4 text-sm text-textMuted/80 font-medium">
                     <div class="flex items-center gap-2">
                         <i data-lucide="calendar" class="w-4 h-4"></i>
@@ -32,28 +28,18 @@
                         <span>{{ $artikel->menit_baca ?? '5' }} min read</span>
                     </div>
                 </div>
-
-                <!-- Meta Description -->
-                @if($artikel->meta_description)
-                    <p class="text-lg text-white/80 leading-relaxed max-w-3xl">
-                        {{ $artikel->meta_description }}
-                    </p>
-                @endif
             </div>
         </div>
 
-        <!-- Article Content (Editor.js blocks) -->
         <div class="prose prose-invert max-w-none space-y-6">
             @if($artikelContent && isset($artikelContent['blocks']) && count($artikelContent['blocks']) > 0)
                 @foreach($artikelContent['blocks'] as $block)
-                    {{-- Paragraph Block --}}
                     @if($block['type'] === 'paragraph' && isset($block['data']['text']))
                         <p class="text-white/80 leading-relaxed text-lg">
                             {!! nl2br(e($block['data']['text'])) !!}
                         </p>
                     @endif
 
-                    {{-- Heading Block --}}
                     @if($block['type'] === 'heading' && isset($block['data']['text']))
                         @php
                             $level = $block['data']['level'] ?? 2;
@@ -70,7 +56,6 @@
                         </h{{ $level }}>
                     @endif
 
-                    {{-- List Block --}}
                     @if($block['type'] === 'list' && isset($block['data']['items']))
                         @php
                             $style = $block['data']['style'] ?? 'unordered';
@@ -102,7 +87,6 @@
                         @endif
                     @endif
 
-                    {{-- Image Block --}}
                     @if($block['type'] === 'image' && isset($block['data']['file']['url']))
                         <figure class="my-8">
                             <img src="{{ $block['data']['file']['url'] }}"
@@ -117,7 +101,6 @@
                         </figure>
                     @endif
 
-                    {{-- Quote Block --}}
                     @if($block['type'] === 'quote' && isset($block['data']['text']))
                         <blockquote class="border-l-4 border-primary pl-6 py-2 my-6 text-white/80 italic">
                             {!! nl2br(e($block['data']['text'])) !!}
@@ -129,14 +112,12 @@
                         </blockquote>
                     @endif
 
-                    {{-- Code Block --}}
                     @if($block['type'] === 'code' && isset($block['data']['code']))
                         <pre class="bg-black/50 border border-white/10 rounded-lg p-4 overflow-x-auto my-6">
                             <code class="text-green-400 text-sm font-mono">{!! nl2br(e($block['data']['code'])) !!}</code>
                         </pre>
                     @endif
 
-                    {{-- Delimiter Block --}}
                     @if($block['type'] === 'delimiter')
                         <hr class="border-t border-white/10 my-8">
                     @endif
