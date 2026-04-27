@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FooterRequest;
 use App\Models\Footer;
-use App\Models\Teknologi;
 use App\Services\FooterService;
-use App\Services\ImageService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class FooterController extends Controller
@@ -18,7 +15,6 @@ class FooterController extends Controller
      */
     public function __construct(
         private FooterService $footerService,
-        private ImageService $imageService,
     ) {
     }
 
@@ -38,7 +34,7 @@ class FooterController extends Controller
      */
     public function create(): View
     {
-        $technologies = Teknologi::orderBy('nama', 'asc')->get();
+        $technologies = $this->footerService->getTechnologies();
 
         return view('admin.footer.create', compact('technologies'));
     }
@@ -52,11 +48,12 @@ class FooterController extends Controller
             $data = $request->validated();
 
             if ($request->hasFile('logo_path')) {
-                $logoPath = $this->imageService->processUpload(
-                    $request->file('logo_path'),
-                    'footers/logos'
+                $logoPath = $this->footerService->processLogoUpload(
+                    $request->file('logo_path')
                 );
-                $data['logo_path'] = $logoPath;
+                if ($logoPath) {
+                    $data['logo_path'] = $logoPath;
+                }
             }
 
             $this->footerService->create($data);
@@ -76,7 +73,7 @@ class FooterController extends Controller
      */
     public function edit(Footer $footer): View
     {
-        $technologies = Teknologi::orderBy('nama', 'asc')->get();
+        $technologies = $this->footerService->getTechnologies();
         $footer = $this->footerService->getById($footer->id);
 
         return view('admin.footer.edit', compact('footer', 'technologies'));
@@ -90,18 +87,15 @@ class FooterController extends Controller
         try {
             $data = $request->validated();
 
-            // Handle logo upload
             if ($request->hasFile('logo_path')) {
-                // Delete old logo
-                if ($footer->logo_path && Storage::disk('public')->exists($footer->logo_path)) {
-                    Storage::disk('public')->delete($footer->logo_path);
-                }
+                $this->footerService->deleteLogoIfExists($footer);
 
-                $logoPath = $this->imageService->processUpload(
-                    $request->file('logo_path'),
-                    'footers/logos'
+                $logoPath = $this->footerService->processLogoUpload(
+                    $request->file('logo_path')
                 );
-                $data['logo_path'] = $logoPath;
+                if ($logoPath) {
+                    $data['logo_path'] = $logoPath;
+                }
             }
 
             $this->footerService->update($footer, $data);
@@ -122,11 +116,7 @@ class FooterController extends Controller
     public function destroy(Footer $footer): RedirectResponse
     {
         try {
-            // Delete logo
-            if ($footer->logo_path && Storage::disk('public')->exists($footer->logo_path)) {
-                Storage::disk('public')->delete($footer->logo_path);
-            }
-
+            $this->footerService->deleteLogoIfExists($footer);
             $this->footerService->delete($footer);
 
             return redirect()
@@ -138,3 +128,4 @@ class FooterController extends Controller
         }
     }
 }
+

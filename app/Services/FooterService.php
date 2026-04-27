@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Footer;
 use App\Models\FooterMediaSozial;
+use App\Models\Teknologi;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -182,5 +183,57 @@ class FooterService
                 'urutan' => $media['urutan'] ?? $index,
             ]);
         }
+    }
+
+    /**
+     * Process logo upload untuk footer
+     *
+     * @param \Illuminate\Http\UploadedFile|null $file
+     * @return string|null
+     */
+    public function processLogoUpload($file): ?string
+    {
+        if (!$file) {
+            return null;
+        }
+
+        try {
+            return app(ImageService::class)->processUpload($file, 'footers/logos');
+        } catch (\Exception $e) {
+            Log::error('Failed to upload logo', [
+                'error' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
+    }
+
+    /**
+     * Delete logo lama jika ada
+     *
+     * @param Footer $footer
+     * @return void
+     */
+    public function deleteLogoIfExists(Footer $footer): void
+    {
+        if ($footer->logo_path) {
+            try {
+                app(ImageService::class)->deleteFile($footer->logo_path);
+            } catch (\Exception $e) {
+                Log::warning('Failed to delete old logo', [
+                    'path' => $footer->logo_path,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Get all technologies untuk dropdown
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getTechnologies()
+    {
+        return Teknologi::orderBy('nama', 'asc')->get();
     }
 }
