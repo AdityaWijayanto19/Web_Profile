@@ -4,12 +4,14 @@
 @section('page_title', 'Create Footer')
 
 @section('content')
-    <div class="max-w-2xl mx-auto px-4">
-        <a href="{{ route('admin.footer.index') }}"
-            class="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-white mb-4 transition-colors">
-            <i data-lucide="arrow-left" class="w-3 h-3"></i>
-            Back
-        </a>
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="mb-6">
+            <a href="{{ route('admin.footer.index') }}"
+                class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
+                <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO FOOTER
+            </a>
+        </div>
 
         <div class="bg-[#1a151d] border border-white/5 rounded-sm p-6">
             <h2 class="text-lg font-semibold text-white mb-4">Add New Footer</h2>

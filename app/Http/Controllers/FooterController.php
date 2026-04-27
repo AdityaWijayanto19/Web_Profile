@@ -51,9 +51,8 @@ class FooterController extends Controller
         try {
             $data = $request->validated();
 
-            // Handle logo upload
             if ($request->hasFile('logo_path')) {
-                $logoPath = $this->imageService->uploadImage(
+                $logoPath = $this->imageService->processUpload(
                     $request->file('logo_path'),
                     'footers/logos'
                 );
@@ -98,7 +97,7 @@ class FooterController extends Controller
                     Storage::disk('public')->delete($footer->logo_path);
                 }
 
-                $logoPath = $this->imageService->uploadImage(
+                $logoPath = $this->imageService->processUpload(
                     $request->file('logo_path'),
                     'footers/logos'
                 );

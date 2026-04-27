@@ -24,7 +24,7 @@
                 
                 <?php $featuredArticle = $articles->first(); ?>
                 <div class="lg:col-span-7">
-                    <a href="<?php echo e(route('article.show', $featuredArticle->slug)); ?>"
+                    <div
                         class="group cursor-pointer flex flex-col gap-4 no-underline">
                         <div
                             class="relative aspect-[16/9] rounded-2xl overflow-hidden border border-borderMuted shadow-2xl">
@@ -63,13 +63,13 @@
                                 <?php echo e($featuredArticle->meta_description ?? 'Professional insights and technical deep dives.'); ?>
 
                             </p>
-                            <div
+                            <a href="<?php echo e(route('article.show', $featuredArticle->slug)); ?>"
                                 class="text-primary font-black text-sm flex items-center gap-2 group-hover:gap-5 transition-all pt-2 uppercase">
                                 Read Full Article <div class="w-8 h-[1px] bg-primary group-hover:w-12 transition-all">
                                 </div> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </div>
+                            </a>
                         </div>
-                    </a>
+                    </div>
                 </div>
 
                 

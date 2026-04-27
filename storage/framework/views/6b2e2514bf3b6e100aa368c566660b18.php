@@ -2,12 +2,14 @@
 <?php $__env->startSection('page_title', 'Edit Footer'); ?>
 
 <?php $__env->startSection('content'); ?>
-    <div class="max-w-2xl mx-auto px-4">
-        <a href="<?php echo e(route('admin.footer.index')); ?>"
-            class="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-white mb-4 transition-colors">
-            <i data-lucide="arrow-left" class="w-3 h-3"></i>
-            Back
-        </a>
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="mb-6">
+            <a href="<?php echo e(route('admin.footer.index')); ?>"
+                class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[#730c1e] transition-colors group">
+                <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO FOOTER
+            </a>
+        </div>
 
         <div class="bg-[#1a151d] border border-white/5 rounded-sm p-6">
             <h2 class="text-lg font-semibold text-white mb-4">Edit Footer</h2>
@@ -151,11 +153,12 @@ unset($__errorArgs, $__bag); ?>
                                         </option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
-                                <input type="url" name="media_sozials[<?php echo e($index); ?>][url]" value="<?php echo e($media->url); ?>"
-                                    placeholder="https://..."
+                                <input type="url" name="media_sozials[<?php echo e($index); ?>][url]"
+                                    value="<?php echo e($media->url); ?>" placeholder="https://..."
                                     class="flex-1 px-3 py-2 bg-[#0a0808] border border-white/10 rounded-xs text-white text-xs placeholder-gray-600 focus:outline-none focus:border-[#730c1e]"
                                     required>
-                                <button type="button" class="remove-media px-2 py-2 hover:bg-red-600/20 text-gray-400 hover:text-red-400 rounded-xs transition-colors"
+                                <button type="button"
+                                    class="remove-media px-2 py-2 hover:bg-red-600/20 text-gray-400 hover:text-red-400 rounded-xs transition-colors"
                                     title="Remove">
                                     <i data-lucide="x" class="w-3.5 h-3.5"></i>
                                 </button>
@@ -181,7 +184,8 @@ unset($__errorArgs, $__bag); ?>
                     <label for="urutan" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
                         Order
                     </label>
-                    <input type="number" id="urutan" name="urutan" value="<?php echo e(old('urutan', $footer->urutan)); ?>" min="0"
+                    <input type="number" id="urutan" name="urutan" value="<?php echo e(old('urutan', $footer->urutan)); ?>"
+                        min="0"
                         class="w-full px-3 py-2 bg-[#0a0808] border border-white/10 rounded-xs text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#730c1e] transition-colors">
                     <?php $__errorArgs = ['urutan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
