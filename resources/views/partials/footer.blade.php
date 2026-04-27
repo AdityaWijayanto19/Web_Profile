@@ -60,13 +60,17 @@
                     @if ($footerData && $footerData->email)
                         <li>
                             <a href="mailto:{{ $footerData->email }}"
-                                class="text-primary font-bold hover:text-secondary transition-colors">
+                                class="flex items-center gap-2 text-primary font-bold hover:text-secondary transition-colors">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
                                 {{ $footerData->email }}
                             </a>
                         </li>
                     @endif
                     @if ($footerData && $footerData->no_hp)
-                        <li>{{ $footerData->no_hp }}</li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                            {{ $footerData->no_hp }}
+                        </li>
                     @endif
                 </ul>
             </div>

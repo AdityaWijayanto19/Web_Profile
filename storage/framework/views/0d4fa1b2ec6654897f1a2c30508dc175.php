@@ -62,14 +62,19 @@
                     <?php if($footerData && $footerData->email): ?>
                         <li>
                             <a href="mailto:<?php echo e($footerData->email); ?>"
-                                class="text-primary font-bold hover:text-secondary transition-colors">
+                                class="flex items-center gap-2 text-primary font-bold hover:text-secondary transition-colors">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
                                 <?php echo e($footerData->email); ?>
 
                             </a>
                         </li>
                     <?php endif; ?>
                     <?php if($footerData && $footerData->no_hp): ?>
-                        <li><?php echo e($footerData->no_hp); ?></li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                            <?php echo e($footerData->no_hp); ?>
+
+                        </li>
                     <?php endif; ?>
                 </ul>
             </div>

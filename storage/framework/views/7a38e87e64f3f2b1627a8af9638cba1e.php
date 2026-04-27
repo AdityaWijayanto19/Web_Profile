@@ -17,7 +17,7 @@
     <div id="navMenu"
         class="hidden flex-col md:flex md:flex-row gap-4 md:gap-7 mt-4 md:mt-0 text-[13px] font-medium text-textMuted w-full md:w-auto">
 
-        <a href="<?php echo e(route('landing')); ?>#about" class="nav-link block w-full text-white" data-section="about">Profile</a>
+        <a href="<?php echo e(route('landing')); ?>#about" class="nav-link block w-full hover:text-white transition-colors" data-section="about">Profile</a>
         <a href="<?php echo e(route('landing')); ?>#education" class="nav-link block w-full hover:text-white transition-colors"
             data-section="education">Education</a>
         <a href="<?php echo e(route('landing')); ?>#certificates" class="nav-link block w-full hover:text-white transition-colors"
@@ -38,18 +38,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const menuBtn = document.getElementById('menuBtn');
     const navMenu = document.getElementById('navMenu');
+    const navLinks = document.querySelectorAll('.nav-link');
 
+    // Mobile menu toggle
     if (menuBtn && navMenu) {
         menuBtn.addEventListener('click', () => {
             navMenu.classList.toggle('hidden');
         });
 
         // auto close pas klik
-        navMenu.querySelectorAll('a').forEach(link => {
+        navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.add('hidden');
             });
         });
+    }
+
+    // Intersection Observer untuk detect active section
+    const observerOptions = {
+        root: null,
+        rootMargin: '-50% 0px -50% 0px',
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const currentSection = entry.target.id;
+
+                // Remove active dari semua
+                navLinks.forEach(link => {
+                    link.classList.remove('text-white');
+                    link.classList.add('text-textMuted');
+                });
+
+                // Add active ke yang current
+                const activeLink = document.querySelector(`[data-section="${currentSection}"]`);
+                if (activeLink) {
+                    activeLink.classList.remove('text-textMuted');
+                    activeLink.classList.add('text-white');
+                }
+            }
+        });
+    }, observerOptions);
+
+    // Observe semua sections
+    const sections = document.querySelectorAll('[id^="about"], [id^="education"], [id^="certificates"], [id^="experience"], [id^="projects"], [id^="articles"]');
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+    // Set initial active link (about section default)
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+        const aboutLink = document.querySelector('[data-section="about"]');
+        if (aboutLink) {
+            aboutLink.classList.remove('text-textMuted');
+            aboutLink.classList.add('text-white');
+        }
     }
 
 });
