@@ -96,8 +96,7 @@
                                 @endif
                             </div>
                             <div class="flex-1 min-w-0">
-                                <span
-                                    class="text-[9px] text-primary font-bold uppercase tracking-[0.2em] mb-1 block">Article</span>
+                                <span class="text-[9px] text-primary font-bold uppercase tracking-[0.2em] mb-1 block">{{ $article->tanggal_rilis ? $article->tanggal_rilis->format('M d, Y') : 'N/A' }}</span>
                                 <h4
                                     class="text-white text-sm md:text-md font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2 underline-offset-4 group-hover:underline">
                                     {{ $article->judul }}</h4>

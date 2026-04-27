@@ -16,7 +16,7 @@
         @if ($projects->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 @foreach ($projects->slice(0, 8) as $project)
-                    <div class="group">
+                    <div class="group cursor-pointer" data-project-id="{{ $project->id }}">
                         <div
                             class="project-img-container h-[150px] mb-3 relative overflow-hidden rounded-lg border border-white/10 shadow-lg">
                             @if ($project->path_gambar)
@@ -27,12 +27,6 @@
                                     class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[9px]">
                                     No Preview</div>
                             @endif
-                            <div
-                                class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <a href="{{ route('project.show', $project->id) }}"
-                                    class="bg-white text-black p-2 rounded-full"><i data-lucide="arrow-right"
-                                        class="w-4 h-4"></i></a>
-                            </div>
                         </div>
                         <h3 class="text-md font-bold mb-1 line-clamp-1">{{ $project->judul }}</h3>
                         <p class="text-textMuted text-sm mb-2 line-clamp-1">{{ $project->deskripsi }}</p>
@@ -56,7 +50,7 @@
                 <div id="projects-expanded-items"
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 hidden">
                     @foreach ($projects->slice(8) as $project)
-                        <div class="project-item group">
+                        <div class="project-item group cursor-pointer" data-project-id="{{ $project->id }}">
                             <div
                                 class="project-img-container h-[150px] mb-3 relative overflow-hidden rounded-lg border border-white/10 shadow-lg">
                                 @if ($project->path_gambar)
@@ -67,12 +61,6 @@
                                         class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[9px]">
                                         No Preview</div>
                                 @endif
-                                <div
-                                    class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <a href="{{ route('project.show', $project->id) }}"
-                                        class="bg-white text-black p-2 rounded-full"><i data-lucide="arrow-right"
-                                            class="w-4 h-4"></i></a>
-                                </div>
                             </div>
                             <h3 class="text-md font-bold mb-1 line-clamp-1">{{ $project->judul }}</h3>
                             <p class="text-textMuted text-sm mb-2 line-clamp-1">{{ $project->deskripsi }}</p>
@@ -112,6 +100,16 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Handle project card clicks
+            const projectCards = document.querySelectorAll('[data-project-id]');
+            projectCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const projectId = card.getAttribute('data-project-id');
+                    window.location.href = `/project/${projectId}`;
+                });
+            });
+
+            // Handle expand button
             const expandBtn = document.getElementById('expand-projects-btn');
             const expandedContainer = document.getElementById('projects-expanded-items');
             const expandText = document.getElementById('projects-expand-text');

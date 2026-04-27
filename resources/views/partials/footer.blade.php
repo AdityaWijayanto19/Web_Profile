@@ -73,7 +73,7 @@
         </div>
 
         <div class="text-center pt-8 border-t border-borderMuted/10">
-            <p class="text-textMuted text-xs tracking-widest">&copy; 2026 {{ $footerData && $footerData->nama_web ? $footerData->nama_web : 'Pie' }}. All
+            <p class="text-textMuted text-xs tracking-widest">&copy; {{ now()->year }} {{ $footerData && $footerData->nama_web ? $footerData->nama_web : 'Pie' }} All
                 rights reserved.</p>
         </div>
     </div>

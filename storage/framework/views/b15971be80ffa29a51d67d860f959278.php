@@ -218,7 +218,7 @@
 
     <script>
         window.artikelContent = <?php echo json_encode($artikelContent ?? ['blocks' => []]); ?>;
-        
+
         // Debug: Log struktur data
         console.log('=== ARTIKEL CONTENT STRUCTURE ===');
         console.log(JSON.stringify(window.artikelContent, null, 2));

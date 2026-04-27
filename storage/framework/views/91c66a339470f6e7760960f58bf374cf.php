@@ -17,9 +17,10 @@
         <?php if($sertifikats->count() > 0): ?>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <?php $__currentLoopData = $sertifikats->slice(0, 8); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cert): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="group h-[180px] [perspective:1000px]">
+                    <div class="group h-[180px] [perspective:1000px] cursor-pointer">
                         <div
-                            class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg">
+                            class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
+                            style="transform-style: preserve-3d;">
                             <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
                                 <div
                                     class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-lg">
@@ -44,7 +45,8 @@
                                 </div>
                             </div>
                             <div
-                                class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
+                                class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]"
+                                style="transform: rotateY(180deg); backface-visibility: hidden;">
                                 <div class="flex flex-col h-full">
                                     <div class="flex-1">
                                         <div class="flex items-center justify-between mb-2">
@@ -84,9 +86,10 @@
             <?php if($sertifikats->slice(8)->count() > 0): ?>
                 <div id="cert-expanded-items" class="grid hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <?php $__currentLoopData = $sertifikats->slice(8); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cert): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="group h-[180px] [perspective:1000px]">
+                        <div class="group h-[180px] [perspective:1000px] cursor-pointer">
                             <div
-                                class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg">
+                                class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
+                                style="transform-style: preserve-3d;">
                                 <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
                                     <div
                                         class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-lg">
@@ -112,7 +115,8 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]">
+                                    class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]"
+                                    style="transform: rotateY(180deg); backface-visibility: hidden;">
                                     <div class="flex flex-col h-full">
                                         <div class="flex-1">
                                             <div class="flex items-center justify-between mb-2">
@@ -144,7 +148,7 @@
                                                 <i data-lucide="external-link" class="w-3 h-3 text-white"></i>
                                             </a>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +175,34 @@
 <?php $__env->startPush('scripts'); ?>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Certificate flip animation for mobile & desktop
+            const certCardGroups = document.querySelectorAll('#certificates .group[style*="perspective"]');
+
+            certCardGroups.forEach(card => {
+                const flipContainer = card.querySelector('.relative[style*="transform-style"]');
+
+                if (!flipContainer) return;
+
+                // Handle click to flip
+                card.addEventListener('click', (e) => {
+                    // Don't flip if clicking on link
+                    if (e.target.closest('a')) return;
+
+                    e.preventDefault();
+                    const currentTransform = flipContainer.style.transform || '';
+                    flipContainer.style.transform = currentTransform.includes('180deg')
+                        ? 'rotateY(0deg)'
+                        : 'rotateY(180deg)';
+                    flipContainer.style.transformStyle = 'preserve-3d';
+                });
+
+                // Reset on mouse leave (desktop)
+                card.addEventListener('mouseleave', () => {
+                    flipContainer.style.transform = 'rotateY(0deg)';
+                });
+            });
+
+            // Expand certificates button
             const expandBtn = document.getElementById('cert-expand-btn');
             const expandedContainer = document.getElementById('cert-expanded-items');
             const expandText = document.getElementById('cert-expand-text');

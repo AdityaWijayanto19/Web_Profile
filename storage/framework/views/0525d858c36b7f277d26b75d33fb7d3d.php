@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <style>
         .macbook-wrapper {
             position: relative;
@@ -52,7 +50,7 @@
     <main class="relative z-10 pt-20">
         <section class="px-6 pb-20 max-w-6xl mx-auto">
             <div class="reveal mb-8">
-                <a href="{{ route('landing') }}"
+                <a href="<?php echo e(route('landing')); ?>"
                     class="inline-flex items-center gap-2 text-sm text-primary hover:text-white transition-colors">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     Back to Home
@@ -66,12 +64,14 @@
                         <div class="flex items-center gap-4 mb-6">
                             <div>
                                 <h1 class="text-4xl lg:text-5xl font-black italic tracking-tighter leading-none">
-                                    {{ $project->judul }}
+                                    <?php echo e($project->judul); ?>
+
                                 </h1>
                             </div>
                         </div>
                         <p class="text-textMuted text-base font-light leading-relaxed">
-                            {{ $project->deskripsi }}
+                            <?php echo e($project->deskripsi); ?>
+
                         </p>
                     </div>
 
@@ -80,33 +80,33 @@
                             <h2 class="text-sm font-black italic tracking-[0.3em] uppercase text-primary">Tech Stack
                             </h2>
                             <div class="flex gap-4 text-textMuted items-center flex-wrap">
-                                @forelse($project->teknologis as $tech)
-                                    @if ($tech->path_icon)
-                                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{{ $tech->path_icon }}.svg"
+                                <?php $__empty_1 = true; $__currentLoopData = $project->teknologis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tech): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <?php if($tech->path_icon): ?>
+                                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/<?php echo e($tech->path_icon); ?>.svg"
                                             class="w-8 h-8 transition-all hover:grayscale-0 grayscale"
-                                            alt="{{ $tech->nama }}" title="{{ $tech->nama }}"
+                                            alt="<?php echo e($tech->nama); ?>" title="<?php echo e($tech->nama); ?>"
                                             style="filter: invert(0.3) brightness(1.1);">
-                                    @endif
-                                @empty
-                                @endforelse
+                                    <?php endif; ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
 
                     <div class="reveal pt-4" style="transition-delay: 300ms;">
                         <div class="flex flex-col sm:flex-row gap-4">
-                            @if ($project->link_demo)
-                                <a href="{{ $project->link_demo }}" target="_blank" rel="noopener noreferrer"
+                            <?php if($project->link_demo): ?>
+                                <a href="<?php echo e($project->link_demo); ?>" target="_blank" rel="noopener noreferrer"
                                     class="px-8 py-3 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-sm shadow-lg hover:shadow-primary/40 hover:-translate-y-0.5 transition-all text-center">
                                     Live Preview
                                 </a>
-                            @endif
-                            @if ($project->link_repo)
-                                <a href="{{ $project->link_repo }}" target="_blank" rel="noopener noreferrer"
+                            <?php endif; ?>
+                            <?php if($project->link_repo): ?>
+                                <a href="<?php echo e($project->link_repo); ?>" target="_blank" rel="noopener noreferrer"
                                     class="px-8 py-3 glass-card text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-sm hover:bg-white/5 transition-all text-center">
                                     Source Code
                                 </a>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -114,17 +114,17 @@
                 <div class="lg:col-span-7 reveal order-1 lg:order-2 lg:sticky lg:top-24">
                     <div class="macbook-wrapper lg:scale-110 origin-top lg:origin-center">
                         <div class="screen-container-bg"></div>
-                        <img src="{{ asset('assets/images/MacBoook.png') }}"
+                        <img src="<?php echo e(asset('assets/images/MacBoook.png')); ?>"
                             class="relative z-30 w-full drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" alt="Mockup">
                         <div class="screen-container z-20">
-                            @if ($project->path_gambar)
-                                <img src="{{ asset('storage/' . $project->path_gambar) }}" class="screen-content"
-                                    alt="{{ $project->judul }}">
-                            @else
+                            <?php if($project->path_gambar): ?>
+                                <img src="<?php echo e(asset('storage/' . $project->path_gambar)); ?>" class="screen-content"
+                                    alt="<?php echo e($project->judul); ?>">
+                            <?php else: ?>
                                 <div
                                     class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[9px]">
                                     No Preview</div>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -132,9 +132,9 @@
             </div>
         </section>
     </main>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -148,4 +148,6 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/project/show.blade.php ENDPATH**/ ?>
