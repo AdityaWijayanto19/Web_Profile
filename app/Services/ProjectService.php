@@ -63,6 +63,7 @@ class ProjectService
                     'gambar_type' => isset($data['gambar']) ? get_class($data['gambar']) : null,
                 ]);
 
+                $data['urutan'] = Proyek::getNextUrutan();
                 $technologies = $data['teknologis'] ?? [];
                 unset($data['teknologis']);
 
@@ -182,5 +183,10 @@ class ProjectService
                 ->orderByDesc('teknologis_count')
                 ->first(['id', 'judul']),
         ];
+    }
+
+    public function getNextUrutan(): int
+    {
+        return Proyek::getNextUrutan();
     }
 }

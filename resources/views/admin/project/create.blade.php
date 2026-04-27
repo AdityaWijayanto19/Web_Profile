@@ -78,16 +78,9 @@
 
                             <div class="grid grid-cols-2 gap-6">
 
-                                <div class="space-y-2">
-                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Display
-                                        Order</label>
-                                    <input type="number" name="urutan" placeholder="1" min="1" max="9999"
-                                        value="{{ old('urutan', '') }}"
-                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm @error('urutan') border-red-500 @enderror">
-                                    @error('urutan')
-                                        <p class="text-xs text-red-500">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Urutan saat
+                                    ini:{{ $newOrder }}</label>
+
 
                                 <div class="space-y-2">
                                     <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Publish

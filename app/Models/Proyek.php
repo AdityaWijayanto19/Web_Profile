@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasOrder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Proyek extends Model
 {
+    use HasOrder;
+    
     /**
      * Database table name
      */

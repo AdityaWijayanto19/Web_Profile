@@ -39,6 +39,8 @@ class SertifikatService
                     'has_gambar' => isset($data['gambar']),
                 ]);
 
+                $data['urutan'] = Sertifikat::getNextUrutan();
+
                 if (isset($data['gambar']) && $data['gambar']) {
                     $imagePath = $this->imageService->processUpload($data['gambar'], 'sertifikats');
 
@@ -161,5 +163,10 @@ class SertifikatService
         return Sertifikat::where('tahun', $tahun)
             ->orderBy('nama_sertifikat', 'asc')
             ->paginate(self::PER_PAGE);
+    }
+
+    public function getNextUrutan(): int
+    {
+        return Sertifikat::getNextUrutan();
     }
 }

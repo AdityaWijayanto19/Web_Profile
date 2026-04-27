@@ -44,7 +44,8 @@ class PendidikanController extends Controller
      */
     public function create(): View
     {
-        return view('admin.edukasi.create');
+        $newOrder = $this->pendidikanService->getNextUrutan();
+        return view('admin.edukasi.create', compact('newOrder'));
     }
 
     /**

@@ -67,7 +67,7 @@
                                             <span
                                                 class="text-[9px] text-white font-mono uppercase"><?php echo e($cert->tahun); ?></span>
                                         </div>
-                                        <a href="#"
+                                        <a href="<?php echo e($cert->link_kredensial ?? $cert->link ?? '#'); ?>" target="_blank"
                                             class="group/btn flex items-center gap-1.5 bg-primary/10 hover:bg-primary px-2 py-1 rounded-lg transition-all duration-300">
                                             <span
                                                 class="text-[8px] font-black uppercase tracking-widest text-white">View</span>
@@ -137,14 +137,14 @@
                                                 <span
                                                     class="text-[9px] text-white font-mono uppercase"><?php echo e($cert->tahun); ?></span>
                                             </div>
-                                            <a href="#"
+                                            <a href="<?php echo e($cert->link_kredensial ?? $cert->link ?? '#'); ?>" target="_blank"
                                                 class="group/btn flex items-center gap-1.5 bg-primary/10 hover:bg-primary px-2 py-1 rounded-lg transition-all duration-300">
                                                 <span
                                                     class="text-[8px] font-black uppercase tracking-widest text-white">View</span>
                                                 <i data-lucide="external-link" class="w-3 h-3 text-white"></i>
                                             </a>
                                         </div>
-                                    </div>
+                                    </div>  
                                 </div>
                             </div>
                         </div>

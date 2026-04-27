@@ -54,18 +54,22 @@
                             </div>
 
                             <div class="grid grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start Year</label>
-                                <input type="text" name="start_year" value="{{ explode(' - ', $sertifikat->tahun)[0] ?? '' }}"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
-                            </div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Start
+                                        Year</label>
+                                    <input type="text" name="start_year"
+                                        value="{{ explode(' - ', $sertifikat->tahun)[0] ?? '' }}"
+                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                                </div>
 
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year / Status</label>
-                                <input type="text" name="end_year" value="{{ explode(' - ', $sertifikat->tahun)[1] ?? '' }}"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">End Year /
+                                        Status</label>
+                                    <input type="text" name="end_year"
+                                        value="{{ explode(' - ', $sertifikat->tahun)[1] ?? '' }}"
+                                        class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all text-sm font-medium">
+                                </div>
                             </div>
-                        </div>
 
                             <div>
                                 <label
@@ -104,16 +108,8 @@
                                 @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Display
-                                    Order</label>
-                                <input type="number" name="urutan" min="1" max="9999"
-                                    value="{{ old('urutan', $sertifikat->urutan) }}"
-                                    class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-2.5 text-white outline-none focus:border-[#730c1e] transition-all placeholder:text-gray-800 text-sm @error('urutan') border-red-500 @enderror">
-                                @error('urutan')
-                                    <p class="text-xs text-red-500">{{ $message }}</p>
-                                @enderror
-                            </div>
+                           <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Urutan saat ini:
+                                {{ $sertifikat->urutan }}</label>
                         </div>
                     </div>
 

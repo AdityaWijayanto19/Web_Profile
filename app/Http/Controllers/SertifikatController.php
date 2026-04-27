@@ -40,7 +40,8 @@ class SertifikatController extends Controller
      */
     public function create(): View
     {
-        return view('admin.sertifikat.create');
+        $newOrder = $this->sertifikatService->getNextUrutan();
+        return view('admin.sertifikat.create', compact('newOrder'));
     }
 
     /**

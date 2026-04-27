@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasOrder;
 
 class Sertifikat extends Model
 {
+    use HasOrder;
     /**
      * The attributes that are mass assignable.
      *

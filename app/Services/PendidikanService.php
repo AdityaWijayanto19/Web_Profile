@@ -37,8 +37,7 @@ class PendidikanService
                     'gelar' => $data['gelar'] ?? null,
                 ]);
 
-                $maxUrutan = Pendidikan::max('urutan') ?? 0;
-                $data['urutan'] = $data['urutan'] ?? $maxUrutan + 1;
+                $data['urutan'] = Pendidikan::getNextUrutan();
 
                 $pendidikan = Pendidikan::create($data);
 
@@ -171,5 +170,10 @@ class PendidikanService
     public function count(): int
     {
         return Pendidikan::count();
+    }
+
+    public function getNextUrutan(): int
+    {
+        return Pendidikan::getNextUrutan();
     }
 }

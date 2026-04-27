@@ -70,6 +70,9 @@
                             <textarea name="description" rows="6"
                                 class="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-3 text-white outline-none focus:border-[#730c1e] transition-all resize-none text-sm leading-relaxed font-light">{{ $pendidikan->keterangan }}</textarea>
                         </div>
+
+                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">Urutan saat ini:
+                                {{ $pendidikan->urutan }}</label>
                     </div>
                 </div>
 

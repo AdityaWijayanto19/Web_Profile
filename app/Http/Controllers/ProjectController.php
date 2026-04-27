@@ -43,8 +43,9 @@ class ProjectController extends Controller
      */
     public function create(): View
     {
+        $newOrder = $this->projectService->getNextUrutan();
         $teknologis = Teknologi::ordered()->get();
-        return view('admin.project.create', compact('teknologis'));
+        return view('admin.project.create', compact('teknologis', 'newOrder'));
     }
 
     /**

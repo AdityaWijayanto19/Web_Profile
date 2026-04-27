@@ -88,8 +88,54 @@
                 editorContainer.addEventListener('input', checkContentChanged);
                 editorContainer.addEventListener('drop', () => setTimeout(checkContentChanged, 500));
                 editorContainer.addEventListener('paste', () => setTimeout(checkContentChanged, 300));
+
+                // Detect inline formatting changes (bold, italic, code, links)
+                editorContainer.addEventListener('mouseup', () => setTimeout(checkContentChanged, 100));
+                editorContainer.addEventListener('keyup', () => setTimeout(checkContentChanged, 100));
             }
 
+            // Custom Inline Code Tool
+            class InlineCode {
+                constructor() {
+                    this.tag = 'code';
+                    this.class = 'inline-code';
+                    this.button = null;
+                }
+
+                static get isInline() {
+                    return true;
+                }
+
+                render() {
+                    this.button = document.createElement('button');
+                    this.button.type = 'button';
+                    this.button.innerHTML = '&lt;code&gt;';
+                    this.button.classList.add('ce-inline-tool');
+                    this.button.title = 'Inline Code (Cmd+Shift+M)';
+                    return this.button;
+                }
+
+                surround(range) {
+                    const selectedText = range.extractContents();
+                    const code = document.createElement(this.tag);
+                    code.appendChild(selectedText);
+                    range.insertNode(code);
+                }
+
+                checkState() {
+                    return document.queryCommandState('formatBlock', false, 'code');
+                }
+
+                static get sanitize() {
+                    return {
+                        code: {}
+                    };
+                }
+
+                static get shortcut() {
+                    return 'CMD+SHIFT+M';
+                }
+            }
             const uploader = (file) => new Promise((res) => {
                 const formData = new FormData();
                 formData.append('image', file);
@@ -145,6 +191,10 @@
                             }
                         },
                         inlineToolbar: true
+                    },
+                    inlineCode: {
+                        class: InlineCode,
+                        shortcut: 'CMD+SHIFT+M'
                     }
                 },
                 onReady: () => {

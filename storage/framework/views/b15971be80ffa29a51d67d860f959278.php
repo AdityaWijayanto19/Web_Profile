@@ -1,9 +1,7 @@
-@extends('layouts.admin')
+<?php $__env->startSection('title', 'Write Story'); ?>
+<?php $__env->startSection('page_title', 'Article Editor'); ?>
 
-@section('title', 'Write Story')
-@section('page_title', 'Article Editor')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         :root {
             --m-green: #2c974b;
@@ -161,15 +159,15 @@
             color: #2c974b;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="max-w-7xl mx-auto px-4 pb-40">
 
         <header class="flex sticky -top-4 z-50 bg-[#140f17] items-center justify-between py-2 border-b border-white/10 mb-4">
             <div class="flex items-center gap-4">
 
-                <a href="{{ route('article.index') }}"
+                <a href="<?php echo e(route('article.index')); ?>"
                     class="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-white transition-colors group">
                     <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
                     BACK TO PROJECTS
@@ -177,23 +175,23 @@
 
                 <div class="flex items-center gap-2 px-1 relative">
                     <span id="saveStatusText" class="text-sm font-medium text-gray-400">
-                        @if($artikel->status === 'publish')
+                        <?php if($artikel->status === 'publish'): ?>
                             Published
-                        @else
+                        <?php else: ?>
                             Draft
-                        @endif
+                        <?php endif; ?>
                     </span>
                 </div>
             </div>
 
             <div class="flex items-center gap-4">
-                @if($artikel->status === 'draft')
+                <?php if($artikel->status === 'draft'): ?>
                     <button id="publishBtn"
                         class="text-sm font-semibold bg-white text-black px-5 py-1.5 rounded-md hover:bg-gray-200 transition-all">
                         Publish
                     </button>
-                @else
-                    <a href="{{ route('article.edit-metadata', $artikel->id) }}"
+                <?php else: ?>
+                    <a href="<?php echo e(route('article.edit-metadata', $artikel->id)); ?>"
                         class="text-sm font-semibold bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition-all inline-flex items-center gap-2">
                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                         Metadata
@@ -202,37 +200,39 @@
                         class="text-sm font-semibold bg-green-600 text-white px-5 py-1.5 rounded-md hover:bg-green-700 transition-all">
                         Update Content
                     </button>
-                @endif
+                <?php endif; ?>
             </div>
         </header>
 
 
         <div class="flex items-center gap-3 mb-2">
             <div class="flex-1">
-                <textarea id="article-title" class="title-input" placeholder="Title" autocomplete="off">{{ $artikel->judul ?? '' }}</textarea>
+                <textarea id="article-title" class="title-input" placeholder="Title" autocomplete="off"><?php echo e($artikel->judul ?? ''); ?></textarea>
             </div>
         </div>
 
         <div id="editorjs" class="min-h-10"
-             data-artikel-id="{{ $artikel->id }}"
-             data-upload-url="{{ route('article.upload-image', $artikel->id) }}"></div>
+             data-artikel-id="<?php echo e($artikel->id); ?>"
+             data-upload-url="<?php echo e(route('article.upload-image', $artikel->id)); ?>"></div>
     </div>
 
     <script>
-        window.artikelContent = {!! json_encode($artikelContent ?? ['blocks' => []]) !!};
-
+        window.artikelContent = <?php echo json_encode($artikelContent ?? ['blocks' => []]); ?>;
+        
         // Debug: Log struktur data
         console.log('=== ARTIKEL CONTENT STRUCTURE ===');
         console.log(JSON.stringify(window.artikelContent, null, 2));
         console.log('================================');
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@1.10.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.9.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.4.0"></script>
-    @vite(['resources/js/admin/article/create.js'])
-@endpush
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/js/admin/article/create.js']); ?>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Web Profile\resources\views/admin/article/create.blade.php ENDPATH**/ ?>

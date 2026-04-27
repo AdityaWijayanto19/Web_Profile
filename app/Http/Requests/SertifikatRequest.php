@@ -46,7 +46,7 @@ class SertifikatRequest extends FormRequest
             'deskripsi' => ['nullable', 'string', 'max:1000'],
             'link_kredensial' => ['nullable', 'url', 'max:255'],
             'start_year' => 'required|string|max:10',
-            'end_year' => 'required|string|max:10',
+            'end_year' => 'nullable|string|max:10',
             'urutan' => [
                 'nullable',
                 'integer',
@@ -94,7 +94,6 @@ class SertifikatRequest extends FormRequest
             'start_year.string' => 'Tahun mulai harus berupa teks.',
             'start_year.max' => 'Tahun mulai maksimal 10 karakter.',
 
-            'end_year.required' => 'Tahun selesai wajib diisi.',
             'end_year.string' => 'Tahun selesai harus berupa teks.',
             'end_year.max' => 'Tahun selesai maksimal 10 karakter.',
 
