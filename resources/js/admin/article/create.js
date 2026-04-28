@@ -50,6 +50,8 @@
                         isi_konten: JSON.stringify(output)
                     };
 
+                    lastSavedContent = JSON.stringify(currentContent);
+
                     const response = await fetch(`/admin/article/${artikelId}/save-content`, {
                         method: 'POST',
                         headers: {
@@ -60,8 +62,13 @@
                     });
 
                     if (response.ok) {
-                        lastSavedContent = JSON.stringify(currentContent);
                         updateSaveStatus(true);
+                    } else {
+                        lastSavedContent = JSON.stringify({
+                            judul: titleInput ? titleInput.value : '',
+                            isi_konten: JSON.stringify(artikelContent)
+                        });
+                        updateSaveStatus(false);
                     }
                     isSaving = false;
                 } catch (err) {
