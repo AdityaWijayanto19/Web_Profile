@@ -20,7 +20,7 @@
                     <div class="group h-[180px] [perspective:1000px] cursor-pointer">
                         <div
                             class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
-                            style="transform-style: preserve-3d;">
+                            style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d; perspective: 1000px; -webkit-perspective: 1000px;">
                             <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
                                 <div
                                     class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-lg">
@@ -88,8 +88,8 @@
                         <div class="group h-[180px] [perspective:1000px] cursor-pointer">
                             <div
                                 class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
-                                style="transform-style: preserve-3d;">
-                                <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
+                                style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d; perspective: 1000px; -webkit-perspective: 1000px;">
+                                <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]" style="backface-visibility: hidden; -webkit-backface-visibility: hidden;">
                                     <div
                                         class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-lg">
                                         @if ($cert->path_gambar)
@@ -115,7 +115,7 @@
                                 </div>
                                 <div
                                     class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]"
-                                    style="transform: rotateY(180deg); backface-visibility: hidden;">
+                                    style="transform: rotateY(180deg); -webkit-transform: rotateY(180deg); backface-visibility: hidden; -webkit-backface-visibility: hidden;">
                                     <div class="flex flex-col h-full">
                                         <div class="flex-1">
                                             <div class="flex items-center justify-between mb-2">
@@ -173,7 +173,12 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Certificate flip animation for mobile & desktop
+            const isTouchDevice = () => {
+                return (('ontouchstart' in window) ||
+                    (navigator.maxTouchPoints > 0) ||
+                    (navigator.msMaxTouchPoints > 0));
+            };
+
             const certCardGroups = document.querySelectorAll('#certificates .group[style*="perspective"]');
 
             certCardGroups.forEach(card => {
@@ -181,23 +186,30 @@
 
                 if (!flipContainer) return;
 
-                // Handle click to flip
-                card.addEventListener('click', (e) => {
-                    // Don't flip if clicking on link
+                let isFlipped = false;
+
+                const toggleFlip = (e) => {
                     if (e.target.closest('a')) return;
 
                     e.preventDefault();
-                    const currentTransform = flipContainer.style.transform || '';
-                    flipContainer.style.transform = currentTransform.includes('180deg')
-                        ? 'rotateY(0deg)'
-                        : 'rotateY(180deg)';
+                    isFlipped = !isFlipped;
+                    flipContainer.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+                    flipContainer.style.WebkitTransform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
                     flipContainer.style.transformStyle = 'preserve-3d';
-                });
+                    flipContainer.style.WebkitTransformStyle = 'preserve-3d';
+                };
 
-                // Reset on mouse leave (desktop)
-                card.addEventListener('mouseleave', () => {
-                    flipContainer.style.transform = 'rotateY(0deg)';
-                });
+                if (isTouchDevice()) {
+                    card.style.cursor = 'pointer';
+                    card.addEventListener('touchstart', toggleFlip, { passive: false });
+                } else {
+                    card.addEventListener('click', toggleFlip);
+                    card.addEventListener('mouseleave', () => {
+                        isFlipped = false;
+                        flipContainer.style.transform = 'rotateY(0deg)';
+                        flipContainer.style.WebkitTransform = 'rotateY(0deg)';
+                    });
+                }
             });
 
             // Expand certificates button
