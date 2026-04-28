@@ -48,7 +48,7 @@ class AuthService
     public function sendPasswordResetEmail(string $email, string $token): bool
     {
         try {
-            Mail::to($email)->send(new ResetPasswordMail($email, $token));
+            Mail::to($email)->queue(new ResetPasswordMail($email, $token));
             return true;
         } catch (Throwable $e) {
             Log::error("Email Error: " . $e->getMessage(), ['email' => $email]);
