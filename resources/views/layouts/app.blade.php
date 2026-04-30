@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@yield('og_title', 'Yunnappie | Portfolio')">
+    <meta property="og:description" content="@yield('og_description', 'Mahasiswa Teknologi Informasi Universitas Brawijaya yang fokus pada Website Development, IoT, dan Infrastruktur Server.')">
+    <meta property="og:image" content="https://yunnappie.me/og-image.png">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="Yunnappie Portfolio">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <title>My Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -127,6 +134,7 @@
         }
     </style>
 </head>
+
 <body class="relative overflow-x-hidden">
 
     @include('partials.navbar')
@@ -137,4 +145,5 @@
 
     @include('partials.scripts')
 </body>
+
 </html>
