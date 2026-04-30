@@ -36,12 +36,12 @@
                     @if ($hero->link_cv)
                         <a href="{{ $hero->link_cv }}" target="_blank" rel="noopener noreferrer"
                             class="w-full md:w-auto px-12 py-5 bg-white text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all duration-500 rounded-sm inline-flex items-center justify-center">
-                            Get in Touch
+                            Hubungi Saya
                         </a>
                     @else
                         <button
                             class="w-full md:w-auto px-12 py-5 bg-white text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all duration-500 rounded-sm">
-                            Get in Touch
+                            Hubungi Saya
                         </button>
                     @endif
                 </div>
@@ -64,7 +64,7 @@
             </span>
 
             <div class="lg:col-span-12 text-center py-12">
-                <p class="text-textMuted text-sm">No hero available at the moment.</p>
+                <p class="text-textMuted text-sm">Tidak ada hero yang tersedia saat ini.</p>
             </div>
         </main>
     @endif

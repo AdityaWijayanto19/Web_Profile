@@ -34,7 +34,7 @@
                 </div>
             </div>
         @empty
-            <p class="text-center text-textMuted">No education data available</p>
+            <p class="text-center text-textMuted">Tidak ada data pendidikan yang tersedia</p>
         @endforelse
     </div>
 
