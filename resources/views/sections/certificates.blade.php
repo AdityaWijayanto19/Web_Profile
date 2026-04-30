@@ -153,7 +153,7 @@
                 <div class="flex justify-center mt-6">
                     <button type="button" id="cert-expand-btn"
                         class="px-6 py-2.5 bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-sm text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-                        <span id="cert-expand-text">View All Certificates</span>
+                        <span id="cert-expand-text">Lihat Semua Sertifikat</span>
                         <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"
                             id="cert-expand-icon"></i>
                     </button>
@@ -161,7 +161,7 @@
             @endif
         @else
             <div class="lg:col-span-12 text-center py-12">
-                <p class="text-textMuted text-sm">No certificates available at the moment.</p>
+                <p class="text-textMuted text-sm">Tidak ada sertifikat yang tersedia saat ini.</p>
             </div>
         @endif
     </div>
@@ -230,8 +230,8 @@
                 expandedContainer.classList.toggle('hidden', !isExpanded);
 
                 if (expandText) {
-                    expandText.textContent = isExpanded ? 'Show Less Certificates' :
-                        'View All Certificates';
+                    expandText.textContent = isExpanded ? 'Tampilkan Lebih Sedikit Sertifikat' :
+                        'Lihat Semua Sertifikat';
                 }
 
                 if (expandIcon) {

@@ -44,15 +44,14 @@
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             @else
                                 <div
-                                    class="w-full h-full flex items-center justify-center bg-base text-gray-700 italic text-sm">
-                                    No Preview</div>
+                                    class="w-full h-full flex items-center justify-center bg-base text-gray-700 italic text-sm">Tidak Ada Pratinjau</div>
                             @endif
                         </div>
                         <div class="space-y-3 px-1">
                             <div class="flex items-center gap-3 text-xs text-textMuted/80 font-medium">
                                 <span>{{ $featuredArticle->tanggal_rilis ? $featuredArticle->tanggal_rilis->format('M d, Y') : 'N/A' }}</span>
                                 <span class="w-1 h-1 rounded-full bg-primary"></span>
-                                <span>{{ $featuredArticle->menit_baca ?? '5' }} min read</span>
+                                <span>{{ $featuredArticle->menit_baca ?? '5' }} menit baca</span>
                             </div>
                             <h3
                                 class="text-3xl md:text-4xl font-extrabold leading-tight tracking-tighter bg-gradient-to-r from-primary via-[#ef4444] to-[#7f1d1d] bg-clip-text text-transparent group-hover:from-white group-hover:to-primary transition-all duration-500">
@@ -63,7 +62,7 @@
                             </p>
                             <a href="{{ route('article.show', $featuredArticle->slug) }}"
                                 class="text-primary font-black text-sm flex items-center gap-2 group-hover:gap-5 transition-all pt-2 uppercase">
-                                Read Full Article <div class="w-8 h-[1px] bg-primary group-hover:w-12 transition-all">
+                                Baca Artikel Lengkap <div class="w-8 h-[1px] bg-primary group-hover:w-12 transition-all">
                                 </div> <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </a>
                         </div>
@@ -92,7 +91,7 @@
                                 @else
                                     <div
                                         class="w-full h-full flex items-center justify-center bg-base text-gray-700 italic text-[9px]">
-                                        No Preview</div>
+                                        Tidak Ada Pratinjau</div>
                                 @endif
                             </div>
                             <div class="flex-1 min-w-0">
@@ -103,15 +102,14 @@
                                     {{ $article->judul }}</h4>
                                 <p class="text-textMuted text-xs mt-1 line-clamp-1 font-light opacity-90">
                                     {{ $article->meta_description ?? 'Professional insights.' }}</p>
-                                <p class="text-textMuted/70 text-xs mt-1 font-light">{{ $article->menit_baca ?? '5' }}
-                                    min read</p>
+                                <p class="text-textMuted/70 text-xs mt-1 font-light">{{ $article->menit_baca ?? '5' }} menit baca</p>
                             </div>
                         </a>
                     @endforeach
                 </div>
             @else
                 <div class="lg:col-span-12 text-center py-12">
-                    <p class="text-textMuted text-sm">No articles available at the moment.</p>
+                    <p class="text-textMuted text-sm">Tidak ada artikel yang tersedia saat ini.</p>
                 </div>
             @endif
         </div>

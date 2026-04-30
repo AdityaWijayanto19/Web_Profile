@@ -24,7 +24,7 @@
                             @else
                                 <div
                                     class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[9px]">
-                                    No Preview</div>
+                                    Tidak Ada Pratinjau</div>
                             @endif
                         </div>
                         <h3 class="text-md font-bold mb-1 line-clamp-1">{{ $project->judul }}</h3>
@@ -58,7 +58,7 @@
                                 @else
                                     <div
                                         class="w-full h-full flex items-center justify-center bg-white/5 text-gray-700 italic text-[9px]">
-                                        No Preview</div>
+                                        Tidak Ada Pratinjau</div>
                                 @endif
                             </div>
                             <h3 class="text-md font-bold mb-1 line-clamp-1">{{ $project->judul }}</h3>
@@ -82,7 +82,7 @@
                 <div class="flex justify-center mt-6">
                     <button type="button" id="expand-projects-btn"
                         class="px-6 py-2.5 bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-sm text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-                        <span id="projects-expand-text">Show More Projects</span>
+                        <span id="projects-expand-text">Tampilkan Lebih Banyak Proyek</span>
                         <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"
                             id="projects-expand-icon"></i>
                     </button>
@@ -90,7 +90,7 @@
             @endif
         @else
             <div class="lg:col-span-12 text-center py-12">
-                    <p class="text-textMuted text-sm">No projects available at the moment.</p>
+                    <p class="text-textMuted text-sm">Tidak ada proyek yang tersedia saat ini.</p>
                 </div>
         @endif
     </div>
@@ -126,7 +126,7 @@
                 expandedContainer.classList.toggle('hidden', !isExpanded);
 
                 if (expandText) {
-                    expandText.textContent = isExpanded ? 'Show Less Projects' : 'Show More Projects';
+                    expandText.textContent = isExpanded ? 'Tampilkan Lebih Sedikit Proyek' : 'Tampilkan Lebih Banyak Proyek';
                 }
 
                 if (expandIcon) {
