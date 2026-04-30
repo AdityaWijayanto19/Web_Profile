@@ -17,17 +17,18 @@
     <div id="navMenu"
         class="hidden flex-col md:flex md:flex-row gap-4 md:gap-7 mt-4 md:mt-0 text-[13px] font-medium text-textMuted w-full md:w-auto">
 
-        <a href="{{ route('landing') }}#about" class="nav-link block w-full hover:text-white transition-colors" data-section="about">Profile</a>
+        <a href="{{ route('landing') }}#about" class="nav-link block w-full hover:text-white transition-colors"
+            data-section="about">Profil</a>
         <a href="{{ route('landing') }}#education" class="nav-link block w-full hover:text-white transition-colors"
-            data-section="education">Education</a>
+            data-section="education">Pendidikan</a>
         <a href="{{ route('landing') }}#certificates" class="nav-link block w-full hover:text-white transition-colors"
-            data-section="certificates">Certificates</a>
+            data-section="certificates">Sertifikat</a>
         <a href="{{ route('landing') }}#experience" class="nav-link block w-full hover:text-white transition-colors"
-            data-section="experience">Experience</a>
+            data-section="experience">Pengalaman</a>
         <a href="{{ route('landing') }}#projects" class="nav-link block w-full hover:text-white transition-colors"
-            data-section="projects">Projects</a>
+            data-section="projects">Proyek</a>
         <a href="{{ route('landing') }}#articles" class="nav-link block w-full hover:text-white transition-colors"
-            data-section="articles">Articles</a>
+            data-section="articles">Artikel</a>
 
     </div>
 </nav>
