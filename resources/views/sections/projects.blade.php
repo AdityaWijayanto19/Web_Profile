@@ -2,14 +2,13 @@
     <div class="max-w-6xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
             <div class="relative">
-                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Verified
-                    Showcase</span>
+                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Dokumentasi Karya</span>
                 <h2 class="text-4xl md:text-5xl font-bold tracking-tighter italic leading-none">
-                    Portfolio <span class="text-white not-italic border-b-4 border-primary/40">Projects</span>
+                    Galeri <span class="text-white not-italic border-b-4 border-primary/40">Proyek</span>
                 </h2>
             </div>
             <p class="text-textMuted max-w-md text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-4">
-                Professional projects crafted with modern technologies and creative solutions.
+                Deretan proyek yang dibangun dengan teknologi modern dan pendekatan solusi kreatif.
             </p>
         </div>
 

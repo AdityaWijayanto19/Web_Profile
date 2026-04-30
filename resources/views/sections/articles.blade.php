@@ -8,14 +8,15 @@
     <div class="max-w-6xl mx-auto relative z-10">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
             <div class="relative">
-                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Verified
-                    Article</span>
+                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Publikasi
+                    Artikel</span>
                 <h2 class="text-4xl md:text-5xl font-bold tracking-tighter italic leading-none">
-                    Articles <span class="text-white not-italic border-b-4 border-primary/40">Showcase</span>
+                    Galeri <span class="text-white not-italic border-b-4 border-primary/40">Artikel</span>
                 </h2>
             </div>
             <p class="text-textMuted max-w-md text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-4">
-                Happy writing and sharing knowledge through articles, providing insights into the latest trends and
+                Ruang berbagi edukasi dan pengalaman melalui tulisan, memberikan sudut pandang baru seputar tren
+                industri dan teknologi.
             </p>
         </div>
 
@@ -24,8 +25,7 @@
                 {{-- Featured Article (Left) --}}
                 @php $featuredArticle = $articles->first(); @endphp
                 <div class="lg:col-span-7">
-                    <div
-                        class="group cursor-pointer flex flex-col gap-4 no-underline">
+                    <div class="group cursor-pointer flex flex-col gap-4 no-underline">
                         <div
                             class="relative aspect-[16/9] rounded-2xl overflow-hidden border border-borderMuted shadow-2xl">
                             @php
@@ -96,7 +96,8 @@
                                 @endif
                             </div>
                             <div class="flex-1 min-w-0">
-                                <span class="text-[9px] text-primary font-bold uppercase tracking-[0.2em] mb-1 block">{{ $article->tanggal_rilis ? $article->tanggal_rilis->format('M d, Y') : 'N/A' }}</span>
+                                <span
+                                    class="text-[9px] text-primary font-bold uppercase tracking-[0.2em] mb-1 block">{{ $article->tanggal_rilis ? $article->tanggal_rilis->format('M d, Y') : 'N/A' }}</span>
                                 <h4
                                     class="text-white text-sm md:text-md font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2 underline-offset-4 group-hover:underline">
                                     {{ $article->judul }}</h4>

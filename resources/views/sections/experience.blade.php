@@ -2,11 +2,11 @@
     <div class="max-w-4xl mx-auto text-center mb-2">
         <div class="flex items-center justify-center gap-2 mb-2">
             <span class="w-8 h-[1px] bg-primary"></span>
-            <span class="text-primary text-xs font-medium tracking-widest uppercase">My Journey</span>
+            <span class="text-primary text-xs font-medium tracking-widest uppercase">Riwayat Perjalanan</span>
             <span class="w-8 h-[1px] bg-primary"></span>
         </div>
         <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight">
-            Experience <span class="text-primary">section.</span>
+            Latar Belakang <span class="text-primary">Pengalaman.</span>
         </h2>
     </div>
 

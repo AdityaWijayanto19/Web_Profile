@@ -2,15 +2,14 @@
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
             <div class="relative">
-                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Verified
-                    Credentials</span>
+                <span class="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block italic">Sertifikat Keahlian</span>
                 <h2 class="text-4xl md:text-5xl font-bold tracking-tighter italic leading-none">
-                    Official <span class="text-white not-italic border-b-4 border-primary/40">Certifications</span>
+                    Galeri <span class="text-white not-italic border-b-4 border-primary/40"> Sertifikat</span>
                 </h2>
             </div>
             <p class="text-textMuted max-w-md text-sm font-light leading-relaxed border-l-2 border-primary/20 pl-4">
-                Professional recognition and specialized training verified by global tech institutions and industry
-                leaders.
+                Kumpulan sertifikat dan pelatihan teknis yang memvalidasi kemampuan saya berdasarkan standar industri
+                teknologi saat ini.
             </p>
         </div>
 
@@ -18,8 +17,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 @foreach ($sertifikats->slice(0, 8) as $cert)
                     <div class="group h-[180px] [perspective:1000px] cursor-pointer">
-                        <div
-                            class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
+                        <div class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
                             style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d; perspective: 1000px; -webkit-perspective: 1000px;">
                             <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]">
                                 <div
@@ -44,8 +42,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]"
+                            <div class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]"
                                 style="transform: rotateY(180deg); backface-visibility: hidden;">
                                 <div class="flex flex-col h-full">
                                     <div class="flex-1">
@@ -68,7 +65,7 @@
                                             <span
                                                 class="text-[9px] text-white font-mono uppercase">{{ $cert->tahun }}</span>
                                         </div>
-                                        <a href="{{ $cert->link_kredensial ?? $cert->link ?? '#' }}" target="_blank"
+                                        <a href="{{ $cert->link_kredensial ?? ($cert->link ?? '#') }}" target="_blank"
                                             class="group/btn flex items-center gap-1.5 bg-primary/10 hover:bg-primary px-2 py-1 rounded-lg transition-all duration-300">
                                             <span
                                                 class="text-[8px] font-black uppercase tracking-widest text-white">View</span>
@@ -86,10 +83,10 @@
                 <div id="cert-expanded-items" class="grid hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     @foreach ($sertifikats->slice(8) as $cert)
                         <div class="group h-[180px] [perspective:1000px] cursor-pointer">
-                            <div
-                                class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
+                            <div class="relative h-full w-full rounded-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-lg"
                                 style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d; perspective: 1000px; -webkit-perspective: 1000px;">
-                                <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]" style="backface-visibility: hidden; -webkit-backface-visibility: hidden;">
+                                <div class="absolute inset-0 h-full w-full [backface-visibility:hidden]"
+                                    style="backface-visibility: hidden; -webkit-backface-visibility: hidden;">
                                     <div
                                         class="h-full w-full rounded-lg overflow-hidden border border-white/10 relative shadow-lg">
                                         @if ($cert->path_gambar)
@@ -113,8 +110,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div
-                                    class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]"
+                                <div class="absolute inset-0 h-full w-full rounded-xl bg-[#0d0a0f] border-2 border-primary/40 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-[0_0_40px_rgba(244,63,94,0.2)]"
                                     style="transform: rotateY(180deg); -webkit-transform: rotateY(180deg); backface-visibility: hidden; -webkit-backface-visibility: hidden;">
                                     <div class="flex flex-col h-full">
                                         <div class="flex-1">
@@ -139,7 +135,8 @@
                                                 <span
                                                     class="text-[9px] text-white font-mono uppercase">{{ $cert->tahun }}</span>
                                             </div>
-                                            <a href="{{ $cert->link_kredensial ?? $cert->link ?? '#' }}" target="_blank"
+                                            <a href="{{ $cert->link_kredensial ?? ($cert->link ?? '#') }}"
+                                                target="_blank"
                                                 class="group/btn flex items-center gap-1.5 bg-primary/10 hover:bg-primary px-2 py-1 rounded-lg transition-all duration-300">
                                                 <span
                                                     class="text-[8px] font-black uppercase tracking-widest text-white">View</span>
@@ -194,14 +191,17 @@
                     e.preventDefault();
                     isFlipped = !isFlipped;
                     flipContainer.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
-                    flipContainer.style.WebkitTransform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+                    flipContainer.style.WebkitTransform = isFlipped ? 'rotateY(180deg)' :
+                        'rotateY(0deg)';
                     flipContainer.style.transformStyle = 'preserve-3d';
                     flipContainer.style.WebkitTransformStyle = 'preserve-3d';
                 };
 
                 if (isTouchDevice()) {
                     card.style.cursor = 'pointer';
-                    card.addEventListener('touchstart', toggleFlip, { passive: false });
+                    card.addEventListener('touchstart', toggleFlip, {
+                        passive: false
+                    });
                 } else {
                     card.addEventListener('click', toggleFlip);
                     card.addEventListener('mouseleave', () => {
@@ -231,7 +231,7 @@
 
                 if (expandText) {
                     expandText.textContent = isExpanded ? 'Show Less Certificates' :
-                    'View All Certificates';
+                        'View All Certificates';
                 }
 
                 if (expandIcon) {
