@@ -34,7 +34,7 @@
                             <div
                                 class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-2 relative mb-10">
                                 <span class="text-8xl font-bold text-slate-200/50 select-none leading-none">1</span>
-                                <div class="text-center md:text-left justify-center md:justify-start">
+                                <div class="flex flex-col items-center md:items-start text-center md:text-left justify-center md:justify-start">
                                     <h4 class="text-xl font-bold text-primary mb-2">{{ $item->jabatan }}</h4>
                                     <p class="text-sm text-gray-500 leading-relaxed max-w-[200px] line-clamp-3">
                                         {{ $item->keterangan }}</p>
